@@ -1,5 +1,5 @@
-import React from "react";
 
+import React, { useEffect, useState } from "react";
 const fasilitas = [
   {
     title: "IGD",
@@ -32,6 +32,11 @@ const fasilitas = [
     img: "/igd.jpg",
   },
 ];
+const heroImages = [
+    "/rumahsakit.jpg",
+    "/rumahsakit2.jpg",
+  
+]
 const dokterList = [
   {
     nama: "Dr. Carmen",
@@ -111,68 +116,45 @@ const jadwalDokterList = [
   },
 ];
 const Home = ()=> {
+  const [currentHero, setCurrentHero] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentHero((prev) =>
+      prev === heroImages.length -1 ? 0 : prev + 1)
+    }, 3000)
+    return () => clearInterval(interval);
+  }, []);
   return (
     <div className="font-sans">
       
 
       {/* Hero */}
       {/* Hero + Profil Overlay */}
-<section id="profil" className="relative w-full h-[600px] scroll-mt-20">
-
-  {/* Background Image */}
-  <img
-    src="/rumahsakit.jpg"
-    alt="hero"
-    className="w-full h-full object-cover"
-  />
-
-  {/* Overlay gelap */}
-  <div className="absolute inset-0 bg-black/50"></div>
-
-  {/* Konten Profil */}
-  <div className="absolute inset-0 flex items-center px-8">
-    <div className="max-w-2xl text-white py-30">
-
-      <h1 className="text-4xl md:text-5xl font-bold mb-4 ">
-        Rumah Sakit UMS A.R FACHRUDIN
-      </h1>
-
-      <p className="text-gray-200 mb-4">
-        RS UMS A.R. Facrudin merupakan rumah sakit modern yang berkomitmen
-        memberikan pelayanan kesehatan terbaik bagi masyarakat dengan
-        dukungan tenaga medis profesional dan fasilitas lengkap.
-      </p>
-
-      <p className="text-gray-300 mb-6">
-        Kami mengedepankan pelayanan cepat, tepat, dan ramah dengan standar
-        medis tinggi serta teknologi terkini.
-      </p>
-
-      {/* Highlight */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <div className="bg-white/20 backdrop-blur-md p-3 rounded-lg text-center">
-          <h3 className="font-bold">24 Jam</h3>
-          <p className="text-xs">IGD</p>
-        </div>
-
-        <div className="bg-white/20 backdrop-blur-md p-3 rounded-lg text-center">
-          <h3 className="font-bold">50+</h3>
-          <p className="text-xs">Dokter</p>
-        </div>
-
-        <div className="bg-white/20 backdrop-blur-md p-3 rounded-lg text-center">
-          <h3 className="font-bold">100+</h3>
-          <p className="text-xs">Tenaga Medis</p>
-        </div>
-
-        <div className="bg-white/20 backdrop-blur-md p-3 rounded-lg text-center">
-          <h3 className="font-bold">Terakreditasi</h3>
-          <p className="text-xs">Nasional</p>
-        </div>
-      </div>
-
-    </div>
+<section
+  id="profil"
+  className="relative w-full h-[600px] overflow-hidden scroll-mt-20"
+>
+  {/* Slider Track */}
+  <div
+    className="flex h-full transition-transform duration-1000 ease-in-out"
+    style={{
+      width: `${heroImages.length * 100}%`,
+      transform: `translateX(-${currentHero * (100 / heroImages.length)}%)`,
+    }}
+  >
+    {heroImages.map((image, index) => (
+      <img
+        key={index}
+        src={image}
+        alt={`hero-${index}`}
+        className="w-full h-full object-cover flex-shrink-0"
+        style={{ width: `${100 / heroImages.length}%` }}
+      />
+    ))}
   </div>
+
+  {/* Overlay */}
+  <div className="absolute inset-0 bg-black/50"></div>
 </section>
       
 
@@ -416,58 +398,7 @@ const Home = ()=> {
   </div>
 </section>
 {/* Footer */}
-<footer className="bg-gray-800 text-white px-8 py-12">
-  <div className="grid md:grid-cols-4 gap-8">
 
-    {/* Logo & Deskripsi */}
-    <div>
-      <h2 className="text-xl font-bold mb-3">
-        RS UMS A.R. Facrudin
-      </h2>
-      <p className="text-sm text-gray-200">
-        Memberikan pelayanan kesehatan terbaik dengan fasilitas modern dan tenaga medis profesional.
-      </p>
-    </div>
-
-    {/* Menu */}
-    <div>
-      <h3 className="font-semibold mb-3">Menu</h3>
-      <ul className="space-y-2 text-sm text-gray-200">
-        <li><a href="#">Beranda</a></li>
-        <li><a href="#">Profil</a></li>
-        <li><a href="#">Fasilitas</a></li>
-        <li><a href="#">Dokter</a></li>
-      </ul>
-    </div>
-
-    {/* Layanan */}
-    <div>
-      <h3 className="font-semibold mb-3">Layanan</h3>
-      <ul className="space-y-2 text-sm text-gray-200">
-        <li>IGD 24 Jam</li>
-        <li>Rawat Inap</li>
-        <li>Laboratorium</li>
-        <li>Apotek</li>
-      </ul>
-    </div>
-
-    {/* Kontak */}
-    <div>
-      <h3 className="font-semibold mb-3">Kontak</h3>
-      <ul className="space-y-2 text-sm text-gray-200">
-        <li>📍 Surakarta, Jawa Tengah</li>
-        <li>📞 0888 0888 0880</li>
-        <li>✉️ info@rsums.com</li>
-      </ul>
-    </div>
-
-  </div>
-
-  {/* Bottom */}
-  <div className="border-t border-green-700 mt-8 pt-4 text-center text-sm text-gray-300">
-    © 2025 RS UMS A.R. Facrudin. All rights reserved.
-  </div>
-</footer>
     </div>
   );
 }
