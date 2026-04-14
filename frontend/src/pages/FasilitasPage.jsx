@@ -9,13 +9,13 @@ const kategoriList = [
 ];
 
 const fasilitasData = [
-  { title: "Poli Umum", category: "Rawat Jalan", image: "/poli.jpg" },
-  { title: "Poli Gigi", category: "Rawat Jalan", image: "/gigi.jpg" },
+  { title: "Poli Umum", category: "Rawat Jalan", image: "/poliklinik.jpeg" },
+  { title: "Poli Gigi", category: "Rawat Jalan", image: "/gigi.jpeg" },
 
-  { title: "Kamar VIP", category: "Rawat Inap", image: "/vip.jpg" },
-  { title: "Kamar Kelas 1", category: "Rawat Inap", image: "/kelas1.jpg" },
+  { title: "Kamar VIP", category: "Rawat Inap", image: "/kamar_vip.jpeg" },
+  { title: "Kamar Kelas 1", category: "Rawat Inap", image: "/kelas_1.jpg" },
 
-  { title: "CT Scan", category: "Layanan Unggulan", image: "/ctscan.jpg" },
+  { title: "Rontgen", category: "Layanan Unggulan", image: "/scan_radiologi.jpeg" },
   { title: "MRI", category: "Layanan Unggulan", image: "/mri.jpg" },
 
   { title: "Masjid", category: "Fasilitas Umum", image: "/masjid.jpg" },
@@ -23,8 +23,8 @@ const fasilitasData = [
   { title: "Minimarket", category: "Fasilitas Umum", image: "/minimarket.jpg" },
   { title: "Parkir", category: "Fasilitas Umum", image: "/parkir.jpg" },
 
-  { title: "Laboratorium", category: "Fasilitas Penunjang", image: "/lab.jpg" },
-  { title: "Radiologi", category: "Fasilitas Penunjang", image: "/radio.jpg" },
+  { title: "Ruang Operasi", category: "Fasilitas Penunjang", image: "/ruang_operasi.jpeg" },
+  { title: "Radiologi", category: "Fasilitas Penunjang", image: "/scan_radiologi.jpeg" },
 ];
 
 export default function FasilitasPage() {

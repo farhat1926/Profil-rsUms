@@ -8,11 +8,14 @@ import ComplaintForm from "./pages/ComplaintForm";
 import InformasiPage from "./pages/Informasipage";
 import ArticleDetail from "./pages/ArticleDetail";
 import Footer from "./components/Footer";
+import JadwalDokter from "./components/JadwalDokter";
+import PromoPopup from "./components/Popup";
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <PromoPopup />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/dokter" element={<DokterPage />} />
@@ -21,6 +24,7 @@ function App() {
         <Route path="/complaint" element={<ComplaintForm />} />
         <Route path="/informasi" element={<InformasiPage />} />
         <Route path="/informasi/:id" element={<ArticleDetail />} />
+        <Route path="/JadwalDokter" element={<JadwalDokter />} />
       </Routes>
       <Footer />
     </Router>
