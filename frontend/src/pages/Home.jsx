@@ -167,7 +167,7 @@ const Home = () => {
               key={index}
               src={image}
               alt={`hero-${index}`}
-              className="w-full h-full object-cover flex-shrink-0"
+              className="w-full h-full object-contain flex-shrink-0"
               style={{ width: `${100 / heroImages.length}%` }}
               loading={index === 0 ? "eager" : "lazy"}
             />
