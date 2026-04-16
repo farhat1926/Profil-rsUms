@@ -9,34 +9,158 @@ const kategoriList = [
 ];
 
 const fasilitasData = [
-  { title: "Poli Umum", category: "Rawat Jalan", image: "/poliklinik.jpeg" },
-  { title: "Poli Gigi", category: "Rawat Jalan", image: "/gigi.jpeg" },
+  { 
+    title: "Poli Umum", 
+    category: "Rawat Jalan", 
+    image: "/poliklinik.jpeg",
+    desc: "Pelayanan pemeriksaan umum oleh dokter untuk berbagai keluhan kesehatan."
+  },
+  { 
+    title: "Poli Gigi", 
+    category: "Rawat Jalan", 
+    image: "/gigi.jpeg",
+    desc: "Layanan pemeriksaan kesehatan gigi dan mulut."
+  },
+  { 
+    title: "Threadmill", 
+    category: "Rawat Jalan", 
+    image: "/poli jantung.JPG",
+    desc: "Fasilitas pemeriksaan kesehatan jantung dengan treadmill test."
+  },
+  { 
+    title: "Echo", 
+    category: "Rawat Jalan", 
+    image: "/usg.JPG",
+    desc: "Pemeriksaan echocardiography untuk evaluasi kondisi jantung."
+  },
+  { 
+    title: "USG 4D", 
+    category: "Rawat Jalan", 
+    image: "/usg.JPG",
+    desc: "USG 4D untuk pemeriksaan kandungan dan organ tubuh."
+  },
+  { 
+    title: "USG Abdomen", 
+    category: "Rawat Jalan", 
+    image: "/abdomen.JPG",
+    desc: "Pemeriksaan organ perut dan abdomen."
+  },
+  { 
+    title: "THT Endoscopy", 
+    category: "Rawat Jalan", 
+    image: "/tht.JPG",
+    desc: "Pemeriksaan saluran telinga, hidung, dan tenggorokan."
+  },
 
-  { title: "Kamar VIP", category: "Rawat Inap", image: "/kamar_vip.jpeg" },
-  { title: "Kamar Kelas 1", category: "Rawat Inap", image: "/kelas_1.jpg" },
+  { 
+    title: "Kamar VVIP", 
+    category: "Rawat Inap", 
+    image: "/kamar_vip.jpeg",
+    desc: "Kamar perawatan premium dengan fasilitas lengkap."
+  },
+  { 
+    title: "Kamar VIP", 
+    category: "Rawat Inap", 
+    image: "/kelas_1.jpg",
+    desc: "Kamar rawat inap nyaman dengan privasi lebih."
+  },
+  { 
+    title: "Kamar Kelas 1", 
+    category: "Rawat Inap", 
+    image: "/kelas1.JPG",
+    desc: "Kamar rawat inap kelas 1 dengan fasilitas standar terbaik."
+  },
+  { 
+    title: "Kamar Kelas 2", 
+    category: "Rawat Inap", 
+    image: "/kelas 2.JPG",
+    desc: "Kamar kelas 2 untuk perawatan pasien."
+  },
+  { 
+    title: "Kamar Kelas 3", 
+    category: "Rawat Inap", 
+    image: "/kelas_1.jpg",
+    desc: "Kamar kelas 3 dengan kapasitas lebih banyak."
+  },
 
-  { title: "Rontgen", category: "Layanan Unggulan", image: "/scan_radiologi.jpeg" },
-  { title: "MRI", category: "Layanan Unggulan", image: "/mri.jpg" },
+  { 
+    title: "Rontgen", 
+    category: "Layanan Unggulan", 
+    image: "/scan_radiologi.jpeg",
+    desc: "Layanan pemeriksaan radiologi dan rontgen."
+  },
+  { 
+    title: "Fetomaternal", 
+    category: "Layanan Unggulan", 
+    image: "/scan_radiologi.jpeg",
+    desc: "Pelayanan kesehatan ibu dan janin."
+  },
 
-  { title: "Masjid", category: "Fasilitas Umum", image: "/masjid.jpg" },
-  { title: "Kantin", category: "Fasilitas Umum", image: "/kantin.jpg" },
-  { title: "Minimarket", category: "Fasilitas Umum", image: "/minimarket.jpg" },
-  { title: "Parkir", category: "Fasilitas Umum", image: "/parkir.jpg" },
+  { 
+    title: "Masjid", 
+    category: "Fasilitas Umum", 
+    image: "/moshola.JPG",
+    desc: "Tempat ibadah untuk pasien dan keluarga."
+  },
+  { 
+    title: "Kantin", 
+    category: "Fasilitas Umum", 
+    image: "/kantin.png",
+    desc: "Menyediakan makanan dan minuman."
+  },
+  { 
+    title: "Taman Bermain", 
+    category: "Fasilitas Umum", 
+    image: "/Taman_Bermain.jpeg",
+    desc: "Area bermain anak yang nyaman."
+  },
+  { 
+    title: "Parkir", 
+    category: "Fasilitas Umum", 
+    image: "/parkiran.JPG",
+    desc: "Area parkir luas dan aman."
+  },
 
-  { title: "Ruang Operasi", category: "Fasilitas Penunjang", image: "/ruang_operasi.jpeg" },
-  { title: "Radiologi", category: "Fasilitas Penunjang", image: "/scan_radiologi.jpeg" },
+  { 
+    title: "Ruang Operasi", 
+    category: "Fasilitas Penunjang", 
+    image: "/ruang_operasi.jpeg",
+    desc: "Ruang tindakan operasi dengan standar medis."
+  },
+  { 
+    title: "Radiologi", 
+    category: "Fasilitas Penunjang", 
+    image: "/scan_radiologi.jpeg",
+    desc: "Pemeriksaan radiologi modern."
+  },
+  { 
+    title: "Laboratorium", 
+    category: "Fasilitas Penunjang", 
+    image: "/laboratorium.JPG",
+    desc: "Pemeriksaan laboratorium lengkap."
+  },
+  { 
+    title: "Farmasi", 
+    category: "Fasilitas Penunjang", 
+    image: "/farm.jpeg",
+    desc: "Pelayanan obat dan resep pasien."
+  },
 ];
 
 export default function FasilitasPage() {
   const [activeKategori, setActiveKategori] = useState("Fasilitas Umum");
+  const [expandedIndex, setExpandedIndex] = useState(null);
 
   const filteredData = fasilitasData.filter(
     (item) => item.category === activeKategori
   );
 
+  const toggleDetail = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 px-10 py-10">
-      {/* Title */}
       <h1 className="text-5xl font-bold mb-6">Fasilitas RS UMS</h1>
 
       {/* Tabs */}
@@ -44,7 +168,10 @@ export default function FasilitasPage() {
         {kategoriList.map((kategori) => (
           <button
             key={kategori}
-            onClick={() => setActiveKategori(kategori)}
+            onClick={() => {
+              setActiveKategori(kategori);
+              setExpandedIndex(null);
+            }}
             className={`px-5 py-2 rounded-full text-sm font-medium transition ${
               activeKategori === kategori
                 ? "bg-lime-500 text-white"
@@ -59,9 +186,12 @@ export default function FasilitasPage() {
       {/* Grid */}
       <div className="grid md:grid-cols-2 gap-10">
         {filteredData.map((item, index) => (
-          <div key={index}>
-            {/* Image */}
-            <div className="w-full h-52 bg-gray-300 rounded-md overflow-hidden">
+          <div
+            key={index}
+            className="bg-white rounded-xl shadow-md overflow-hidden"
+          >
+            {/* Gambar tetap ada */}
+            <div className="w-full h-80 bg-gray-300 rounded-md overflow-hidden">
               <img
                 src={item.image}
                 alt={item.title}
@@ -70,7 +200,24 @@ export default function FasilitasPage() {
             </div>
 
             {/* Title */}
-            <p className="mt-3 text-lg font-medium">{item.title}</p>
+            <div className="p-4">
+              <p className="text-xl font-semibold">{item.title}</p>
+
+              {expandedIndex === index && (
+                <p className="mt-3 text-gray-600 leading-7">
+                  {item.desc}
+                </p>
+              )}
+
+              <button
+                onClick={() => toggleDetail(index)}
+                className="mt-3 text-lime-600 font-medium hover:underline"
+              >
+                {expandedIndex === index
+                  ? "Sembunyikan"
+                  : "Selengkapnya"}
+              </button>
+            </div>
           </div>
         ))}
       </div>

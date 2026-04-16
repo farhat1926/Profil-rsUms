@@ -35,24 +35,27 @@ function Navbar() {
     { name: "Beranda", path: "/" },
     { name: "Fasilitas", path: "/fasilitas" },
     { name: "Dokter", path: "/dokter" },
-    { name: "Hubungi Kami", path: "/contact" },
-    { name: "Pengaduan", path: "/complaint" },
     { name: "Informasi", path: "/informasi" },
+    { name: "Edit Dokter", path: "/edit-jadwal" },
+    { name: "Input Event", path: "/input-event" },
+    { name: "Input Informasi", path: "/input-informasi" },
+    { name: "Promo", path: "/promo" },
+    { name: "Input Promo", path: "/input-promo" }
   ];
 
   return (
     <header className="w-full sticky top-0 z-50 drop-shadow-sm">
       {/* HEADER PUTIH (LOGO & KONTAK) */}
-      <div
+      {/* <div
         className={`transition-all duration-500 ease-in-out overflow-hidden ${
           isVisible ? "max-h-[150px] opacity-100" : "max-h-0 opacity-0"
         }`}
-      >
+      ></div> */}
         <div className="bg-gradient-to-r from-green-50 via-white to-blue-50 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             {/* LOGO */}
             <Link to="/" className="flex items-center gap-3">
-              <img src={logo} alt="logo" className="w-70 h-14 object-contain" />
+              <img src={logo} alt="logo" className="w-80 h-20 object-contain" />
             </Link>
 
             {/* CONTACT INFO */}
@@ -86,7 +89,7 @@ function Navbar() {
             </button>
           </div>
         </div>
-      </div>
+      
 
       {/* NAVBAR HIJAU (STICKY AT TOP-0 KETIKA HEADER PUTIH COLLAPSE) */}
       <nav
@@ -109,7 +112,7 @@ function Navbar() {
                   {doctorDropdown && (
                     <div className="absolute top-full left-0 mt-2 w-52 bg-white text-black rounded-lg shadow-xl border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
                       <Link
-                        to="/meet-the-doctor"
+                        to="/meet-doctor"
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600 font-medium transition-colors border-b border-gray-50"
                         onClick={() => setDoctorDropdown(false)}
                       >
@@ -123,6 +126,7 @@ function Navbar() {
                       >
                         Jadwal Dokter
                       </Link>
+                      
                     </div>
                   )}
                 </div>
@@ -157,8 +161,11 @@ function Navbar() {
                 </Link>
               ))}
             </div>
+            
           )}
+          
         </div>
+        
       </nav>
     </header>
   );

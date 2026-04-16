@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
-// Komponen Pembantu Khusus untuk Embed Instagram
-// DIBUNGKUS DENGAN React.memo AGAR TIDAK HILANG SAAT SLIDER BERGERAK
-const InstagramEmbed = React.memo(({ embedUrl }) => {
+const InstagramEmbed = React.memo(({ children }) => {
   useEffect(() => {
     const processInsta = () => {
       if (window.instgrm) {
@@ -10,27 +9,56 @@ const InstagramEmbed = React.memo(({ embedUrl }) => {
       }
     };
 
-    // Memuat script Instagram secara dinamis
     if (!window.instgrm) {
       const script = document.createElement("script");
+      script.src = "https://www.instagram.com/embed.js";
       script.async = true;
-      script.src = "https://www.instagram.com/embed.js"; // Gunakan HTTPS
       script.onload = processInsta;
       document.body.appendChild(script);
     } else {
-      // Gunakan setTimeout agar memastikan HTML sudah masuk sebelum diproses
       setTimeout(processInsta, 100);
     }
-  }, [embedUrl]);
+  }, []);
 
   return (
-    <div
-      className="instagram-embed-container flex justify-center w-full"
-      dangerouslySetInnerHTML={{ __html: embedUrl }}
-    />
+    <div className="instagram-embed-container flex justify-center w-full">
+      {children}
+    </div>
   );
 });
 
+const instagramEmbeds = [
+  {
+    id: 1,
+    embedCode: (
+      <blockquote
+        className="instagram-media"
+        data-instgrm-permalink="https://www.instagram.com/reel/DW2x9sXiRPL/"
+        data-instgrm-version="14"
+      />
+    ),
+  },
+  {
+    id: 2,
+    embedCode: (
+      <blockquote
+        className="instagram-media"
+        data-instgrm-permalink="https://www.instagram.com/reel/DXEH6PlCRPN/"
+        data-instgrm-version="14"
+      />
+    ),
+  },
+  {
+    id: 3,
+    embedCode: (
+      <blockquote
+        className="instagram-media"
+        data-instgrm-permalink="https://www.instagram.com/reel/DXHEs73iZnz/"
+        data-instgrm-version="14"
+      />
+    ),
+  },
+];
 const fasilitas = [
   {
     title: "IGD",
@@ -66,80 +94,119 @@ const fasilitas = [
 
 const heroImages = ["/slider.png", "/Slider2.png"];
 
-const dokterList = [
-  {
-    nama: "Dr. dr. Flora Ramona Sigit Prakoeswa, M.Kes, Sp.DVE, Dipl. STD-HIV/AIDS, FINSDV, FAADV",
-    spesialis: "Spesialis Dermatologi, Venereologi, dan Estetika (Sp.DVE)",
-    pengalaman: "12 tahun pengalaman",
-    img: "/Dr flora ramona.jpg",
-    jadwal: {
-      Senin: "08:00 - 14:00",
-      Selasa: "08:00 - 14:00",
-    },
-  },
-  {
-    nama: "dr. Abdurahman Ama, Sp.KJ., M.Kes",
-    spesialis: "Spesialis Kedokteran Jiwa",
-    pengalaman: "10 tahun pengalaman",
-    img: "/dr. Abdurahman Ama, Sp.KJ., M.Kes..JPG",
-    jadwal: {
-      Senin: "08:00 - 14:00",
-      Selasa: "08:00 - 14:00",
-    },
-  },
-  {
-    nama: "dr. Restu Triwulandani Tolibin, SpA",
-    spesialis: "Spesialis Anak",
-    pengalaman: "10 tahun pengalaman",
-    img: "/dr. Restu Triwulandani Tolibin, SpA.jpg",
-    jadwal: {
-      Senin: "08:00 - 14:00",
-      Selasa: "08:00 - 14:00",
-    },
-  },
-  {
-    nama: "Dr. dr. Siswarni Sp KFR (K)",
-    spesialis: "Spesialis Kedokteran Fisik dan Rehabilitasi",
-    pengalaman: "10 tahun pengalaman",
-    img: "/Dr. dr. Siswarni Sp KFR (K).JPG",
-    jadwal: {
-      Senin: "08:00 - 14:00",
-      Selasa: "08:00 - 14:00",
-    },
-  },
-];
 
-const eventList = [
-  {
-    title: "Seminar Kesehatan Jantung",
-    desc: "Edukasi kesehatan jantung untuk masyarakat umum.",
-    img: "/Arisan.jpeg",
-  },
-  {
-    title: "Seminar Kesehatan Jantung 2",
-    desc: "Edukasi kesehatan jantung untuk masyarakat umum.",
-    img: "/Stunting.jpeg",
-  },
-];
-
-const instagramEmbeds = [
-  {
-    id: 1,
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DW2x9sXiRPL/?utm_source=ig_web_button_share_sheet&igsh=MzRlODBiNWFlZA==" data-instgrm-version="14" style=" background:#FFF; border:0; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
-  },
-  {
-    id: 2,
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DXEH6PlCRPN/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" data-instgrm-version="14" style=" background:#FFF; border:0; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
-  },
-  {
-    id: 3,
-    embedCode: `<blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DXHEs73iZnz/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==" data-instgrm-version="14" style=" background:#FFF; border:0; margin: 1px; max-width:540px; min-width:326px; padding:0; width:99.375%; width:-webkit-calc(100% - 2px); width:calc(100% - 2px);"></blockquote>`,
-  },
-];
-
-const Home = () => {
+// const jadwalDokterList = [
+//   {
+//     nama: "Dr. Carmen",
+//     spesialis: "Spesialis THT",
+//     hari: "Senin - Jumat",
+//     jam: "08:00 - 14:00",
+//     status: "Tersedia",
+//     img: "/dokter.png",
+//     jadwal: {
+//       Senin: "08:00 - 14:00",
+//       Selasa: "08:00 - 14:00",
+//       Rabu: "08:00 - 14:00",
+//       Kamis: "08:00 - 14:00",
+//       Jumat: "08:00 - 14:00",
+//       Sabtu: "09:00 - 12:00",
+//       Minggu: "Libur",
+//     },
+//   },
+//   {
+//     nama: "Dr. Nader",
+//     spesialis: "Spesialis Anak",
+//     hari: "Senin - Sabtu",
+//     jam: "09:00 - 15:00",
+//     status: "Tersedia",
+//     img: "/dokter.png",
+//     jadwal: {
+//       Senin: "08:00 - 14:00",
+//       Selasa: "08:00 - 14:00",
+//       Rabu: "08:00 - 14:00",
+//       Kamis: "08:00 - 14:00",
+//       Jumat: "08:00 - 14:00",
+//       Sabtu: "09:00 - 12:00",
+//       Minggu: "Libur",
+//     },
+//   },
+//   {
+//     nama: "Dr. Maya",
+//     spesialis: "Spesialis Jantung",
+//     hari: "Selasa - Jumat",
+//     jam: "10:00 - 16:00",
+//     status: "Tersedia",
+//     img: "/dokter.png",
+//     jadwal: {
+//       Senin: "08:00 - 14:00",
+//       Selasa: "08:00 - 14:00",
+//       Rabu: "08:00 - 14:00",
+//       Kamis: "08:00 - 14:00",
+//       Jumat: "08:00 - 14:00",
+//       Sabtu: "09:00 - 12:00",
+//       Minggu: "Libur",
+//     },
+//   },
+//   {
+//     nama: "Dr. Kevin",
+//     spesialis: "Spesialis Penyakit Dalam",
+//     hari: "Setiap Hari",
+//     jam: "08:00 - 20:00",
+//     status: "Tersedia",
+//     img: "/dokter.png",
+//     jadwal: {
+//       Senin: "10:00 - 14:00",
+//       Selasa: "08:00 - 14:00",
+//       Rabu: "08:00 - 14:00",
+//       Kamis: "08:00 - 14:00",
+//       Jumat: "08:00 - 14:00",
+//       Sabtu: "09:00 - 12:00",
+//       Minggu: "Libur",
+//     },
+//   },
+// ];
+const Home = ()=> {
   const [currentHero, setCurrentHero] = useState(0);
   const [openDropdown, setOpenDropdown] = useState(null);
+    const [dokterList, setDokterList] = useState([]);
+  const [eventList, setEventList] = useState([]);
+  useEffect(() => {
+  fetch("http://localhost:3001/event")
+    .then((res) => res.json())
+    .then((data) => setEventList(data));
+}, []);
+
+  useEffect(() => {
+  fetch("http://localhost:3001/jadwal")
+    .then((res) => res.json())
+    .then((data) => {
+      const groupedDokter = data.reduce((acc, item) => {
+        const existing = acc.find((d) => d.id === item.id);
+
+        if (existing) {
+          existing.jadwal[item.hari] = item.jam;
+        } else {
+          acc.push({
+            id: item.id,
+            nama: item.nama_dokter,
+            spesialis: item.spesialis,
+            img: `http://localhost:3001${item.image}`,
+            pengalaman: "Dokter Spesialis",
+            jadwal: {
+              [item.hari]: item.jam,
+            },
+          });
+        }
+
+        return acc;
+      }, []);
+
+      setDokterList(groupedDokter);
+    })
+    .catch((err) => {
+      console.error("Gagal mengambil dokter:", err);
+    });
+}, []);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -173,7 +240,7 @@ const Home = () => {
             />
           ))}
         </div>
-        <div className="absolute inset-0 bg-black/30"></div>
+        <div className="absolute "></div>
       </section>
 
       {/* Fasilitas */}
@@ -217,96 +284,129 @@ const Home = () => {
 
       {/* Dokter Spesialis */}
       <section id="dokter" className="w-full bg-green-50 py-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-2xl font-bold text-center mb-8">
-            Dokter Spesialis
-          </h2>
+  <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <h2 className="text-2xl font-bold text-center mb-8">
+      Dokter Spesialis
+    </h2>
 
-          <div className="flex gap-6 overflow-x-auto pb-4 custom-scrollbar">
-            {dokterList.map((dokter, index) => (
-              <div
-                key={dokter.nama}
-                className="min-w-[350px] bg-white rounded-2xl p-5 flex gap-4 shadow hover:shadow-lg transition"
-              >
-                <img
-                  src={dokter.img}
-                  alt={dokter.nama}
-                  loading="lazy"
-                  className="w-28 h-28 object-cover rounded-xl"
-                />
-                <div className="flex flex-col justify-between w-full">
-                  <div>
-                    <h3 className="font-bold">{dokter.nama}</h3>
-                    <p className="text-sm text-gray-600">{dokter.spesialis}</p>
-                    <ul className="text-xs text-gray-500 mt-2 space-y-1">
-                      <li>🟢 {dokter.pengalaman}</li>
-                    </ul>
-                    <p
-                      onClick={() =>
-                        setOpenDropdown(openDropdown === index ? null : index)
-                      }
-                      className="mt-3 text-sm text-green-600 font-semibold cursor-pointer hover:underline"
-                    >
-                      Jadwal Dokter {openDropdown === index ? "▲" : "▼"}
-                    </p>
-                    {openDropdown === index && dokter.jadwal && (
-                      <div className="mt-2 text-xs text-gray-600 bg-gray-50 rounded-lg p-3 border">
-                        {Object.entries(dokter.jadwal).map(([hari, jam]) => (
-                          <div
-                            key={hari}
-                            className="flex justify-between py-1 border-b last:border-b-0"
-                          >
-                            <span>{hari}</span>
-                            <span>{jam}</span>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+    <div className="flex gap-6 overflow-x-auto pb-4 custom-scrollbar">
+      {dokterList.length > 0 ? (
+        dokterList.map((dokter, index) => (
+          <div
+            key={dokter.id}
+            className="min-w-[350px] bg-white rounded-2xl p-5 flex gap-4 shadow hover:shadow-lg transition"
+          >
+            <img
+              src={dokter.img}
+              alt={dokter.nama}
+              loading="lazy"
+              className="w-28 h-28 object-cover rounded-xl"
+            />
 
-      {/* Kegiatan & Event / Informasi */}
-      <section id="informasi" className="w-full py-12 bg-gray-100 scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold text-green-600">
-              Informasi Rumah Sakit
-            </h2>
-            <p className="text-gray-600 mt-2 max-w-2xl">
-              Berbagai informasi terbaru mengenai kegiatan, event, serta artikel
-              kesehatan dari rumah sakit.
-            </p>
-          </div>
+            <div className="flex flex-col justify-between w-full">
+              <div>
+                <h3 className="font-bold">
+                  {dokter.nama}
+                </h3>
 
-          <div className="mb-12">
-            <h3 className="text-xl font-semibold mb-4">Kegiatan & Event</h3>
-            <div className="grid md:grid-cols-2 gap-6">
-              {eventList.map((event) => (
-                <div
-                  key={event.title}
-                  className="relative rounded-xl overflow-hidden shadow group"
+                <p className="text-sm text-gray-600">
+                  {dokter.spesialis}
+                </p>
+
+                <ul className="text-xs text-gray-500 mt-2 space-y-1">
+                  <li>🟢 {dokter.pengalaman}</li>
+                </ul>
+
+                <p
+                  onClick={() =>
+                    setOpenDropdown(
+                      openDropdown === index ? null : index
+                    )
+                  }
+                  className="mt-3 text-sm text-green-600 font-semibold cursor-pointer hover:underline"
                 >
-                  <img
-                    src={event.img}
-                    alt={event.title}
-                    loading="lazy"
-                    className="w-full h-64 object-cover group-hover:scale-110 transition"
-                  />
-                  <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-4">
-                    <h3 className="text-white font-semibold">{event.title}</h3>
-                    <p className="text-gray-200 text-sm">{event.desc}</p>
-                  </div>
-                </div>
-              ))}
+                  Jadwal Dokter{" "}
+                  {openDropdown === index ? "▲" : "▼"}
+                </p>
+
+                {openDropdown === index &&
+                  dokter.jadwal && (
+                    <div className="mt-2 text-xs text-gray-600 bg-gray-50 rounded-lg p-3 border">
+                      {Object.entries(
+                        dokter.jadwal
+                      ).map(([hari, jam]) => (
+                        <div
+                          key={hari}
+                          className="flex justify-between py-1 border-b last:border-b-0"
+                        >
+                          <span>{hari}</span>
+                          <span>{jam}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        ))
+      ) : (
+        <p className="text-center w-full text-gray-500">
+          Belum ada data dokter
+        </p>
+      )}
+    </div>
+  </div>
+</section>
+
+      {/* Kegiatan & Event / Informasi */}
+     <section
+  id="informasi"
+  className="w-full py-12 bg-gray-100 scroll-mt-20"
+>
+  <div className="max-w-7xl mx-auto px-4 md:px-8">
+    <div className="mb-10">
+      <h2 className="text-3xl font-bold text-green-600">
+        Informasi Rumah Sakit
+      </h2>
+      <p className="text-gray-600 mt-2 max-w-2xl">
+        Berbagai informasi terbaru mengenai kegiatan, event,
+        serta artikel kesehatan dari rumah sakit.
+      </p>
+    </div>
+
+    <div className="mb-12">
+      <h3 className="text-xl font-semibold mb-4">
+        Kegiatan & Event
+      </h3>
+
+      <div className="grid md:grid-cols-2 gap-6">
+        {eventList.map((event, index) => (
+          <Link
+            to={`/event/${event.id || index}`}
+            key={event.id || index}
+            className="relative rounded-xl overflow-hidden shadow group block"
+          >
+            <img
+  src={`http://localhost:3001${event.image}`}
+  alt={event.title}
+  loading="lazy"
+  className="w-full h-64 object-cover group-hover:scale-110 transition duration-300"
+/>
+
+            <div className="absolute inset-0 bg-black/50 flex flex-col justify-end p-4">
+              <h3 className="text-white font-semibold">
+                {event.title}
+              </h3>
+              <p className="text-gray-200 text-sm">
+                {event.short_desc}
+              </p>
+            </div>
+          </Link>
+        ))}
+      </div>
+    </div>
+  </div>
+</section>
 
       {/* ================= RS UMS UPDATE ================= */}
       <section id="rs-ums-update" className="w-full py-16 bg-white">
@@ -330,7 +430,9 @@ const Home = () => {
                 key={item.id}
                 className="w-full overflow-hidden flex justify-center bg-gray-50 rounded-xl p-2"
               >
-                <InstagramEmbed embedUrl={item.embedCode} />
+               <InstagramEmbed>
+  {item.embedCode}
+</InstagramEmbed>
               </div>
             ))}
           </div>
