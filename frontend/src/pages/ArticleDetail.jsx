@@ -1,41 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { articles } from "../data/articles";
+import { fetchArticleById } from "../data/articles";
 
 const ArticleDetail = () => {
   const { id } = useParams();
+  const [article, setArticle] = useState(null);
 
-  const article = articles.find(
-    (item) => item.id === Number(id)
-  );
+  useEffect(() => {
+    const loadDetail = async () => {
+      try {
+        const data = await fetchArticleById(id);
+        setArticle(data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+
+    loadDetail();
+  }, [id]);
 
   if (!article) {
-    return <h1>Artikel tidak ditemukan</h1>;
+    return (
+      <div className="p-10 text-center">
+        Memuat artikel...
+      </div>
+    );
   }
 
   return (
-    <section className="px-8 py-12 max-w-4xl mx-auto">
-      <img
-        src={article.image}
-        className="w-full h-96 object-cover rounded-2xl"
-      />
+    <div className="min-h-screen bg-white py-16 px-6 md:px-12">
+      <div className="max-w-5xl mx-auto">
+        <img
+          src={`http://localhost:3001${article.image}`}
+          alt={article.title}
+          className="w-full h-[450px] object-cover rounded-2xl shadow-lg"
+        />
 
-      <p className="text-green-600 mt-6">
-        {article.category}
-      </p>
+        <h1 className="text-4xl font-bold mt-8 text-green-600">
+          {article.title}
+        </h1>
 
-      <h1 className="text-4xl font-bold mt-3">
-        {article.title}
-      </h1>
+        <p className="text-sm text-gray-500 mt-2">
+          {article.author} • {article.date}
+        </p>
 
-      <p className="text-gray-500 mt-2">
-        {article.author} • {article.date}
-      </p>
+        <p className="text-gray-600 mt-4 text-lg">
+          {article.summary}
+        </p>
 
-      <div className="mt-8 text-lg leading-8 text-gray-700">
-        {article.content}
+        <div className="mt-6 text-gray-700 leading-8 text-lg whitespace-pre-line">
+          {article.content}
+        </div>
       </div>
-    </section>
+    </div>
   );
 };
 

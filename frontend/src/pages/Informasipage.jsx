@@ -1,28 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { categories, articles } from "../data/articles";
 
 const InformasiPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState("Semua");
+  const [selectedCategory, setSelectedCategory] =
+    useState("Semua");
+
+  const [articles, setArticles] = useState([]);
+  const [categories, setCategories] = useState([
+    "Semua",
+  ]);
+
+  useEffect(() => {
+    fetch("http://localhost:3001/informasi")
+      .then((res) => res.json())
+      .then((data) => {
+        setArticles(data);
+
+        const uniqueCategories = [
+          "Semua",
+          ...new Set(data.map((item) => item.category)),
+        ];
+
+        setCategories(uniqueCategories);
+      });
+  }, []);
 
   const filteredArticles =
     selectedCategory === "Semua"
       ? articles
       : articles.filter(
-          (item) => item.category === selectedCategory
+          (item) =>
+            item.category === selectedCategory
         );
 
   return (
     <section className="px-8 py-12 bg-gray-100 min-h-screen">
-      <h1 className="text-5xl font-bold mb-8">Informasi</h1>
+      <h1 className="text-5xl font-bold mb-8">
+        Informasi
+      </h1>
 
-      {/* Categories */}
       <div className="flex flex-wrap gap-3 mb-8">
         {categories.map((cat) => (
           <button
             key={cat}
-            onClick={() => setSelectedCategory(cat)}
-            className={`px-5 py-2 rounded-full text-sm ${
+            onClick={() =>
+              setSelectedCategory(cat)
+            }
+            className={`px-5 py-2 rounded-full ${
               selectedCategory === cat
                 ? "bg-green-500 text-white"
                 : "bg-white"
@@ -33,16 +57,15 @@ const InformasiPage = () => {
         ))}
       </div>
 
-      {/* Article List */}
       <div className="grid md:grid-cols-2 gap-6">
         {filteredArticles.map((article) => (
           <Link
             to={`/informasi/${article.id}`}
             key={article.id}
-            className="bg-white rounded-2xl shadow overflow-hidden hover:shadow-xl transition"
+            className="bg-white rounded-2xl shadow overflow-hidden"
           >
             <img
-              src={article.image}
+              src={`http://localhost:3001${article.image}`}
               className="w-full h-52 object-cover"
             />
 
