@@ -11,17 +11,22 @@ const kategoriList = [
 const fasilitasData = [
   { title: "Poli Umum", category: "Rawat Jalan", image: "/poliklinik.jpeg" },
   { title: "Poli Gigi", category: "Rawat Jalan", image: "/gigi.jpeg" },
+  { title: "Threadmill", category: "Rawat Jalan", image: "/gigi.jpeg" },
+  { title: "Echo", category: "Rawat Jalan", image: "/gigi.jpeg" },
+  { title: "USG 4D", category: "Rawat Jalan", image: "/gigi.jpeg" },
+  { title: "USG Abdomen", category: "Rawat Jalan", image: "/gigi.jpeg" },
+  { title: "THT Endoscopy", category: "Rawat Jalan", image: "/gigi.jpeg" },
 
   { title: "Kamar VIP", category: "Rawat Inap", image: "/kamar_vip.jpeg" },
   { title: "Kamar Kelas 1", category: "Rawat Inap", image: "/kelas_1.jpg" },
 
   { title: "Rontgen", category: "Layanan Unggulan", image: "/scan_radiologi.jpeg" },
-  { title: "MRI", category: "Layanan Unggulan", image: "/mri.jpg" },
+  { title: "Fetomaternal", category: "Layanan Unggulan", image: "/scan_radiologi.jpeg" },
 
-  { title: "Masjid", category: "Fasilitas Umum", image: "/masjid.jpg" },
-  { title: "Kantin", category: "Fasilitas Umum", image: "/kantin.jpg" },
-  { title: "Minimarket", category: "Fasilitas Umum", image: "/minimarket.jpg" },
-  { title: "Parkir", category: "Fasilitas Umum", image: "/parkir.jpg" },
+  { title: "Masjid", category: "Fasilitas Umum", image: "/moshola.JPG" },
+  { title: "Kantin", category: "Fasilitas Umum", image: "/kantin.JPG" },
+  { title: "Taman Bermain", category: "Fasilitas Umum", image: "/Taman_Bermain.jpeg" },
+  { title: "Parkir", category: "Fasilitas Umum", image: "/parkiran.JPG" },
 
   { title: "Ruang Operasi", category: "Fasilitas Penunjang", image: "/ruang_operasi.jpeg" },
   { title: "Radiologi", category: "Fasilitas Penunjang", image: "/scan_radiologi.jpeg" },

@@ -16,6 +16,8 @@ function Navbar() {
     { name: "Hubungi Kami", path: "/contact" },
     { name: "Pengaduan", path: "/complaint" },
     { name: "Informasi", path: "/informasi" },
+    { name: "Edit Jadwal", path: "/edit-jadwal" },
+    
   ];
 
   return (
@@ -112,6 +114,8 @@ function Navbar() {
                 </Link>
               )
             )}
+            <div className="ml-auto">
+  </div>
           </div>
 
           {/* MOBILE MENU */}

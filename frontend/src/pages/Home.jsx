@@ -81,14 +81,19 @@ const dokterList = [
 ];
 const eventList = [
   {
-    title: "Seminar Kesehatan Jantung",
-    desc: "Edukasi kesehatan jantung untuk masyarakat umum.",
+    title: "Penyuluhan Hidup Sehat untuk Lansia",
+    desc: "Edukasi kesehatan Lansia untuk masyarakat umum.",
     img: "/Arisan.jpeg",
   },
   {
-    title: "Seminar Kesehatan Jantung",
-    desc: "Edukasi kesehatan jantung untuk masyarakat umum.",
+    title: "Penyuluhan Asi Eksklusif dan PMBA  (Pemberian Makan Bayi dan Anak) ",
+    desc: "Edukasi gizi untuk bayi dan anak untuk masyarakat umum.",
     img: "/Stunting.jpeg",
+  },
+  {
+    title: "Cek Kesehatan Gratis Karyawan RS UMS A.R. Facrudin",
+    desc: "Cek Kesehatan Gratis oleh Puskesmas Pajang",
+    img: "/CKG.jpeg",
   },
   
 ];
