@@ -5,10 +5,13 @@ export default function PromoPage() {
   const [promoList, setPromoList] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:3001/promo")
-      .then((res) => res.json())
-      .then((data) => setPromoList(data));
-  }, []);
+  fetch("http://localhost:3001/promo")
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("DATA:", data);
+      setPromoList(data);
+    });
+}, []);
 
   return (
     <section className="p-10 bg-gray-100 min-h-screen">

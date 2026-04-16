@@ -52,6 +52,11 @@ function AppContent() {
           <Route path="/informasi/:id" element={<ArticleDetail />} />
           <Route path="/promo" element={<PromoPage />} />
         <Route
+          path="/promo"
+          element={<PromoPage />}
+        />
+
+        <Route
           path="/promo/:id"
           element={<DetailPromo />}
         />
