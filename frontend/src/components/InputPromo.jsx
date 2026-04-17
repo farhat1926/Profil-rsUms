@@ -52,8 +52,7 @@ export default function InputPromo() {
         Input Promosi
       </h1>
 
-      <form
-        onSubmit={handleSubmit}
+      <form onSubmit={handleSubmit} encType="multipart/form-data"
         className="space-y-4"
       >
         <input
