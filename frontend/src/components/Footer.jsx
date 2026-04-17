@@ -42,8 +42,8 @@ const Footer = () => {
       <h3 className="font-semibold mb-3">Kontak</h3>
       <ul className="space-y-2 text-sm text-gray-200">
         <li>📍 Surakarta, Jawa Tengah</li>
-        <li>📞 0888 0888 0880</li>
-        <li>✉️ info@rsums.com</li>
+        <li>📞 0851-2997-2996</li>
+        <li>✉️ humas.rsumsarfachrudin@gmail.com</li>
       </ul>
     </div>
 

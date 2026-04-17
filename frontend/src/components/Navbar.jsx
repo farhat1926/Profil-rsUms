@@ -36,10 +36,10 @@ function Navbar() {
     { name: "Fasilitas", path: "/fasilitas" },
     { name: "Dokter", path: "/dokter" },
     { name: "Informasi", path: "/informasi" },
+    { name: "Promo", path: "/promo" },
     { name: "Edit Dokter", path: "/edit-jadwal" },
     { name: "Input Event", path: "/input-event" },
     { name: "Input Informasi", path: "/input-informasi" },
-    { name: "Promo", path: "/promo" },
     { name: "Input Promo", path: "/input-promo" }
   ];
 

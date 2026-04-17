@@ -77,13 +77,13 @@ export default function InputPromo() {
           onChange={handleChange}
         />
 
-        <input
+        {/* <input
           type="text"
           name="link"
           placeholder="Link eksternal tujuan"
           className="w-full border p-3 rounded"
           onChange={handleChange}
-        />
+        /> */}
 
         <input
           type="file"
