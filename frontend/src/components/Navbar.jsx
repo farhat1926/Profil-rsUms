@@ -116,7 +116,7 @@ function Navbar() {
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600 font-medium transition-colors border-b border-gray-50"
                         onClick={() => setDoctorDropdown(false)}
                       >
-                        Meet the Doctor
+                        Profil Dokter
                       </Link>
 
                       <Link

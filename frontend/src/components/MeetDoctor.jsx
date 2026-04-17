@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  Eye,
-  CalendarDays,
   Phone,
   MessageCircle,
-  ChevronDown,
-  ChevronUp,
+  ArrowRight,
+  Clock,
+  CalendarDays,
 } from "lucide-react";
 
 const doctorList = [
@@ -73,104 +72,163 @@ const doctorList = [
 export default function MeetDoctor() {
   const [openJadwal, setOpenJadwal] = useState(null);
 
-  return (
-    <section className="min-h-screen bg-gray-100 px-6 py-10">
-      <div className="max-w-7xl mx-auto">
-        <h1 className="text-4xl font-bold text-green-700 mb-10">
-          Meet With Doctor
-        </h1>
+  // State untuk membatasi jumlah dokter yang tampil awal (misal: 4 dokter)
+  const [visibleCount, setVisibleCount] = useState(4);
 
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-          {doctorList.map((doctor, index) => (
+  // Fungsi untuk menambah jumlah tampilan saat tombol diklik
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 4);
+  };
+
+  return (
+    <div className="min-h-screen bg-gray-50/50">
+      {/* ================= HERO HEADER SECTION ================= */}
+      <section className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
+        <img
+          src="images/banner-web.png"
+          alt="Banner Profil Dokter"
+          className="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-multiply opacity-70"
+        />
+        <div className="relative z-10">
+          <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 md:mb-3 drop-shadow-md">
+            Profil Dokter
+          </h1>
+          <p className="text-white font-medium text-sm md:text-base max-w-2xl mx-auto drop-shadow-sm">
+            Cari dan temukan jadwal dokter spesialis di RS UMS A.R. Fachrudin.
+            Kami siap memberikan layanan kesehatan terbaik untuk Anda.
+          </p>
+        </div>
+      </section>
+
+      {/* ================= MAIN CONTENT: GRID DOKTER ================= */}
+      <section className="max-w-[1440px] mx-auto px-4 md:px-6 py-12 md:py-20">
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Membatasi render dengan .slice(0, visibleCount) */}
+          {doctorList.slice(0, visibleCount).map((doctor, index) => (
             <div
               key={doctor.id}
-              className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
+              className="bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300 p-5 flex flex-col"
             >
-              {/* seluruh atas card bisa diklik */}
-              <Link
-                to={`/doctor/${doctor.id}`}
-                className="block p-6"
-              >
-                <div className="flex gap-5">
-                  <img
-                    src={doctor.image}
-                    alt={doctor.nama}
-                    className="w-44 h-44 object-cover rounded-2xl border"
-                  />
-
-                  <div className="flex-1">
-                    <h2 className="text-2xl font-bold text-gray-800">
-                      {doctor.nama}
-                    </h2>
-
-                    <p className="text-gray-500 mt-4 uppercase">
-                      Speciality
-                    </p>
-
-                    <p className="text-green-700 font-bold text-xl">
-                      {doctor.spesialis}
-                    </p>
-
-                    <div className="flex items-center gap-2 mt-6 text-green-700 font-semibold underline">
-                      <span>Lihat Profil Selengkapnya</span>
-                      <Eye size={18} />
-                    </div>
-                  </div>
+              {/* LAYOUT KARTU UTAMA (Kiri Foto, Kanan Info) */}
+              <div className="flex gap-5 md:gap-6">
+                {/* Foto Dokter */}
+                <div className="w-[120px] md:w-[150px] shrink-0">
+                  <Link to={`/doctor/${doctor.id}`}>
+                    <img
+                      src={doctor.image}
+                      alt={doctor.nama}
+                      // Penambahan object-top agar dahi dokter tidak terpotong
+                      className="w-full aspect-[3/4] object-cover object-top rounded-2xl bg-gray-200 border border-gray-100"
+                    />
+                  </Link>
                 </div>
-              </Link>
 
-              {/* jadwal */}
-              <div className="px-6 py-4 border-t">
-                <button
-                  onClick={() =>
-                    setOpenJadwal(
-                      openJadwal === index ? null : index
-                    )
-                  }
-                  className="flex items-center gap-3 text-green-700 font-bold text-2xl"
-                >
-                  <CalendarDays size={24} />
-                  Lihat Jadwal Praktek
-                  {openJadwal === index ? (
-                    <ChevronUp size={20} />
-                  ) : (
-                    <ChevronDown size={20} />
-                  )}
-                </button>
+                {/* Informasi Dokter */}
+                <div className="flex-1 py-1 flex flex-col justify-between">
+                  <div>
+                    {/* Badge Spesialis */}
+                    <span className="bg-[#175e97] text-white text-xs md:text-sm font-semibold px-3 py-1.5 rounded-lg inline-block mb-3 shadow-sm">
+                      {doctor.spesialis}
+                    </span>
 
-                {openJadwal === index && (
-                  <div className="mt-4 bg-gray-50 rounded-xl p-4 border">
-                    {Object.entries(doctor.jadwal).map(
-                      ([hari, jam]) => (
-                        <div
-                          key={hari}
-                          className="flex justify-between py-2 border-b last:border-0"
-                        >
-                          <span>{hari}</span>
-                          <span>{jam}</span>
-                        </div>
-                      )
-                    )}
+                    {/* Nama Dokter */}
+                    <Link to={`/doctor/${doctor.id}`}>
+                      <h2 className="text-xl md:text-2xl font-bold text-[#175e97] leading-tight mb-2 hover:text-green-600 transition-colors">
+                        {doctor.nama}
+                      </h2>
+                    </Link>
+
+                    {/* Deskripsi Singkat */}
+                    <p className="text-sm text-gray-500 line-clamp-3 mb-4 leading-relaxed">
+                      {doctor.nama} adalah Dokter Spesialis {doctor.spesialis}{" "}
+                      yang memiliki kompetensi dalam menangani berbagai keluhan
+                      dan penyakit terkait secara profesional.
+                    </p>
                   </div>
-                )}
+
+                  {/* Tombol Profile & Jadwal */}
+                  <button
+                    onClick={() =>
+                      setOpenJadwal(openJadwal === index ? null : index)
+                    }
+                    className="flex items-center gap-2 text-green-600 font-semibold text-sm hover:underline w-max mt-auto"
+                  >
+                    Profile lengkap / Jadwal
+                    <ArrowRight
+                      size={16}
+                      className={`transition-transform duration-300 ${
+                        openJadwal === index ? "rotate-90" : ""
+                      }`}
+                    />
+                  </button>
+                </div>
               </div>
 
-              {/* footer buttons */}
-              <div className="grid grid-cols-2 gap-3 p-6 border-t">
-                <button className="border rounded-xl py-4 flex justify-center items-center gap-2 text-green-700 font-bold hover:bg-green-50">
-                  <Phone size={18} />
-                  Book Appointment
-                </button>
+              {/* EXPANDED JADWAL & BUTTONS */}
+              <div
+                className={`transition-all duration-500 ease-in-out overflow-hidden ${
+                  openJadwal === index
+                    ? "max-h-[500px] opacity-100 mt-6 pt-5 border-t border-gray-100"
+                    : "max-h-0 opacity-0"
+                }`}
+              >
+                <div className="mb-5">
+                  <div className="flex items-center gap-2 text-slate-800 font-bold mb-3">
+                    <CalendarDays size={18} className="text-green-600" />
+                    <h3>Jadwal Praktek</h3>
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    {Object.entries(doctor.jadwal).map(([hari, jam]) => (
+                      <div
+                        key={hari}
+                        className="bg-slate-50 border border-slate-100 rounded-xl p-3 flex items-center gap-3 hover:border-green-200 transition-colors"
+                      >
+                        <div className="bg-white p-2 rounded-lg shadow-sm">
+                          <Clock size={16} className="text-green-600" />
+                        </div>
+                        <div>
+                          <p className="text-xs font-bold text-slate-700 uppercase">
+                            {hari}
+                          </p>
+                          <p className="text-sm font-medium text-slate-500">
+                            {jam}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
 
-                <button className="border rounded-xl py-4 flex justify-center items-center gap-2 text-green-700 font-bold hover:bg-green-50">
-                  <MessageCircle size={18} />
-                  Kontak Cepat
-                </button>
+                {/* Tombol Aksi (Book & Kontak) */}
+                <div className="grid grid-cols-2 gap-4">
+                  <button className="bg-white border-2 border-green-600 text-green-600 rounded-xl py-3 flex justify-center items-center gap-2 font-bold hover:bg-green-600 hover:text-white transition-colors shadow-sm">
+                    <Phone size={18} />
+                    <span className="hidden md:inline">Book Appointment</span>
+                    <span className="md:hidden">Booking</span>
+                  </button>
+
+                  <button className="bg-white border-2 border-blue-600 text-blue-600 rounded-xl py-3 flex justify-center items-center gap-2 font-bold hover:bg-blue-600 hover:text-white transition-colors shadow-sm">
+                    <MessageCircle size={18} />
+                    Kontak Cepat
+                  </button>
+                </div>
               </div>
             </div>
           ))}
         </div>
-      </div>
-    </section>
+
+        {/* ================= TOMBOL LIHAT LEBIH BANYAK ================= */}
+        {visibleCount < doctorList.length && (
+          <div className="mt-12 flex justify-center">
+            <button
+              onClick={handleLoadMore}
+              className="bg-white border-2 border-green-600 text-green-600 font-bold text-base px-10 py-3.5 rounded-full shadow-sm hover:bg-green-600 hover:text-white transition-all duration-300 transform hover:scale-105"
+            >
+              Lihat Lebih Banyak
+            </button>
+          </div>
+        )}
+      </section>
+    </div>
   );
 }
