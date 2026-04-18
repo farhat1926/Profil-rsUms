@@ -173,10 +173,7 @@ const Home = () => {
                 />
               ))}
             </div>
-<<<<<<< HEAD
-=======
             {/* Overlay */}
->>>>>>> 5a36d5e9a056a6c972a78517944baab7e3481353
             <div className="absolute "></div>
           </div>
         </div>
