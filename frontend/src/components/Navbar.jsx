@@ -37,10 +37,6 @@ function Navbar() {
     { name: "Dokter", path: "/dokter" },
     { name: "Informasi", path: "/informasi" },
     { name: "Promo", path: "/promo" },
-    { name: "Edit Dokter", path: "/edit-jadwal" },
-    { name: "Input Event", path: "/input-event" },
-    { name: "Input Informasi", path: "/input-informasi" },
-    { name: "Input Promo", path: "/input-promo" }
   ];
 
   return (
@@ -51,45 +47,42 @@ function Navbar() {
           isVisible ? "max-h-[150px] opacity-100" : "max-h-0 opacity-0"
         }`}
       ></div> */}
-        <div className="bg-gradient-to-r from-green-50 via-white to-blue-50 border-b border-gray-100">
-          <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            {/* LOGO */}
-            <Link to="/" className="flex items-center gap-3">
-              <img src={logo} alt="logo" className="w-80 h-20 object-contain" />
-            </Link>
+      <div className="bg-gradient-to-r from-green-50 via-white to-blue-50 border-b border-gray-100">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+          {/* LOGO */}
+          <Link to="/" className="flex items-center gap-3">
+            <img src={logo} alt="logo" className="w-80 h-20 object-contain" />
+          </Link>
 
-            {/* CONTACT INFO */}
-            <div className="hidden lg:flex items-center gap-8 text-sm">
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
-                <Phone size={18} className="text-green-600" />
-                <span className="font-medium text-gray-700">
-                  0851-2997-2996
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
-                <MapPin size={18} className="text-blue-600" />
-                <span className="font-medium text-gray-700">
-                  Jl. Adi Sucipto No.167, Surakarta
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
-                <Clock3 size={18} className="text-green-600" />
-                <span className="font-medium text-gray-700">24 Jam</span>
-              </div>
+          {/* CONTACT INFO */}
+          <div className="hidden lg:flex items-center gap-8 text-sm">
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
+              <Phone size={18} className="text-green-600" />
+              <span className="font-medium text-gray-700">0851-2997-2996</span>
             </div>
 
-            {/* MOBILE MENU BUTTON */}
-            <button
-              className="lg:hidden text-gray-700"
-              onClick={() => setOpen(!open)}
-            >
-              {open ? <X size={28} /> : <Menu size={28} />}
-            </button>
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
+              <MapPin size={18} className="text-blue-600" />
+              <span className="font-medium text-gray-700">
+                Jl. Adi Sucipto No.167, Surakarta
+              </span>
+            </div>
+
+            <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
+              <Clock3 size={18} className="text-green-600" />
+              <span className="font-medium text-gray-700">24 Jam</span>
+            </div>
           </div>
+
+          {/* MOBILE MENU BUTTON */}
+          <button
+            className="lg:hidden text-gray-700"
+            onClick={() => setOpen(!open)}
+          >
+            {open ? <X size={28} /> : <Menu size={28} />}
+          </button>
         </div>
-      
+      </div>
 
       {/* NAVBAR HIJAU (STICKY AT TOP-0 KETIKA HEADER PUTIH COLLAPSE) */}
       <nav
@@ -98,7 +91,7 @@ function Navbar() {
       >
         <div className="max-w-7xl mx-auto px-6">
           {/* DESKTOP MENU */}
-          <div className="hidden lg:flex items-center justify-center w-full gap-15 py-4 font-bold">
+          <div className="hidden lg:flex items-center justify-center w-full gap-25 py-4 font-bold">
             {menuItems.map((item) =>
               item.name === "Dokter" ? (
                 <div key={item.path} className="relative">
@@ -126,7 +119,6 @@ function Navbar() {
                       >
                         Jadwal Dokter
                       </Link>
-                      
                     </div>
                   )}
                 </div>
@@ -161,11 +153,8 @@ function Navbar() {
                 </Link>
               ))}
             </div>
-            
           )}
-          
         </div>
-        
       </nav>
     </header>
   );

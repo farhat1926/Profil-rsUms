@@ -162,7 +162,7 @@ export default function FasilitasPage() {
         <img
           src="/images/banner-web.png"
           alt="Banner Fasilitas"
-          className="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-multiply opacity-70"
+          className="absolute inset-0 w-full h-full object-cover z-10 mix-blend-multiply opacity-20"
         />
         <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 md:mb-3 drop-shadow-md">
