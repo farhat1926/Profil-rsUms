@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use("/uploads", express.static("uploads"));
 
-const db = require("./db");
+const db = require("./config/db");
 
 // ============================
 // INSERT JADWAL
