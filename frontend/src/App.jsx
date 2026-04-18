@@ -10,7 +10,7 @@ import DokterPage from "./pages/DokterPage";
 import InformasiPage from "./pages/Informasipage";
 import ArticleDetail from "./pages/ArticleDetail";
 import JadwalDokter from "./components/JadwalDokter";
-import Register from "./components/register";
+import Register from "./components/Register";
 import EditPage from "./pages/EditPage";
 import UpdateJadwal from "./components/UpdateJadwal";
 import WhatsAppFloat from "./components/WhatsAppFloat";

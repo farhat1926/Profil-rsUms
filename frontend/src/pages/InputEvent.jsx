@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function InputEvent() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [form, setForm] = useState({
     title: "",
     short_desc: "",
@@ -35,7 +36,7 @@ export default function InputEvent() {
   }
 
   try {
-    const response = await fetch("http://localhost:3001/event", {
+    const response = await fetch(`${API_URL}/event`, {
       method: "POST",
       body: formData,
     });

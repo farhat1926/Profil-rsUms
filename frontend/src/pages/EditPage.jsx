@@ -4,6 +4,8 @@ function EditPage() {
   const [spesialis, setSpesialis] = useState("");
   const [image, setImage] = useState(null);
   const [namaDokter, setNamaDokter] = useState("");
+  const [deskripsi, setDeskripsi] = useState("");
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const [jadwalList, setJadwalList] = useState([
     {
@@ -41,6 +43,7 @@ function EditPage() {
     const formData = new FormData();
     formData.append("namaDokter", namaDokter);
     formData.append("spesialis", spesialis);
+    formData.append("deskripsi", deskripsi);
 
     if (image) {
       formData.append("image", image);
@@ -49,7 +52,7 @@ function EditPage() {
     formData.append("jadwal", JSON.stringify(jadwalList));
 
     try {
-      const res = await fetch("http://localhost:3001/jadwal", {
+      const res = await fetch(`${API_URL}/jadwal`, {
         method: "POST",
         body: formData,
       });
@@ -83,6 +86,13 @@ function EditPage() {
             onChange={(e) => setSpesialis(e.target.value)}
             placeholder="Spesialis"
             className="w-full border p-3 rounded-lg"
+          />
+          <textarea
+            value={deskripsi}
+            onChange={(e) => setDeskripsi(e.target.value)}
+            placeholder="Deskripsi Dokter"
+            className="w-full border p-3 rounded-lg"
+            rows="4"
           />
 
           <input

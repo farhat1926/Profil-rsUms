@@ -15,6 +15,7 @@ function JadwalDokter() {
   const [open, setOpen] = useState(null);
   const [doctors, setDoctors] = useState([]); 
   const navigate = useNavigate();
+  const API_URL = import.meta.env.VITE_API_URL;
 
   const handleUpdate = (doctor) => {
   navigate("/update-jadwal", {
@@ -27,7 +28,7 @@ function JadwalDokter() {
       if (!confirmDelete) return;
 
       try {
-        await fetch(`http://localhost:3001/jadwal/${id}`, {
+        await fetch(`${API_URL}/jadwal/${id}`, {
           method: "DELETE",
         });
 
@@ -38,7 +39,7 @@ function JadwalDokter() {
     };
 
   const loadDoctors = () => {
-  fetch("http://localhost:3001/jadwal")
+  fetch(`${API_URL}/jadwal`)
     .then((res) => res.json())
     .then((data) => {
       const result = {};
@@ -78,13 +79,27 @@ useEffect(() => {
   const grouped = groupBySpesialis(doctors);
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold text-center mb-6">
-        Jadwal Dokter RS UMS A.R. FACHRUDIN
+  <div>
+    {/* 🔵 HEADER HIJAU */}
+    <div className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
+      <img
+        src="/images/banner-web.png"
+        alt="Banner Profil Dokter"
+        className="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-multiply opacity-70"
+      />
+      <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 md:mb-3 drop-shadow-md">
+        Jadwal Dokter 
       </h1>
+      <p className="text-white font-medium text-sm md:text-base max-w-2xl mx-auto drop-shadow-sm">
+        Cari dan temukan jadwal dokter spesialis di RS UMS A.R. Fachrudin.
+      </p>
+    </div>
+
+    {/* 🔽 KONTEN DI BAWAH HIJAU */}
+    <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
 
       {Object.entries(grouped).map(([spesialis, list], index) => (
-        <div key={index} className="mb-4 border rounded-lg overflow-hidden">
+        <div key={index} className="mb-4 border rounded-lg overflow-hidden bg-white">
 
           <div
             onClick={() => setOpen(open === index ? null : index)}
@@ -95,57 +110,59 @@ useEffect(() => {
           </div>
 
           {open === index && (
-            <div className="bg-white p-4 space-y-4">
+            <div className="p-4 space-y-4">
               {list.map((doc, i) => (
-  <div key={i} className="border rounded-xl p-4 flex gap-4">
-    <img
-      src={`http://localhost:3001${doc.image}`}
-      alt={doc.name}
-      className="w-30 h-40 object-cover rounded-lg"
-    />
+                <div key={i} className="border rounded-xl p-4 flex gap-4">
+                  <img
+                    src={`${API_URL}${doc.image}`}
+                    alt={doc.name}
+                    className="w-30 h-40 object-cover rounded-lg"
+                  />
 
-    <div className="flex-1">
-      <p className="font-semibold">{doc.name}</p>
+                  <div className="flex-1">
+                    <p className="font-semibold">{doc.name}</p>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-sm">
-        {Object.entries(doc.jadwal).map(([hari, jam]) => (
-          <div key={hari} className="border rounded p-2">
-            <p className="font-medium capitalize">{hari}</p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mt-2 text-sm">
+                      {Object.entries(doc.jadwal).map(([hari, jam]) => (
+                        <div key={hari} className="border rounded p-2">
+                          <p className="font-medium capitalize">{hari}</p>
 
-            {jam.length > 0 ? (
-              jam.map((j, idx) => <div key={idx}>{j}</div>)
-            ) : (
-              <p className="text-gray-400">-</p>
-            )}
-          </div>
-        ))}
-      </div>
+                          {jam.length > 0 ? (
+                            jam.map((j, idx) => <div key={idx}>{j}</div>)
+                          ) : (
+                            <p className="text-gray-400">-</p>
+                          )}
+                        </div>
+                      ))}
+                    </div>
 
-      {/* tombol */}
-      <div className="flex gap-2 mt-4">
-        <button
-          onClick={() => handleUpdate(doc)}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg"
-        >
-          Update
-        </button>
+                    <div className="flex gap-2 mt-4">
+                      <button
+                        onClick={() => handleUpdate(doc)}
+                        className="px-4 py-2 bg-blue-600 text-white rounded-lg"
+                      >
+                        Update
+                      </button>
 
-        <button
-          onClick={() => handleDelete(doc.id)}
-          className="px-4 py-2 bg-red-600 text-white rounded-lg"
-        >
-          Delete
-        </button>
-      </div>
-    </div>
-  </div>
-))}
+                      <button
+                        onClick={() => handleDelete(doc.id)}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
+
         </div>
       ))}
+
     </div>
-  );
+  </div>
+);
 }
 
 export default JadwalDokter;

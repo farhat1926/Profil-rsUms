@@ -5,8 +5,10 @@ const EventDetail = () => {
   const { id } = useParams();
   const [event, setEvent] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    fetch(`http://localhost:3001/event/${id}`)
+    fetch(`${API_URL}/event/${id}`)
       .then((res) => res.json())
       .then((data) => {
         setEvent(data);
@@ -28,7 +30,7 @@ const EventDetail = () => {
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
       <div className="max-w-5xl mx-auto">
         <img
-          src={`http://localhost:3001${event.image}`}
+          src={`${API_URL}${event.image}`}
           alt={event.title}
           className="w-full h-[450px] object-cover rounded-2xl shadow-lg"
         />

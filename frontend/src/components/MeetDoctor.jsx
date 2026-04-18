@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   Phone,
@@ -8,77 +8,44 @@ import {
   CalendarDays,
 } from "lucide-react";
 
-const doctorList = [
-  {
-    id: 1,
-    nama: "dr. Diah Kurnia Mirawati, Sp. S(K)",
-    spesialis: "Spesialis Neurologi",
-    image: "/dokter1.jpg",
-    jadwal: {
-      Senin: "08:00 - 12:00",
-      Selasa: "09:00 - 13:00",
-      Rabu: "08:00 - 11:00",
-    },
-  },
-  {
-    id: 2,
-    nama: "dr. Erupsiana Fitri Indrihapsari, Sp.N",
-    spesialis: "Spesialis Neurologi",
-    image: "/dokter2.jpg",
-    jadwal: {
-      Senin: "10:00 - 14:00",
-      Kamis: "08:00 - 12:00",
-    },
-  },
-  {
-    id: 3,
-    nama: "dr. Naziya, Sp.M",
-    spesialis: "Spesialis Mata",
-    image: "/dokter3.jpg",
-    jadwal: {
-      Selasa: "08:00 - 12:00",
-      Jumat: "09:00 - 13:00",
-    },
-  },
-  {
-    id: 4,
-    nama: "drg. Astri Zuraida Jannati",
-    spesialis: "Gigi",
-    image: "/dokter4.jpg",
-    jadwal: {
-      Senin: "08:00 - 15:00",
-    },
-  },
-  {
-    id: 5,
-    nama: "drg. Sri Indriyani, MM",
-    spesialis: "Gigi",
-    image: "/dokter5.jpg",
-    jadwal: {
-      Rabu: "09:00 - 14:00",
-    },
-  },
-  {
-    id: 6,
-    nama: "drg. Andhita Permatasari",
-    spesialis: "Gigi",
-    image: "/dokter6.jpg",
-    jadwal: {
-      Kamis: "08:00 - 12:00",
-    },
-  },
-];
-
 export default function MeetDoctor() {
   const [openJadwal, setOpenJadwal] = useState(null);
 
   // State untuk membatasi jumlah dokter yang tampil awal (misal: 4 dokter)
   const [visibleCount, setVisibleCount] = useState(4);
+  const [doctorList, setDoctorList] = useState([]);
+const API_URL = import.meta.env.VITE_API_URL;
 
   // Fungsi untuk menambah jumlah tampilan saat tombol diklik
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + 4);
   };
+  useEffect(() => {
+  fetch(`${API_URL}/jadwal`)
+    .then(res => res.json())
+    .then(data => {
+      const result = {};
+
+      data.forEach((item) => {
+        if (!result[item.id]) {
+          result[item.id] = {
+            id: item.id,
+            nama: item.nama_dokter,
+            spesialis: item.spesialis,
+            image: item.image,
+            deskripsi: item.deskripsi, // 🔥 ambil dari DB
+            jadwal: {},
+          };
+        }
+
+        if (item.hari && item.jam) {
+          result[item.id].jadwal[item.hari] = item.jam;
+        }
+      });
+
+      setDoctorList(Object.values(result));
+    });
+}, []);
 
   return (
     <div className="min-h-screen bg-gray-50/50">
@@ -115,7 +82,7 @@ export default function MeetDoctor() {
                 <div className="w-[120px] md:w-[150px] shrink-0">
                   <Link to={`/doctor/${doctor.id}`}>
                     <img
-                      src={doctor.image}
+                      src={`${API_URL}${doctor.image}`}
                       alt={doctor.nama}
                       // Penambahan object-top agar dahi dokter tidak terpotong
                       className="w-full aspect-[3/4] object-cover object-top rounded-2xl bg-gray-200 border border-gray-100"
@@ -140,9 +107,7 @@ export default function MeetDoctor() {
 
                     {/* Deskripsi Singkat */}
                     <p className="text-sm text-gray-500 line-clamp-3 mb-4 leading-relaxed">
-                      {doctor.nama} adalah Dokter Spesialis {doctor.spesialis}{" "}
-                      yang memiliki kompetensi dalam menangani berbagai keluhan
-                      dan penyakit terkait secara profesional.
+                      {doctor.deskripsi || "Deskripsi belum tersedia"}
                     </p>
                   </div>
 

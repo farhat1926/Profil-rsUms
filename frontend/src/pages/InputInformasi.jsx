@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 export default function InputInformasi() {
+  const API_URL = import.meta.env.VITE_API_URL;
   const [form, setForm] = useState({
     title: "",
     category: "",
@@ -39,7 +40,7 @@ export default function InputInformasi() {
     }
 
     try {
-      const res = await fetch("http://localhost:3001/informasi", {
+      const res = await fetch(`${API_URL}/informasi`, {
         method: "POST",
         body: formData,
       });

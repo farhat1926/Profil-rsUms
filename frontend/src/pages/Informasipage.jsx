@@ -5,9 +5,10 @@ const InformasiPage = () => {
   const [selectedCategory, setSelectedCategory] = useState("Semua");
   const [articles, setArticles] = useState([]);
   const [categories, setCategories] = useState(["Semua"]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:3001/informasi")
+    fetch(`${API_URL}/informasi`)
       .then((res) => res.json())
       .then((data) => {
         setArticles(data);
@@ -70,7 +71,7 @@ const InformasiPage = () => {
               className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden"
             >
               <img
-                src={`http://localhost:3001${article.image}`}
+                src={`${API_URL}${article.image}`}
                 className="w-full h-52 object-cover"
                 alt={article.title}
               />

@@ -5,6 +5,7 @@ import { fetchArticleById } from "../data/articles";
 const ArticleDetail = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const loadDetail = async () => {
@@ -31,7 +32,7 @@ const ArticleDetail = () => {
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
       <div className="max-w-5xl mx-auto">
         <img
-          src={`http://localhost:3001${article.image}`}
+          src={`${API_URL}${article.image}`}
           alt={article.title}
           className="w-full h-[450px] object-cover rounded-2xl shadow-lg"
         />

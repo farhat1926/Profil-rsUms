@@ -34,8 +34,9 @@ export default function InputPromo() {
       formData.append("image", image);
     }
 
+    const API_URL = import.meta.env.VITE_API_URL;
     const res = await fetch(
-      "http://localhost:3001/promo",
+      `${API_URL}/promo`,
       {
         method: "POST",
         body: formData,
