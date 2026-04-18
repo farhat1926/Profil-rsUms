@@ -58,8 +58,8 @@ function UpdateJadwal() {
       if (image) {
         formData.append("image", image);
       }
-
-      await fetch(`http://localhost:3001/jadwal/${doctor.id}`, {
+      const API_URL = import.meta.env.VITE_API_URL;
+      await fetch(`${API_URL}/jadwal/${doctor.id}`, {
         method: "PUT",
         body: formData,
       });

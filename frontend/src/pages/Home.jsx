@@ -102,15 +102,16 @@ const Home = () => {
   const [openDropdown, setOpenDropdown] = useState(null);
   const [dokterList, setDokterList] = useState([]);
   const [eventList, setEventList] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:3001/event")
+    fetch(`${API_URL}/event`)
       .then((res) => res.json())
       .then((data) => setEventList(data));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:3001/jadwal")
+    fetch(`${API_URL}/jadwal`)
       .then((res) => res.json())
       .then((data) => {
         const groupedDokter = data.reduce((acc, item) => {
@@ -123,7 +124,7 @@ const Home = () => {
               id: item.id,
               nama: item.nama_dokter,
               spesialis: item.spesialis,
-              img: `http://localhost:3001${item.image}`,
+              img: `${API_URL}${item.image}`,
               pengalaman: "Dokter Spesialis",
               jadwal: {
                 [item.hari]: item.jam,
@@ -172,6 +173,10 @@ const Home = () => {
                 />
               ))}
             </div>
+<<<<<<< HEAD
+=======
+            {/* Overlay */}
+>>>>>>> 5a36d5e9a056a6c972a78517944baab7e3481353
             <div className="absolute "></div>
           </div>
         </div>
@@ -228,7 +233,7 @@ const Home = () => {
 
           <div className="flex gap-6 overflow-x-auto pb-8 custom-scrollbar px-1">
             {dokterList.length > 0 ? (
-              dokterList.map((dokter, index) => (
+              dokterList.slice(0,5).map((dokter, index) => (
                 <div
                   key={dokter.id}
                   className="min-w-[340px] sm:min-w-[380px] max-w-[400px] bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col snap-center"
@@ -354,7 +359,7 @@ const Home = () => {
                   className="relative rounded-2xl overflow-hidden shadow-md group block border border-gray-200"
                 >
                   <img
-                    src={`http://localhost:3001${event.image}`}
+                    src={`${API_URL}${event.image}`}
                     alt={event.title}
                     loading="lazy"
                     className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"

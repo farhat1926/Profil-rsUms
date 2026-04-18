@@ -78,7 +78,7 @@ const fasilitasData = [
   {
     title: "Kamar Kelas 3",
     category: "Rawat Inap",
-    image: "/kelas_1.jpg",
+    image: "/kelas_3.jpeg",
     desc: "Kamar kelas 3 dengan kapasitas lebih banyak.",
   },
   {
@@ -90,7 +90,7 @@ const fasilitasData = [
   {
     title: "Fetomaternal",
     category: "Layanan Unggulan",
-    image: "/scan_radiologi.jpeg",
+    image: "/feto.jpeg",
     desc: "Pelayanan kesehatan ibu dan janin.",
   },
   {
@@ -161,8 +161,13 @@ export default function FasilitasPage() {
       <section className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
         <img
           src="/images/banner-web.png"
+<<<<<<< HEAD
           alt="Banner Fasilitas"
           className="absolute inset-0 w-full h-full object-cover z-10 mix-blend-multiply opacity-20"
+=======
+          alt="Banner Profil Dokter"
+          className="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-multiply opacity-70"
+>>>>>>> 5a36d5e9a056a6c972a78517944baab7e3481353
         />
         <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 md:mb-3 drop-shadow-md">

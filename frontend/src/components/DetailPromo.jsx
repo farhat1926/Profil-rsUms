@@ -5,8 +5,10 @@ export default function DetailPromo() {
   const { id } = useParams();
   const [promo, setPromo] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   useEffect(() => {
-    fetch(`http://localhost:3001/promo/${id}`)
+    fetch(`${API_URL}/promo/${id}`)
       .then((res) => res.json())
       .then((data) => setPromo(data));
   }, [id]);

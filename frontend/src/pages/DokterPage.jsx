@@ -22,6 +22,7 @@ const doctors = [
 
 function DoctorPage() {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   return (
     <div className="min-h-screen bg-gray-100 px-10 py-12">
@@ -44,6 +45,7 @@ function DoctorPage() {
 
             {/* Bottom Info */}
             <div className="bg-lime-400 px-5 py-4 flex justify-between items-center relative">
+              
               {/* Profile Button */}
               <button
                 onClick={() => setSelectedDoctor(doctor)}

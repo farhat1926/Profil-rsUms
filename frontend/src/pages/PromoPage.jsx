@@ -3,9 +3,10 @@ import { Link } from "react-router-dom";
 
 export default function PromoPage() {
   const [promoList, setPromoList] = useState([]);
+  const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
-    fetch("http://localhost:3001/promo")
+    fetch(`${API_URL}/promo`)
       .then((res) => res.json())
       .then((data) => {
         console.log("DATA:", data);
@@ -42,7 +43,7 @@ export default function PromoPage() {
               className="bg-white rounded-2xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden flex flex-col"
             >
               <img
-                src={`http://localhost:3001${promo.image}`}
+                src={`${API_URL}${promo.image}`}
                 alt={promo.title}
                 className="w-full h-[350px] md:h-[420px] object-cover"
               />

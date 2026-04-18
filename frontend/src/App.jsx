@@ -3,6 +3,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate, // Import Navigate untuk fungsi proteksi rute
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
@@ -29,6 +30,16 @@ import DoctorDetail from "./components/DoctorDetail";
 import AdminLogin from "./pages/AdminPages/AdminLogin";
 import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
 
+
+const ProtectedAdminRoute = ({ children }) => {
+  const token = localStorage.getItem("adminToken");
+
+  if (!token) {
+    return <Navigate to="/admin" replace />;
+  }
+  return children;
+};
+
 function AppContent() {
   const location = useLocation(); // WAJIB ADA
   const hideLayout =
@@ -43,6 +54,7 @@ function AppContent() {
 
       <main className="flex-1">
         <Routes>
+          {/* ================= RUTE PUBLIK ================= */}
           <Route path="/" element={<Home />} />
           <Route path="/fasilitas" element={<FasilitasPage />} />
           <Route path="/meet-doctor" element={<MeetDoctor />} />
@@ -56,12 +68,54 @@ function AppContent() {
           <Route path="/promo/:id" element={<DetailPromo />} />
           <Route path="/register" element={<Register />} />
           <Route path="/admin" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<DashboardAdmin />} />
-          <Route path="/input-event" element={<InputEvent />} />
-          <Route path="/input-informasi" element={<InputInformasi />} />
-          <Route path="/input-promo" element={<InputPromo />} />
-          <Route path="/edit-jadwal" element={<EditPage />} />
-          <Route path="/update-jadwal" element={<UpdateJadwal />} />
+          <Route
+            path="/admin/dashboard"
+            element={
+              <ProtectedAdminRoute>
+                <DashboardAdmin />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/input-event"
+            element={
+              <ProtectedAdminRoute>
+                <InputEvent />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/input-informasi"
+            element={
+              <ProtectedAdminRoute>
+                <InputInformasi />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/input-promo"
+            element={
+              <ProtectedAdminRoute>
+                <InputPromo />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/edit-jadwal"
+            element={
+              <ProtectedAdminRoute>
+                <EditPage />
+              </ProtectedAdminRoute>
+            }
+          />
+          <Route
+            path="/admin/update-jadwal"
+            element={
+              <ProtectedAdminRoute>
+                <UpdateJadwal />
+              </ProtectedAdminRoute>
+            }
+          />
         </Routes>
       </main>
 
