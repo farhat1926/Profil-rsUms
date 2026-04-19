@@ -3,34 +3,39 @@ import {
   Routes,
   Route,
   useLocation,
-  Navigate, // Import Navigate untuk fungsi proteksi rute
+  Navigate,
 } from "react-router-dom";
+
+// Komponen Layout
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import PromoPopup from "./components/Popup";
+import WhatsAppFloat from "./components/WhatsAppFloat";
 
+// Halaman Publik
 import Home from "./pages/Home";
 import FasilitasPage from "./pages/FasilitasPage";
-import InputEvent from "./pages/AdminPages/InputEvent";
 import DokterPage from "./pages/DokterPage";
 import InformasiPage from "./pages/Informasipage";
 import ArticleDetail from "./pages/ArticleDetail";
-import JadwalDokter from "./components/JadwalDokter";
-import Register from "./components/register";
-import EditPage from "./pages/AdminPages/EditPage";
-import UpdateJadwal from "./components/UpdateJadwal";
-import WhatsAppFloat from "./components/WhatsAppFloat";
-import EventDetail from "./components/EventDetail";
-import InputInformasi from "./pages/AdminPages/InputInformasi";
-import MeetDoctor from "./components/MeetDoctor";
 import PromoPage from "./pages/PromoPage";
-import DetailPromo from "./components/DetailPromo";
-import InputPromo from "./pages/AdminPages/InputPromo";
+import Register from "./components/register";
+
+// Komponen Detail & Fitur Tambahan
+import MeetDoctor from "./components/MeetDoctor";
 import DoctorDetail from "./components/DoctorDetail";
+import JadwalDokter from "./components/JadwalDokter";
+import EventDetail from "./components/EventDetail";
+import DetailPromo from "./components/DetailPromo";
+
+// Halaman Admin
 import AdminLogin from "./pages/AdminPages/AdminLogin";
 import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
+import UpdateJadwal from "./components/UpdateJadwal"; // Tetap dipertahankan jika masih digunakan terpisah
 
-
+// =======================================================
+// KOMPONEN PROTEKSI RUTE ADMIN
+// =======================================================
 const ProtectedAdminRoute = ({ children }) => {
   const token = localStorage.getItem("adminToken");
 
@@ -41,7 +46,9 @@ const ProtectedAdminRoute = ({ children }) => {
 };
 
 function AppContent() {
-  const location = useLocation(); // WAJIB ADA
+  const location = useLocation();
+
+  // Sembunyikan Navbar, Footer, dll jika di halaman login/register atau di dalam area admin
   const hideLayout =
     ["/login", "/register"].includes(location.pathname) ||
     location.pathname.startsWith("/admin");
@@ -67,7 +74,12 @@ function AppContent() {
           <Route path="/promo" element={<PromoPage />} />
           <Route path="/promo/:id" element={<DetailPromo />} />
           <Route path="/register" element={<Register />} />
+
+          {/* ================= RUTE ADMIN PANEL ================= */}
+          {/* Halaman Login Admin */}
           <Route path="/admin" element={<AdminLogin />} />
+
+          {/* Halaman Utama Dashboard (Sekarang menampung semua fitur Manage & Input) */}
           <Route
             path="/admin/dashboard"
             element={
@@ -76,38 +88,8 @@ function AppContent() {
               </ProtectedAdminRoute>
             }
           />
-          <Route
-            path="/admin/input-event"
-            element={
-              <ProtectedAdminRoute>
-                <InputEvent />
-              </ProtectedAdminRoute>
-            }
-          />
-          <Route
-            path="/admin/input-informasi"
-            element={
-              <ProtectedAdminRoute>
-                <InputInformasi />
-              </ProtectedAdminRoute>
-            }
-          />
-          <Route
-            path="/admin/input-promo"
-            element={
-              <ProtectedAdminRoute>
-                <InputPromo />
-              </ProtectedAdminRoute>
-            }
-          />
-          <Route
-            path="/admin/edit-jadwal"
-            element={
-              <ProtectedAdminRoute>
-                <EditPage />
-              </ProtectedAdminRoute>
-            }
-          />
+
+          {/* Halaman Update Jadwal (Tetap ada jika Anda menggunakannya untuk mode Edit) */}
           <Route
             path="/admin/update-jadwal"
             element={

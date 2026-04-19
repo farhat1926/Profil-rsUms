@@ -36,19 +36,12 @@ exports.getPromoById = (req, res) => {
 
 // POST tambah promo
 exports.createPromo = (req, res) => {
-  console.log("BODY:", req.body);
-  console.log("FILE:", req.file);
+  // console.log("BODY:", req.body);
+  // console.log("FILE:", req.file);
 
-  const {
-    title,
-    description,
-    detail_description,
-    link,
-  } = req.body;
+  const { title, description, detail_description, link } = req.body;
 
-  const image = req.file
-    ? `/uploads/${req.file.filename}`
-    : null;
+  const image = req.file ? `/uploads/${req.file.filename}` : null;
 
   const sql = `
     INSERT INTO promosi
@@ -58,13 +51,7 @@ exports.createPromo = (req, res) => {
 
   db.query(
     sql,
-    [
-      title,
-      description,
-      detail_description,
-      link,
-      image,
-    ],
+    [title, description, detail_description, link, image],
     (err, result) => {
       if (err) {
         console.error("ERROR INSERT:", err);
@@ -74,7 +61,7 @@ exports.createPromo = (req, res) => {
       res.json({
         message: "Promosi berhasil ditambahkan",
       });
-    }
+    },
   );
 };
 
@@ -82,17 +69,29 @@ exports.createPromo = (req, res) => {
 exports.deletePromo = (req, res) => {
   const id = req.params.id;
 
-  db.query(
-    "DELETE FROM promosi WHERE id = ?",
-    [id],
-    (err) => {
-      if (err) {
-        return res.status(500).json(err);
-      }
-
-      res.json({
-        message: "Promo berhasil dihapus",
-      });
+  db.query("DELETE FROM promosi WHERE id = ?", [id], (err) => {
+    if (err) {
+      return res.status(500).json(err);
     }
+
+    res.json({
+      message: "Promo berhasil dihapus",
+    });
+  });
+};
+
+exports.updatePromo = (req, res) => {
+  const id = req.params.id;
+  const { title, description, detail_description, link } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
+
+  const sql = `UPDATE promosi SET title=?, description=?, detail_description=?, link=?, image=? WHERE id=?`;
+  db.query(
+    sql,
+    [title, description, detail_description, link, image, id],
+    (err) => {
+      if (err) return res.status(500).json(err);
+      res.json({ message: "Promo berhasil diupdate" });
+    },
   );
 };
