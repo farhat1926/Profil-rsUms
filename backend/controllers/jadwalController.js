@@ -104,25 +104,37 @@ const deleteJadwal = (req, res) => {
 
 const updateJadwal = (req, res) => {
   const id = req.params.id;
-  // Tambahkan deskripsi dari req.body
-  const { nama_dokter, spesialis, deskripsi, hari, jam } = req.body;
-  const image = req.file ? `/uploads/${req.file.filename}` : null;
+  const { namaDokter, spesialis, deskripsi } = req.body; // Sesuaikan penamaan dengan frontend
+  const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
 
-  // Tambahkan deskripsi = ? di query UPDATE
-  const sqlDokter = `
-    UPDATE dokter
-    SET nama_dokter = ?, spesialis = ?, deskripsi = ?, image = COALESCE(?, image)
-    WHERE id = ?
-  `;
+  const sqlDokter = `UPDATE dokter SET nama_dokter = ?, spesialis = ?, deskripsi = ?, image = COALESCE(?, image) WHERE id = ?`;
 
-  // Masukkan deskripsi ke dalam array parameter
-  db.query(sqlDokter, [nama_dokter, spesialis, deskripsi, image, id], (err) => {
+  db.query(sqlDokter, [namaDokter, spesialis, deskripsi, image, id], (err) => {
     if (err) return res.status(500).send(err);
 
-    const sqlJadwal = `UPDATE jadwal_dokter SET jam = ? WHERE dokter_id = ? AND hari = ?`;
-    db.query(sqlJadwal, [jam, id, hari], (err2) => {
+    // Hapus semua jadwal lama milik dokter ini
+    db.query("DELETE FROM jadwal_dokter WHERE dokter_id = ?", [id], (err2) => {
       if (err2) return res.status(500).send(err2);
-      res.send("Data berhasil diupdate");
+
+      const jadwalParsed = JSON.parse(req.body.jadwal);
+      let jadwalData = [];
+
+      jadwalParsed.forEach((item) => {
+        if (item.hari && item.mulai && item.selesai) {
+          jadwalData.push([id, item.hari, `${item.mulai} - ${item.selesai}`]);
+        }
+      });
+
+      if (jadwalData.length === 0)
+        return res.send("Dokter diupdate tanpa jadwal");
+
+      // Masukkan jadwal yang baru
+      const sqlJadwal =
+        "INSERT INTO jadwal_dokter (dokter_id, hari, jam) VALUES ?";
+      db.query(sqlJadwal, [jadwalData], (err3) => {
+        if (err3) return res.status(500).send(err3);
+        res.send("Data berhasil diupdate beserta jadwal baru!");
+      });
     });
   });
 };

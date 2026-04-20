@@ -63,10 +63,27 @@ const deleteInformasi = (req, res) => {
   });
 };
 
+const updateInformasi = (req, res) => {
+  const id = req.params.id;
+  const { title, category, summary, content, author, date } = req.body;
+  const image = req.file ? `/uploads/${req.file.filename}` : req.body.image;
+
+  const sql = `UPDATE informasi SET title=?, category=?, summary=?, content=?, author=?, date=?, image=? WHERE id=?`;
+  db.query(
+    sql,
+    [title, category, summary, content, author, date, image, id],
+    (err) => {
+      if (err) return res.status(500).send(err);
+      res.send("Informasi berhasil diupdate");
+    },
+  );
+};
+
 // Export semua fungsi agar bisa dipanggil di routes
 module.exports = {
   createInformasi,
   getAllInformasi,
   getInformasiById,
   deleteInformasi,
+  updateInformasi,
 };
