@@ -161,8 +161,8 @@ export default function FasilitasPage() {
       <section className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
         <img
           src="/images/banner-web.png"
-          alt="Banner Profil Dokter"
-          className="absolute inset-0 w-full h-full object-cover -z-10 mix-blend-multiply opacity-70"
+          alt="Banner Fasilitas"
+          className="absolute inset-0 w-full h-full object-cover z-10 mix-blend-multiply opacity-20"
         />
         <div className="relative z-10">
           <h1 className="text-3xl md:text-4xl font-extrabold text-white mb-2 md:mb-3 drop-shadow-md">

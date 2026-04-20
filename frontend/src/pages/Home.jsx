@@ -1,5 +1,8 @@
+
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+// Menambahkan import icon untuk mempercantik card dokter
+import { Eye, CalendarDays, ChevronDown, ChevronUp } from "lucide-react";
 
 const InstagramEmbed = React.memo(({ children }) => {
   useEffect(() => {
@@ -149,10 +152,9 @@ const Home = () => {
 
   return (
     <div className="font-sans w-full overflow-hidden">
-      {/* Hero + Profil Overlay (DIBUAT LEBIH KECIL DAN ROUNDED) */}
+      {/* Hero + Profil Overlay */}
       <section id="profil" className="w-full bg-white pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          {/* Container Slider - Tinggi dikurangi dan ujung dilengkungkan (rounded-3xl) */}
           <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[450px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
             <div
               className="flex h-full transition-transform duration-1500 ease-in-out"
@@ -219,64 +221,104 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Dokter Spesialis */}
+      {/* ================= DOKTER SPESIALIS ================= */}
+      {/* Background dikembalikan ke bg-green-50 */}
       <section id="dokter" className="w-full bg-green-50 py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-3xl font-bold text-center mb-10 text-gray-800">
+          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
             Dokter Spesialis
           </h2>
 
-          <div className="flex gap-6 overflow-x-auto pb-6 custom-scrollbar">
+          <div className="flex gap-6 overflow-x-auto pb-8 custom-scrollbar px-1">
             {dokterList.length > 0 ? (
               dokterList.slice(0,5).map((dokter, index) => (
                 <div
                   key={dokter.id}
-                  className="min-w-[360px] bg-white rounded-2xl p-6 flex gap-5 shadow-sm hover:shadow-lg transition-shadow border border-green-50"
+                  className="min-w-[340px] sm:min-w-[380px] max-w-[400px] bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col snap-center"
                 >
-                  <img
-                    src={dokter.img}
-                    alt={dokter.nama}
-                    loading="lazy"
-                    className="w-28 h-28 object-cover rounded-xl"
-                  />
+                  {/* Top Info Section */}
+                  <div className="p-6 flex gap-5 items-start">
+                    {/* Foto Melingkar */}
+                    <img
+                      src={dokter.img}
+                      alt={dokter.nama}
+                      loading="lazy"
+                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover object-top border border-gray-200 shrink-0 shadow-sm"
+                      onError={(e) => {
+                        e.target.src = "/default-doctor.jpg";
+                      }}
+                    />
 
-                  <div className="flex flex-col justify-between w-full">
-                    <div>
-                      <h3 className="text-lg font-bold text-gray-900 leading-tight">
+                    {/* Info Teks (Dengan min-w-0 agar tidak melar jika teks panjang) */}
+                    <div className="flex-1 min-w-0">
+                      <h3
+                        className="text-base sm:text-lg font-bold text-gray-900 leading-snug line-clamp-2"
+                        title={dokter.nama}
+                      >
                         {dokter.nama}
                       </h3>
 
-                      <p className="text-sm text-gray-600 mt-1">
+                      <p className="text-[11px] text-gray-400 mt-2.5 uppercase tracking-wider font-bold">
+                        SPESIALIS
+                      </p>
+                      <p
+                        className="text-sm font-bold text-green-700 mt-0.5 truncate"
+                        title={dokter.spesialis}
+                      >
                         {dokter.spesialis}
                       </p>
 
-                      <ul className="text-xs text-gray-500 mt-3 space-y-1 bg-green-50/50 inline-block px-3 py-1 rounded-full border border-green-100">
-                        <li>🟢 {dokter.pengalaman}</li>
-                      </ul>
-
-                      <p
-                        onClick={() =>
-                          setOpenDropdown(openDropdown === index ? null : index)
-                        }
-                        className="mt-4 text-sm text-green-600 font-semibold cursor-pointer hover:text-green-700 transition-colors"
+                      <Link
+                        to={`/doctor/${dokter.id}`}
+                        className="inline-flex items-center gap-1.5 text-xs text-green-700 hover:text-green-900 mt-4 font-semibold transition-colors group"
                       >
-                        Jadwal Dokter {openDropdown === index ? "▲" : "▼"}
-                      </p>
+                        <span className="group-hover:underline">
+                          Lihat Profil Selengkapnya
+                        </span>
+                        <Eye size={14} />
+                      </Link>
+                    </div>
+                  </div>
 
-                      {openDropdown === index && dokter.jadwal && (
-                        <div className="mt-3 text-xs text-gray-700 bg-gray-50 rounded-xl p-4 border border-gray-100 animate-in fade-in duration-200">
+                  {/* Bottom Schedule Section (Hanya Jadwal, Tanpa Booking) */}
+                  <div className="mt-auto border-t border-gray-100">
+                    <button
+                      onClick={() =>
+                        setOpenDropdown(openDropdown === index ? null : index)
+                      }
+                      className="w-full px-6 py-4 flex justify-between items-center text-sm font-bold text-gray-800 hover:bg-green-50/50 transition-colors rounded-b-2xl"
+                    >
+                      <span className="flex items-center gap-2.5">
+                        <CalendarDays size={18} className="text-green-700" />
+                        Lihat Jadwal Praktek
+                      </span>
+                      {openDropdown === index ? (
+                        <ChevronUp size={18} className="text-gray-500" />
+                      ) : (
+                        <ChevronDown size={18} className="text-gray-500" />
+                      )}
+                    </button>
+
+                    {/* Dropdown Content */}
+                    {openDropdown === index && dokter.jadwal && (
+                      <div className="px-6 pb-6 pt-2">
+                        <div className="bg-white rounded-xl p-0 border border-gray-100 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
                           {Object.entries(dokter.jadwal).map(([hari, jam]) => (
                             <div
                               key={hari}
-                              className="flex justify-between py-1.5 border-b border-gray-200 last:border-b-0"
+                              className="flex justify-between py-3 px-4 border-b border-gray-50 last:border-b-0 text-sm"
                             >
-                              <span className="font-medium">{hari}</span>
-                              <span>{jam}</span>
+                              <span className="font-semibold text-gray-700">
+                                {hari}
+                              </span>
+                              <span className="text-gray-600 font-medium">
+                                {jam}
+                              </span>
                             </div>
                           ))}
                         </div>
-                      )}
-                    </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
@@ -290,7 +332,7 @@ const Home = () => {
       </section>
 
       {/* Kegiatan & Event / Informasi */}
-      <section id="informasi" className="w-full py-16 bg-gray-100 scroll-mt-20">
+      <section id="informasi" className="w-full py-16 bg-white scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="mb-10">
             <h2 className="text-3xl font-bold text-green-600 mb-2">
@@ -336,7 +378,7 @@ const Home = () => {
       </section>
 
       {/* ================= RS UMS UPDATE ================= */}
-      <section id="rs-ums-update" className="w-full py-16 bg-white">
+      <section id="rs-ums-update" className="w-full py-16 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex justify-between items-end mb-8">
             <div>
@@ -355,7 +397,7 @@ const Home = () => {
             {instagramEmbeds.map((item) => (
               <div
                 key={item.id}
-                className="w-full overflow-hidden flex justify-center bg-gray-50 rounded-2xl p-2 border border-gray-100 shadow-sm"
+                className="w-full overflow-hidden flex justify-center bg-white rounded-2xl p-2 border border-gray-100 shadow-sm"
               >
                 <InstagramEmbed>{item.embedCode}</InstagramEmbed>
               </div>
@@ -374,7 +416,7 @@ const Home = () => {
       </section>
 
       {/* Lokasi Rumah Sakit */}
-      <section id="lokasi" className="w-full py-16 bg-gray-50 scroll-mt-20">
+      <section id="lokasi" className="w-full py-16 bg-white scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             {/* MAP */}
