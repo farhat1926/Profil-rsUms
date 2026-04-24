@@ -6,7 +6,7 @@ const path = require("path");
 const connection = mysql.createConnection({
   host: "localhost",
   user: "root", // Sesuaikan jika Anda menggunakan username lain
-  password: "", // Sesuaikan jika MySQL Anda memiliki password
+  password: "fardanio19", // Sesuaikan jika MySQL Anda memiliki password
   multipleStatements: true, // SANGAT PENTING: Mengizinkan eksekusi banyak query sekaligus
 });
 

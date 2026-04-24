@@ -2,83 +2,32 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { MapPin, ArrowLeft } from "lucide-react";
 
-const dummyDoctors = [
-  {
-    id: 1,
-    nama: "dr. Diah Kurnia Mirawati, Sp. S(K)",
-    spesialis: "Spesialis Neurologi",
-    img: "/dokter1.jpg",
-    jadwal: {
-      Senin: "08:00 - 12:00",
-      Selasa: "09:00 - 13:00",
-      Rabu: "08:00 - 11:00",
-    },
-  },
-  {
-    id: 2,
-    nama: "dr. Erupsiana Fitri Indrihapsari, Sp.N",
-    spesialis: "Spesialis Neurologi",
-    img: "/dokter2.jpg",
-    jadwal: {
-      Senin: "10:00 - 14:00",
-      Kamis: "08:00 - 12:00",
-    },
-  },
-  {
-    id: 3,
-    nama: "dr. Naziya, Sp.M",
-    spesialis: "Spesialis Mata",
-    img: "/dokter3.jpg",
-    jadwal: {
-      Selasa: "08:00 - 12:00",
-      Jumat: "09:00 - 13:00",
-    },
-  },
-  {
-    id: 4,
-    nama: "drg. Astri Zuraida Jannati",
-    spesialis: "Gigi",
-    img: "/dokter4.jpg",
-    jadwal: {
-      Senin: "08:00 - 15:00",
-    },
-  },
-  {
-    id: 5,
-    nama: "drg. Sri Indriyani, MM",
-    spesialis: "Gigi",
-    img: "/dokter5.jpg",
-    jadwal: {
-      Rabu: "09:00 - 14:00",
-    },
-  },
-  {
-    id: 6,
-    nama: "drg. Andhita Permatasari",
-    spesialis: "Gigi",
-    img: "/dokter6.jpg",
-    jadwal: {
-      Kamis: "08:00 - 12:00",
-    },
-  },
-];
-
 export default function DoctorDetail() {
   const { id } = useParams();
+  const API_URL = import.meta.env.VITE_API_URL;
   const [doctor, setDoctor] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulasi jeda loading data (300 milidetik) agar terasa natural
-    const timer = setTimeout(() => {
-      // Mencari dokter berdasarkan ID dari URL
-      const foundDoctor = dummyDoctors.find((d) => d.id.toString() === id);
-      setDoctor(foundDoctor);
-      setLoading(false);
-    }, 300);
+  setLoading(true);
 
-    return () => clearTimeout(timer);
-  }, [id]);
+  fetch(`${API_URL}/jadwal/${id}`)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Dokter tidak ditemukan");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      setDoctor(data);
+      setLoading(false);
+    })
+    .catch((err) => {
+      console.error(err);
+      setDoctor(null);
+      setLoading(false);
+    });
+}, [id]);
 
   if (loading) {
     return (
@@ -95,16 +44,15 @@ export default function DoctorDetail() {
       </div>
     );
   }
-
   const daysOfWeek = [
-    "Senin",
-    "Selasa",
-    "Rabu",
-    "Kamis",
-    "Jumat",
-    "Sabtu",
-    "Minggu",
-  ];
+  "senin",
+  "selasa",
+  "rabu",
+  "kamis",
+  "jumat",
+  "sabtu",
+  "minggu",
+];
 
   return (
     <div className="min-h-screen bg-white pb-20">
@@ -136,13 +84,13 @@ export default function DoctorDetail() {
           {/* FOTO DOKTER (Menembus Header) */}
           <div className="w-56 h-72 md:w-[280px] md:h-[380px] shrink-0 bg-white p-2.5 rounded-2xl shadow-xl border border-gray-100 -mt-12 md:-mt-20">
             <img
-              src={doctor.img}
-              alt={doctor.nama}
-              className="w-full h-full object-cover object-top rounded-xl bg-gray-100"
-              onError={(e) => {
-                e.target.src = "/images/logo square.png";
-              }}
-            />
+  src={`${API_URL}${doctor.image}`}
+  alt={doctor.nama}
+  className="w-full h-full object-cover object-top rounded-xl bg-gray-100"
+  onError={(e) => {
+    e.target.src = "/images/logo square.png";
+  }}
+/>
           </div>
 
           {/* INFORMASI DOKTER */}
@@ -163,19 +111,8 @@ export default function DoctorDetail() {
 
             {/* Deskripsi */}
             <div className="mt-8 text-gray-600 text-[15px] leading-relaxed space-y-4 text-justify">
-              <p>
-                {doctor.nama} merupakan Dokter Spesialis {doctor.spesialis} di
-                RS UMS A.R. Fachrudin. Beliau mampu menangani berbagai keluhan
-                dan tindakan medis yang berkaitan dengan spesialisasi tersebut
-                dengan pendekatan yang komprehensif.
-              </p>
-              <p>
-                Berbagai pemeriksaan diagnostik dasar maupun lanjutan biasa
-                beliau lakukan. Selain itu, beliau juga berdedikasi untuk
-                memberikan pelayanan prima yang berfokus pada keselamatan dan
-                kenyamanan pasien selama masa perawatan.
-              </p>
-            </div>
+  <p>{doctor.deskripsi || "Deskripsi belum tersedia"}</p>
+</div>
           </div>
         </div>
 
@@ -186,23 +123,17 @@ export default function DoctorDetail() {
               <thead>
                 <tr className="bg-[#0f2a4a] text-white">
                   {daysOfWeek.map((day) => (
-                    <th
-                      key={day}
-                      className="py-4 px-2 text-sm font-bold border-r border-white/10 last:border-0 w-[14.28%]"
-                    >
-                      {day}
+                    <th key={day} className="py-4 px-2 text-sm font-bold">
+                      {day.charAt(0).toUpperCase() + day.slice(1)}
                     </th>
                   ))}
                 </tr>
               </thead>
               <tbody>
-                <tr className="bg-gray-50 hover:bg-gray-100 transition-colors">
+                <tr className="bg-gray-50">
                   {daysOfWeek.map((day) => (
-                    <td
-                      key={day}
-                      className="py-6 px-2 text-sm font-semibold text-gray-700 border-r border-gray-200 last:border-0"
-                    >
-                      {doctor.jadwal[day] ? doctor.jadwal[day] : "-"}
+                    <td key={day} className="py-6 px-2 text-sm font-semibold">
+                      {doctor?.jadwal?.[day] || "-"}
                     </td>
                   ))}
                 </tr>

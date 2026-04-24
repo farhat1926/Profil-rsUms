@@ -57,6 +57,42 @@ const getAllJadwal = (req, res) => {
     res.json(result);
   });
 };
+const getDetailDokter = (req, res) => {
+  const id = req.params.id;
+
+  const sql = `
+    SELECT d.id, d.nama_dokter, d.spesialis, d.deskripsi, d.image, j.hari, j.jam
+    FROM dokter d
+    LEFT JOIN jadwal_dokter j ON d.id = j.dokter_id
+    WHERE d.id = ?
+  `;
+
+  db.query(sql, [id], (err, result) => {
+    if (err) return res.status(500).send(err);
+
+    if (result.length === 0) {
+      return res.status(404).json({ message: "Dokter tidak ditemukan" });
+    }
+
+    // Format data biar rapi (gabung jadwal)
+    const dokter = {
+      id: result[0].id,
+      nama: result[0].nama_dokter,
+      spesialis: result[0].spesialis,
+      deskripsi: result[0].deskripsi,
+      image: result[0].image,
+      jadwal: {},
+    };
+
+    result.forEach((item) => {
+      if (item.hari && item.jam) {
+        dokter.jadwal[item.hari.toLowerCase()] = item.jam;
+      }
+    });
+
+    res.json(dokter);
+  });
+};
 
 const deleteJadwal = (req, res) => {
   const id = req.params.id;
@@ -103,4 +139,4 @@ const updateJadwal = (req, res) => {
   });
 };
 
-module.exports = { createJadwal, getAllJadwal, deleteJadwal, updateJadwal };
+module.exports = { createJadwal, getAllJadwal, deleteJadwal, updateJadwal, getDetailDokter };

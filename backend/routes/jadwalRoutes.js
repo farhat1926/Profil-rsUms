@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { getDetailDokter } = require("../controllers/jadwalController");
 const upload = require("../config/multer"); // Panggil multer
 const {
   createJadwal,
@@ -13,5 +14,6 @@ router.post("/", upload.single("image"), createJadwal);
 router.get("/", getAllJadwal);
 router.delete("/:id", deleteJadwal);
 router.put("/:id", upload.single("image"), updateJadwal);
+router.get("/:id", getDetailDokter);
 
 module.exports = router;

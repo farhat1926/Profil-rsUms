@@ -18,31 +18,48 @@ export default function DetailPromo() {
   }
 
   return (
-    <section className="p-10 min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto">
+    <section className="min-h-screen bg-white pt-10 pb-20 px-4 md:px-6">
+  <div className="max-w-6xl mx-auto">
+
+    {/* JUDUL */}
+    <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 leading-tight">
+      {promo.title}
+    </h1>
+
+    {/* META */}
+    <p className="text-sm text-gray-400 mb-6">
+      Dipublikasikan oleh RS UMS A.R. Fachrudin
+    </p>
+
+    {/* GARIS */}
+    <div className="w-16 h-[3px] bg-green-600 mb-8"></div>
+
+    {/* FLEX UTAMA */}
+    <div className="flex flex-col md:flex-row gap-10 items-start">
+
+      {/* KIRI - GAMBAR PORTRAIT */}
+      <div className="w-full md:w-[320px] shrink-0">
         <img
-          src={`http://localhost:3001${promo.image}`}
+          src={
+            promo.image
+              ? `${API_URL}${promo.image}`
+              : "/images/banner-web.png"
+          }
           alt={promo.title}
-          className="w-full h-[600px] object-cover rounded-2xl"
+          className="w-full h-[420px] object-cover object-top rounded-md"
         />
-
-        <h1 className="text-4xl font-bold mt-6">
-          {promo.title}
-        </h1>
-
-        <p className="mt-4 text-gray-700 leading-8">
-          {promo.description}
-        </p>
-
-        <a
-          href={promo.link}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-block mt-6 text-green-600 font-semibold hover:underline"
-        >
-          Kunjungi Promo →
-        </a>
       </div>
-    </section>
+
+      {/* KANAN - DESKRIPSI */}
+      <div className="flex-1">
+        <div className="text-gray-700 leading-8 text-[15px] md:text-base whitespace-pre-line
+                        md:w-[calc(100vw-380px)] md:-mr-[calc((100vw-100%)/2)]">
+          {promo.detail_description}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
   );
 }   
