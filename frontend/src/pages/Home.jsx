@@ -67,36 +67,36 @@ const fasilitas = [
   {
     title: "IGD",
     desc: "Fasilitas pelayanan darurat 24 jam untuk menangani kondisi kritis dan kebutuhan medis mendesak.",
-    img: "/igd.JPG",
+    img: "/igd.webp",
   },
   {
     title: "Instalasi Rawat Inap",
     desc: "Ruang perawatan dengan berbagai kelas yang nyaman, higienis, dan dilengkapi fasilitas pendukung pasien.",
-    img: "/rawat_Inap.JPG",
+    img: "/rawat_Inap.webp",
   },
   {
     title: "Instalasi Bedah / Kamar Operasi",
     desc: "Ruang operasi modern dengan peralatan medis steril dan teknologi canggih untuk tindakan pembedahan.",
-    img: "/igd.jpg",
+    img: "/ruang_operasi.webp",
   },
   {
     title: "Instalasi Radiologi & Diagnostik",
     desc: "Layanan pemeriksaan seperti X-ray dan USG untuk diagnosa yang akurat dan cepat.",
-    img: "/radiologi.JPG",
+    img: "/radiologi.webp",
   },
   {
     title: "Laboratorium Klinik",
     desc: "Fasilitas pemeriksaan darah, urin, dan berbagai tes medis untuk mendukung diagnosis dan pengobatan.",
-    img: "/lab.JPG",
+    img: "/lab.webp",
   },
   {
     title: "Apotek Rumah Sakit",
     desc: "Pelayanan farmasi lengkap untuk memenuhi kebutuhan obat pasien sesuai resep dokter.",
-    img: "/farmasi.JPG",
+    img: "/farmasi.webp",
   },
 ];
 
-const heroImages = ["/slider.png", "/Slider2.png"];
+const heroImages = ["/slider.webp", "/Slider2.webp"];
 
 const Home = () => {
   const [currentHero, setCurrentHero] = useState(0);
@@ -155,7 +155,7 @@ const Home = () => {
       {/* Hero + Profil Overlay */}
       <section id="profil" className="w-full bg-white pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[450px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
+          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
             <div
               className="flex h-full transition-transform duration-1500 ease-in-out"
               style={{
@@ -168,7 +168,7 @@ const Home = () => {
                   key={index}
                   src={image}
                   alt={`hero-${index}`}
-                  className="w-full h-full object-cover flex-shrink-0"
+                  className="w-full h-full object-contain flex-shrink-0"
                   style={{ width: `${100 / heroImages.length}%` }}
                   loading={index === 0 ? "eager" : "lazy"}
                 />
@@ -391,6 +391,7 @@ const Home = () => {
               </p>
             </div>
           </div>
+            
 
           {/* Grid Embed Instagram */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -404,15 +405,16 @@ const Home = () => {
             ))}
           </div>
 
+        </div>
           <a
-            href="https://instagram.com/rs.ums"
+            href="https://www.instagram.com/rsumsarfachrudin/"
             target="_blank"
             rel="noopener noreferrer"
-            className="md:hidden mt-8 block text-center text-sm bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-md"
+            className="mt-8 block w-fit mx-auto text-sm bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-md"
           >
             Kunjungi Instagram
           </a>
-        </div>
+        
       </section>
 
       {/* Lokasi Rumah Sakit */}

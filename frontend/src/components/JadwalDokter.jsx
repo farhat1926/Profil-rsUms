@@ -136,7 +136,7 @@ useEffect(() => {
                       ))}
                     </div>
 
-                    <div className="flex gap-2 mt-4">
+                    {/* <div className="flex gap-2 mt-4">
                       <button
                         onClick={() => handleUpdate(doc)}
                         className="px-4 py-2 bg-blue-600 text-white rounded-lg"
@@ -150,7 +150,7 @@ useEffect(() => {
                       >
                         Delete
                       </button>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               ))}

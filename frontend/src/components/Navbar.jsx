@@ -42,11 +42,11 @@ function Navbar() {
   return (
     <header className="w-full sticky top-0 z-50 drop-shadow-sm">
       {/* HEADER PUTIH (LOGO & KONTAK) */}
-      {/* <div
+      <div
         className={`transition-all duration-500 ease-in-out overflow-hidden ${
           isVisible ? "max-h-[150px] opacity-100" : "max-h-0 opacity-0"
         }`}
-      ></div> */}
+      >
       <div className="bg-gradient-to-r from-green-50 via-white to-blue-50 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           {/* LOGO */}
@@ -78,11 +78,12 @@ function Navbar() {
           <button
             className="lg:hidden text-gray-700"
             onClick={() => setOpen(!open)}
-          >
+            >
             {open ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
       </div>
+            </div>
 
       {/* NAVBAR HIJAU (STICKY AT TOP-0 KETIKA HEADER PUTIH COLLAPSE) */}
       <nav

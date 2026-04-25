@@ -12,7 +12,21 @@ export default function MeetDoctor() {
   const [openJadwal, setOpenJadwal] = useState(null);
   const [visibleCount, setVisibleCount] = useState(4);
   const [doctorList, setDoctorList] = useState([]);
+  const [search, setSearch] = useState("");
   const API_URL = import.meta.env.VITE_API_URL;
+
+  const filteredDoctors = doctorList.filter((doctor) =>
+  doctor.nama.toLowerCase().includes(search.toLowerCase()) ||
+  doctor.spesialis.toLowerCase().includes(search.toLowerCase())
+);
+useEffect(() => {
+  setVisibleCount(4);
+}, [search]);
+{filteredDoctors.length === 0 && (
+  <p className="text-center text-gray-500 mt-10">
+    Dokter tidak ditemukan
+  </p>
+)}
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + 4);
@@ -66,8 +80,30 @@ export default function MeetDoctor() {
 
       {/* ================= MAIN CONTENT: GRID DOKTER ================= */}
       <section className="max-w-[1440px] mx-auto px-4 md:px-6 py-12 md:py-20">
+        <div className="mb-8 flex justify-center">
+          <input
+            type="text"
+            placeholder="Cari nama dokter atau spesialis..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full md:w-[400px] px-5 py-3 border border-gray-300 rounded-full shadow-sm focus:outline-none focus:ring-2 focus:ring-green-500"
+          />
+        </div>
         <div className="grid md:grid-cols-2 gap-6">
-          {doctorList.slice(0, visibleCount).map((doctor, index) => (
+          {filteredDoctors.length === 0 ? (
+            <p className="col-span-2 text-center text-gray-500 mt-10">
+              Dokter tidak ditemukan
+            </p>
+          ) : (
+            filteredDoctors.slice(0, visibleCount).map((doctor, index) => (
+              <div key={doctor.id}>
+                {/* isi card dokter kamu */}
+              </div>
+            ))
+          )}
+        </div>
+        <div className="grid md:grid-cols-2 gap-6">
+          {filteredDoctors.slice(0, visibleCount).map((doctor, index) => (
             <div
               key={doctor.id}
               className="bg-white rounded-3xl shadow-sm border border-gray-100 hover:shadow-lg transition-shadow duration-300 p-5 flex flex-col"

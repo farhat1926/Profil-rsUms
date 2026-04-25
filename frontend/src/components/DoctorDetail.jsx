@@ -71,7 +71,7 @@ export default function DoctorDetail() {
       </section>
 
       {/* KONTEN UTAMA */}
-      <div className="max-w-6xl mx-auto px-4 md:px-8 -mt-12 md:-mt-16 relative z-20">
+      <div className="max-w-6xl mx-auto px-4 md:px-8 -mt-12 md:-mt-16 relative z-10">
         {/* Tombol Kembali */}
         <Link
           to="/meet-doctor"

@@ -8,7 +8,7 @@ import "swiper/css/pagination";
 export default function PromoPopup() {
   const [show, setShow] = useState(false);
 
-  const promos = ["/jantung.jpeg", "/MCU.jpeg", "/Persalinan.jpeg"];
+  const promos = ["/jantung.webp", "/MCU.webp", "/Persalinan.webp"];
 
   useEffect(() => {
     const hasSeenPopup = sessionStorage.getItem("hasSeenPromo");

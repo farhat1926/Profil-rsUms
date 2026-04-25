@@ -1,25 +1,6 @@
 import React, { useState } from "react";
 import { Phone, MessageCircle, ChevronDown, X } from "lucide-react";
 
-// const doctors = [
-//   {
-//     name: "dr. chaewon",
-//     specialty: "Spesialis THT",
-//     image: "/dokter.png",
-//     description:
-//       "Dokter spesialis THT berpengalaman lebih dari 10 tahun dalam menangani gangguan telinga, hidung, dan tenggorokan.",
-//     schedule: "Senin - Jumat, 08:00 - 15:00",
-//   },
-//   {
-//     name: "dr. chaewon",
-//     specialty: "Spesialis THT",
-//     image: "/dokter.png",
-//     description:
-//       "Ahli dalam konsultasi dan tindakan medis THT modern.",
-//     schedule: "Senin - Sabtu, 09:00 - 14:00",
-//   },
-// ];
-
 function DoctorPage() {
   const [selectedDoctor, setSelectedDoctor] = useState(null);
   const API_URL = import.meta.env.VITE_API_URL;
