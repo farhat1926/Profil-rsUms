@@ -8,12 +8,16 @@ export default function AdminLogin() {
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
+  // Memanggil URL API dari file .env Vite
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setErrorMsg("");
 
     try {
-      const response = await fetch("http://localhost:3001/admin/login", {
+      // Menggunakan API_URL secara dinamis
+      const response = await fetch(`${API_URL}/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -21,14 +25,16 @@ export default function AdminLogin() {
 
       const data = await response.json();
 
-      if (data.success) {
+      // Mengecek apakah respons dari backend berstatus sukses (HTTP 200-299)
+      if (response.ok) {
         localStorage.setItem("adminToken", data.token);
         navigate("/admin/dashboard");
       } else {
-        setErrorMsg(data.message);
+        // Menampilkan pesan error dari backend jika ada, atau pesan bawaan
+        setErrorMsg(data.message || "Login gagal, periksa kembali data Anda.");
       }
     } catch (err) {
-      setErrorMsg("Koneksi ke server gagal.");
+      setErrorMsg("Koneksi ke server gagal. Pastikan server menyala.");
     }
   };
 
