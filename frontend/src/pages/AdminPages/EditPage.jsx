@@ -10,6 +10,8 @@ export default function EditPage() {
     { hari: "", mulai: "", selesai: "" },
   ]);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const tambahJadwal = () => {
     setJadwalList([...jadwalList, { hari: "", mulai: "", selesai: "" }]);
   };
@@ -35,7 +37,7 @@ export default function EditPage() {
     formData.append("jadwal", JSON.stringify(jadwalList));
 
     try {
-      const res = await fetch("http://localhost:3001/jadwal", {
+      const res = await fetch(`${API_URL}/jadwal`, {
         method: "POST",
         body: formData,
       });

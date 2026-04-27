@@ -12,6 +12,8 @@ export default function InputInformasi() {
   });
   const [image, setImage] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === "image") {
@@ -28,7 +30,7 @@ export default function InputInformasi() {
     if (image) formData.append("image", image);
 
     try {
-      const res = await fetch("http://localhost:3001/informasi", {
+      const res = await fetch(`${API_URL}/informasi`, {
         method: "POST",
         body: formData,
       });

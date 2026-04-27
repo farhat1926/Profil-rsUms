@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
 
 -- Insert default admin (Jika belum ada)
 INSERT INTO `admins` (`username`, `password`) 
-SELECT 'admin', 'admin123' 
+SELECT 'admin', '@dminrsums_26' 
 WHERE NOT EXISTS (SELECT * FROM `admins` WHERE `username` = 'admin');
 
 -- 2. Tabel Dokter

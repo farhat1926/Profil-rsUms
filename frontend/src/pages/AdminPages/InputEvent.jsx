@@ -10,6 +10,8 @@ export default function InputEvent() {
   });
   const [image, setImage] = useState(null);
 
+  const API_URL = import.meta.env.VITE_API_URL;
+
   const handleChange = (e) => {
     if (e.target.name === "image") {
       setImage(e.target.files[0]);
@@ -28,7 +30,7 @@ export default function InputEvent() {
     if (image) formData.append("image", image);
 
     try {
-      const response = await fetch("http://localhost:3001/event", {
+      const response = await fetch(`${API_URL}/event`, {
         method: "POST",
         body: formData,
       });

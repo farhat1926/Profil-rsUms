@@ -25,6 +25,16 @@ const InformasiPage = () => {
       ? articles
       : articles.filter((item) => item.category === selectedCategory);
 
+  // Fungsi untuk memformat tanggal ke format Indonesia
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "";
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 pb-12">
       {/* ================= HERO HEADER SECTION ================= */}
@@ -32,7 +42,6 @@ const InformasiPage = () => {
         <img
           src="/images/banner-web.png"
           alt="Banner Informasi"
-          // HANYA MENGGUNAKAN object-cover TANPA object-top
           className="absolute inset-0 w-full h-full object-cover z-10 mix-blend-multiply opacity-20"
         />
         <div className="relative z-10">
@@ -86,7 +95,8 @@ const InformasiPage = () => {
                   {article.summary}
                 </p>
                 <p className="text-sm text-gray-400 mt-4 flex items-center gap-2">
-                  <span>{article.author}</span> • <span>{article.date}</span>
+                  <span>{article.author}</span> •{" "}
+                  <span>{formatTanggal(article.date)}</span>
                 </p>
               </div>
             </Link>

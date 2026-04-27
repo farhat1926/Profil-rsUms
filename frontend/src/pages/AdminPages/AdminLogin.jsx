@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ShieldAlert } from "lucide-react";
+import { ShieldAlert, Eye, EyeOff } from "lucide-react"; 
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
 
-  // Memanggil URL API dari file .env Vite
   const API_URL = import.meta.env.VITE_API_URL;
 
   const handleLogin = async (e) => {
@@ -16,7 +16,6 @@ export default function AdminLogin() {
     setErrorMsg("");
 
     try {
-      // Menggunakan API_URL secara dinamis
       const response = await fetch(`${API_URL}/admin/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -25,12 +24,10 @@ export default function AdminLogin() {
 
       const data = await response.json();
 
-      // Mengecek apakah respons dari backend berstatus sukses (HTTP 200-299)
       if (response.ok) {
         localStorage.setItem("adminToken", data.token);
         navigate("/admin/dashboard");
       } else {
-        // Menampilkan pesan error dari backend jika ada, atau pesan bawaan
         setErrorMsg(data.message || "Login gagal, periksa kembali data Anda.");
       }
     } catch (err) {
@@ -74,14 +71,23 @@ export default function AdminLogin() {
             <label className="block text-sm font-medium text-gray-700 mb-1">
               Password
             </label>
-            <input
-              type="password"
-              required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-            />
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"} 
+                required
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 outline-none transition pr-11"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••"
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-green-600 transition"
+              >
+                {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+              </button>
+            </div>
           </div>
 
           <button

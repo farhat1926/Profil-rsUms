@@ -19,7 +19,6 @@ import DokterPage from "./pages/DokterPage";
 import InformasiPage from "./pages/Informasipage";
 import ArticleDetail from "./pages/ArticleDetail";
 import PromoPage from "./pages/PromoPage";
-import Register from "./components/register";
 
 // Komponen Detail & Fitur Tambahan
 import MeetDoctor from "./components/MeetDoctor";
@@ -31,7 +30,6 @@ import DetailPromo from "./components/DetailPromo";
 // Halaman Admin
 import AdminLogin from "./pages/AdminPages/AdminLogin";
 import DashboardAdmin from "./pages/AdminPages/DashboardAdmin";
-import UpdateJadwal from "./components/UpdateJadwal"; // Tetap dipertahankan jika masih digunakan terpisah
 
 // =======================================================
 // KOMPONEN PROTEKSI RUTE ADMIN
@@ -50,7 +48,7 @@ function AppContent() {
 
   // Sembunyikan Navbar, Footer, dll jika di halaman login/register atau di dalam area admin
   const hideLayout =
-    ["/login", "/register"].includes(location.pathname) ||
+    ["/login"].includes(location.pathname) ||
     location.pathname.startsWith("/admin");
 
   return (
@@ -73,7 +71,6 @@ function AppContent() {
           <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/promo" element={<PromoPage />} />
           <Route path="/promo/:id" element={<DetailPromo />} />
-          <Route path="/register" element={<Register />} />
 
           {/* ================= RUTE ADMIN PANEL ================= */}
           {/* Halaman Login Admin */}
@@ -85,16 +82,6 @@ function AppContent() {
             element={
               <ProtectedAdminRoute>
                 <DashboardAdmin />
-              </ProtectedAdminRoute>
-            }
-          />
-
-          {/* Halaman Update Jadwal (Tetap ada jika Anda menggunakannya untuk mode Edit) */}
-          <Route
-            path="/admin/update-jadwal"
-            element={
-              <ProtectedAdminRoute>
-                <UpdateJadwal />
               </ProtectedAdminRoute>
             }
           />

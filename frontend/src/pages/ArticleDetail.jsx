@@ -21,12 +21,18 @@ const ArticleDetail = () => {
   }, [id]);
 
   if (!article) {
-    return (
-      <div className="p-10 text-center">
-        Memuat artikel...
-      </div>
-    );
+    return <div className="p-10 text-center">Memuat artikel...</div>;
   }
+
+  // Fungsi untuk memformat tanggal ke format Indonesia
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "";
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
 
   return (
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
@@ -42,12 +48,10 @@ const ArticleDetail = () => {
         </h1>
 
         <p className="text-sm text-gray-500 mt-2">
-          {article.author} • {article.date}
+          {article.author} • {formatTanggal(article.date)}
         </p>
 
-        <p className="text-gray-600 mt-4 text-lg">
-          {article.summary}
-        </p>
+        <p className="text-gray-600 mt-4 text-lg">{article.summary}</p>
 
         <div className="mt-6 text-gray-700 leading-8 text-lg whitespace-pre-line">
           {article.content}
