@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import {link} from "react-router-dom";  
 
 const EventDetail = () => {
   const { id } = useParams();
@@ -27,7 +28,14 @@ const EventDetail = () => {
   }
 
   return (
+
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
+      <button
+          onClick={() => navigate("/promo")}
+          className="mb-4 text-green-600 hover:underline"
+        >
+          ← Kembali ke Promo
+        </button>
       <div className="max-w-5xl mx-auto">
         <img
           src={`${API_URL}${event.image}`}
