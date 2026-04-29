@@ -74,7 +74,14 @@ function AppContent() {
 
           {/* ================= RUTE ADMIN PANEL ================= */}
           {/* Halaman Login Admin */}
-          <Route path="/admin" element={<AdminLogin />} />
+          <Route
+  path="/admin"
+  element={
+    <PublicAdminRoute>
+      <AdminLogin />
+    </PublicAdminRoute>
+  }
+/>
 
           {/* Halaman Utama Dashboard (Sekarang menampung semua fitur Manage & Input) */}
           <Route

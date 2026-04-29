@@ -57,7 +57,7 @@ export default function DashboardAdmin() {
   // Proteksi Route
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    if (!token) navigate("/admin");
+    if (!token) navigate("/admin", { replace: true });
   }, [navigate]);
 
   // Fetch Summary Data secara Real-time
@@ -96,7 +96,7 @@ export default function DashboardAdmin() {
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
-    navigate("/admin");
+    navigate("/admin", { replace: true });
   };
 
   // Tutup sidebar jika menu diklik (khusus di mobile)
