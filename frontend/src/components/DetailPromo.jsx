@@ -25,7 +25,7 @@ export default function DetailPromo() {
         {/* BACK BUTTON */}
         <button
           onClick={() => navigate("/promo")}
-          className="mb-4 text-green-600 hover:underline"
+          className="mb-4 text-green-600 hover:underline cursor-pointer"
         >
           ← Kembali ke Promo
         </button>

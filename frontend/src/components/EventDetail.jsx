@@ -31,10 +31,10 @@ const EventDetail = () => {
 
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
       <button
-          onClick={() => navigate("/informasi")}
-          className="mb-4 text-green-600 hover:underline"
+          onClick={() => navigate("/")}
+          className="mb-4 text-green-600 hover:underline cursor-pointer"
         >
-          ← Kembali ke Informasi
+          ← Kembali ke halaman utama
         </button>
       <div className="max-w-5xl mx-auto">
         <img
@@ -51,9 +51,14 @@ const EventDetail = () => {
           {event.short_desc}
         </p>
 
-        <div className="mt-6 text-gray-700 leading-8 text-lg">
-          {event.full_desc}
-        </div>
+        <div className="mt-6 text-gray-700 leading-8 text-lg space-y-4">
+  {event.full_desc
+    ?.split("\n")
+    .filter((p) => p.trim() !== "")
+    .map((paragraph, index) => (
+      <p key={index}>{paragraph}</p>
+    ))}
+</div>
 
         <p className="mt-6 text-sm text-gray-400">
           Tanggal Event: {event.event_date}
