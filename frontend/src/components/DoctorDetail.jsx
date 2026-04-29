@@ -83,14 +83,19 @@ export default function DoctorDetail() {
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-start">
           {/* FOTO DOKTER (Menembus Header) */}
           <div className="w-56 h-72 md:w-[280px] md:h-[380px] shrink-0 bg-white p-2.5 rounded-2xl shadow-xl border border-gray-100 -mt-12 md:-mt-20">
-            <img
-  src={`${API_URL}${doctor.image}`}
-  alt={doctor.nama}
-  className="w-full h-full object-cover object-top rounded-xl bg-gray-100"
-  onError={(e) => {
-    e.target.src = "/images/logo square.png";
-  }}
-/>
+           <img
+              src={
+                doctor.image
+                  ? `${API_URL}${doctor.image}`
+                  : "/images/default.jpg"
+              }
+              alt={doctor.nama}
+              className="w-full h-full object-cover object-top rounded-xl bg-gray-100"
+              onError={(e) => {
+                e.target.onerror = null; // biar tidak loop
+                e.target.src = "/default.png";
+              }}
+            />
           </div>
 
           {/* INFORMASI DOKTER */}
