@@ -26,7 +26,8 @@ export default function AdminLogin() {
 
       if (response.ok) {
         localStorage.setItem("adminToken", data.token);
-        navigate("/admin/dashboard", { replace: true });
+        // 🔥 GANTI INI
+        window.location.href = "/admin/dashboard";
       } else {
         setErrorMsg(data.message || "Login gagal, periksa kembali data Anda.");
       }

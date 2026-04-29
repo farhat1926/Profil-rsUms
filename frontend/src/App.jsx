@@ -45,8 +45,9 @@ const ProtectedAdminRoute = ({ children }) => {
 
 function AppContent() {
   const location = useLocation();
-   const token = localStorage.getItem("adminToken");
+  const token = localStorage.getItem("adminToken");
 
+  // kuncinavigasi ke dashboard jika sudah login dan mencoba akses halaman login lagi
   if (token && !location.pathname.startsWith("/admin")) {
     return <Navigate to="/admin/dashboard" replace />;
   }
