@@ -57,24 +57,11 @@ export default function DashboardAdmin() {
   // Proteksi Route
   useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    if (!token) navigate("/admin", { replace: true });
+    if (!token) navigate("/admin");
   }, [navigate]);
 
   // Fetch Summary Data secara Real-time
   useEffect(() => {
-    const handleBack = () => {
-    window.history.pushState(null, "", window.location.href);
-  };
-
-  // push state pertama
-  window.history.pushState(null, "", window.location.href);
-
-  // deteksi tombol back
-  window.addEventListener("popstate", handleBack);
-
-  return () => {
-    window.removeEventListener("popstate", handleBack);
-  };
     if (activeMenu === "dashboard") {
       const fetchStats = async () => {
         try {
@@ -106,6 +93,21 @@ export default function DashboardAdmin() {
       fetchStats();
     }
   }, [activeMenu, API_URL]);
+  useEffect(() => {
+  const preventBack = () => {
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  // push state awal
+  window.history.pushState(null, "", window.location.href);
+
+  // setiap klik tombol back
+  window.addEventListener("popstate", preventBack);
+
+  return () => {
+    window.removeEventListener("popstate", preventBack);
+  };
+}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
