@@ -30,12 +30,12 @@ const EventDetail = () => {
   return (
 
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
-      <button
-          onClick={() => navigate("/")}
-          className="mb-4 text-green-600 hover:underline cursor-pointer"
-        >
-          ← Kembali ke halaman utama
-        </button>
+     <Link 
+  to="/" 
+  className="mb-4 text-green-600 hover:underline cursor-pointer"
+>
+  ← Kembali ke halaman utama
+</Link>
       <div className="max-w-5xl mx-auto">
         <img
           src={`${API_URL}${event.image}`}
@@ -51,13 +51,8 @@ const EventDetail = () => {
           {event.short_desc}
         </p>
 
-        <div className="mt-6 text-gray-700 leading-8 text-lg space-y-4">
-  {event.full_desc
-    ?.split("\n")
-    .filter((p) => p.trim() !== "")
-    .map((paragraph, index) => (
-      <p key={index}>{paragraph}</p>
-    ))}
+        <div className="mt-6 text-gray-700 leading-8 text-lg whitespace-pre-line">
+  {event.full_desc}
 </div>
 
         <p className="mt-6 text-sm text-gray-400">

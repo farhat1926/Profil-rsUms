@@ -23,12 +23,12 @@ export default function DetailPromo() {
       <div className="max-w-6xl mx-auto">
 
         {/* BACK BUTTON */}
-        <button
-          onClick={() => navigate("/promo")}
+        <Link
+          to="/promo"
           className="mb-4 text-green-600 hover:underline cursor-pointer"
         >
           ← Kembali ke Promo
-        </button>
+        </Link>
 
         {/* JUDUL */}
         <h1 className="text-2xl md:text-4xl font-extrabold text-gray-800 mb-4 leading-tight">
