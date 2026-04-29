@@ -26,7 +26,7 @@ export default function AdminLogin() {
 
       if (response.ok) {
         localStorage.setItem("adminToken", data.token);
-        navigate("/admin/dashboard");
+        navigate("/admin/dashboard", { replace: true });
       } else {
         setErrorMsg(data.message || "Login gagal, periksa kembali data Anda.");
       }
