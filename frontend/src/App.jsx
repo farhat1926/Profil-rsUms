@@ -45,6 +45,11 @@ const ProtectedAdminRoute = ({ children }) => {
 
 function AppContent() {
   const location = useLocation();
+   const token = localStorage.getItem("adminToken");
+
+  if (token && !location.pathname.startsWith("/admin")) {
+    return <Navigate to="/admin/dashboard" replace />;
+  }
 
   // Sembunyikan Navbar, Footer, dll jika di halaman login/register atau di dalam area admin
   const hideLayout =
