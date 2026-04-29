@@ -93,25 +93,10 @@ export default function DashboardAdmin() {
       fetchStats();
     }
   }, [activeMenu, API_URL]);
-  useEffect(() => {
-  const preventBack = () => {
-    window.history.pushState(null, "", window.location.href);
-  };
-
-  // push state awal
-  window.history.pushState(null, "", window.location.href);
-
-  // setiap klik tombol back
-  window.addEventListener("popstate", preventBack);
-
-  return () => {
-    window.removeEventListener("popstate", preventBack);
-  };
-}, []);
 
   const handleLogout = () => {
     localStorage.removeItem("adminToken");
-    navigate("/admin", { replace: true });
+    navigate("/admin");
   };
 
   // Tutup sidebar jika menu diklik (khusus di mobile)
