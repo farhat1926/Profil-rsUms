@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ShieldAlert, Eye, EyeOff } from "lucide-react"; 
+import { useEffect } from "react";
+
+useEffect(() => {
+  const token = localStorage.getItem("adminToken");
+  if (token) {
+    navigate("/admin/dashboard", { replace: true });
+  }
+}, []);
 
 export default function AdminLogin() {
   const [username, setUsername] = useState("");

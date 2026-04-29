@@ -62,6 +62,19 @@ export default function DashboardAdmin() {
 
   // Fetch Summary Data secara Real-time
   useEffect(() => {
+    const handleBack = () => {
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  // push state pertama
+  window.history.pushState(null, "", window.location.href);
+
+  // deteksi tombol back
+  window.addEventListener("popstate", handleBack);
+
+  return () => {
+    window.removeEventListener("popstate", handleBack);
+  };
     if (activeMenu === "dashboard") {
       const fetchStats = async () => {
         try {
