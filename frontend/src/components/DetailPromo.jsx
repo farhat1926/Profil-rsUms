@@ -52,9 +52,10 @@ export default function DetailPromo() {
 
       {/* KANAN - DESKRIPSI */}
       <div className="flex-1">
-        <div className="text-gray-700 leading-8 text-[15px] md:text-base whitespace-pre-line
-                        md:w-[calc(100vw-380px)] md:-mr-[calc((100vw-100%)/2)]">
-          {promo.detail_description}
+        <div className="flex-1">
+          <div className="text-gray-700 leading-8 text-[15px] md:text-base whitespace-pre-line break-words">
+            {promo.detail_description}
+          </div>
         </div>
       </div>
 
