@@ -446,7 +446,7 @@ const Home = () => {
                   Surakarta
                 </li>
                 <li className="flex items-center gap-3">
-                  <span className="text-2xl">📞</span> 0888 0888 0880
+                  <span className="text-2xl">📞</span> 0851-2997-2996
                 </li>
                 <li className="flex items-center gap-3">
                   <span className="text-2xl">🕒</span> Buka 24 Jam

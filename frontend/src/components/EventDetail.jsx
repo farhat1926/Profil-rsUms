@@ -31,10 +31,10 @@ const EventDetail = () => {
 
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
       <button
-          onClick={() => navigate("/promo")}
+          onClick={() => navigate("/informasi")}
           className="mb-4 text-green-600 hover:underline"
         >
-          ← Kembali ke Promo
+          ← Kembali ke Informasi
         </button>
       <div className="max-w-5xl mx-auto">
         <img
