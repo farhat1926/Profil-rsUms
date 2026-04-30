@@ -114,18 +114,10 @@ useEffect(() => {
                 <div className="w-[120px] md:w-[150px] shrink-0">
                   <Link to={`/doctor/${doctor.id}`}>
                     <img
-  src={
-    doctor.image
-      ? `${API_URL}${doctor.image}`
-      : "/images/default.png"
-  }
-  alt={doctor.nama}
-  className="w-full aspect-[3/4] object-cover object-top rounded-2xl bg-gray-200 border border-gray-100"
-  onError={(e) => {
-    e.target.onerror = null;
-    e.target.src = "/images/default.png";
-  }}
-/>
+                      src={`${API_URL}${doctor.image}`}
+                      alt={doctor.nama}
+                      className="w-full aspect-[3/4] object-cover object-top rounded-2xl bg-gray-200 border border-gray-100"
+                    />
                   </Link>
                 </div>
 

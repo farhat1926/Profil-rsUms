@@ -93,11 +93,26 @@ export default function DashboardAdmin() {
       fetchStats();
     }
   }, [activeMenu, API_URL]);
+  useEffect(() => {
+  // push state baru
+  window.history.pushState(null, "", window.location.href);
+
+  const handlePopState = () => {
+    // ketika user klik back → paksa tetap di dashboard
+    window.history.pushState(null, "", window.location.href);
+  };
+
+  window.addEventListener("popstate", handlePopState);
+
+  return () => {
+    window.removeEventListener("popstate", handlePopState);
+  };
+}, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("adminToken");
-    navigate("/admin");
-  };
+  localStorage.removeItem("adminToken");
+  navigate("/admin", { replace: true });
+};
 
   // Tutup sidebar jika menu diklik (khusus di mobile)
   const handleMenuClick = (menuId) => {
