@@ -55,10 +55,13 @@ export default function DashboardAdmin() {
   const API_URL = import.meta.env.VITE_API_URL;
 
   // Proteksi Route
-  useEffect(() => {
+    useEffect(() => {
     const token = localStorage.getItem("adminToken");
-    if (!token) navigate("/admin");
+    if (!token) {
+      navigate("/admin", { replace: true });
+    }
   }, [navigate]);
+  
 
   // Fetch Summary Data secara Real-time
   useEffect(() => {
@@ -94,12 +97,13 @@ export default function DashboardAdmin() {
     }
   }, [activeMenu, API_URL]);
   useEffect(() => {
-  // push state baru
+  // push beberapa state biar back gak tembus
+  window.history.pushState(null, "", window.location.href);
   window.history.pushState(null, "", window.location.href);
 
   const handlePopState = () => {
-    // ketika user klik back → paksa tetap di dashboard
-    window.history.pushState(null, "", window.location.href);
+    // setiap back ditekan → dorong lagi ke depan
+    window.history.go(1);
   };
 
   window.addEventListener("popstate", handlePopState);
