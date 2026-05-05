@@ -19,7 +19,8 @@ import DokterPage from "./pages/DokterPage";
 import InformasiPage from "./pages/Informasipage";
 import ArticleDetail from "./pages/ArticleDetail";
 import PromoPage from "./pages/PromoPage";
-import profil from "./pages/profil";
+import Profil from "./pages/profil";
+import StrukturOrganisasi from "./pages/struktur-organisasi";
 
 // Komponen Detail & Fitur Tambahan
 import MeetDoctor from "./components/MeetDoctor";
@@ -63,7 +64,8 @@ function AppContent() {
           {/* ================= RUTE PUBLIK ================= */}
           <Route path="/" element={<Home />} />
           <Route path="/fasilitas" element={<FasilitasPage />} />
-          <Route path="/profil" element={<profil />} />
+          <Route path="/profil" element={<Profil />} />
+          <Route path="/struktur-organisasi" element={<StrukturOrganisasi />} />
           <Route path="/meet-doctor" element={<MeetDoctor />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
           <Route path="/dokter" element={<DokterPage />} />

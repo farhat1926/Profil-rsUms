@@ -3,7 +3,7 @@
 import React from "react";
 import { Eye, Target, HeartHandshake } from "lucide-react";
 
-export default function profil() {
+export default function Profil() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* HERO */}
