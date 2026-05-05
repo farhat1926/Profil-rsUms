@@ -5,12 +5,14 @@ import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
   const [open, setOpen] = useState(false);
+
   const [doctorDropdown, setDoctorDropdown] = useState(false);
+  const [profileDropdown, setProfileDropdown] = useState(false);
+
   const location = useLocation();
 
   const [isVisible, setIsVisible] = useState(true);
 
-  // Perbaikan Jitter/Kedat Kedut dengan Hysteresis (Zona Aman)
   useEffect(() => {
     const handleScroll = () => {
       if (window.scrollY > 150) {
@@ -26,6 +28,7 @@ function Navbar() {
 
   const menuItems = [
     { name: "Beranda", path: "/" },
+    { name: "Profil", path: "/profil" },
     { name: "Fasilitas", path: "/fasilitas" },
     { name: "Dokter", path: "/dokter" },
     { name: "Informasi", path: "/informasi" },
@@ -34,7 +37,7 @@ function Navbar() {
 
   return (
     <header className="w-full sticky top-0 z-50 drop-shadow-sm">
-      {/* HEADER PUTIH (LOGO & KONTAK) */}
+      {/* HEADER PUTIH */}
       <div
         className={`transition-all duration-500 ease-in-out overflow-hidden ${
           isVisible ? "max-h-[150px] opacity-100" : "max-h-0 opacity-0"
@@ -69,7 +72,7 @@ function Navbar() {
               </div>
             </div>
 
-            {/* MOBILE MENU BUTTON */}
+            {/* MOBILE BUTTON */}
             <button
               className="lg:hidden text-gray-700"
               onClick={() => setOpen(!open)}
@@ -80,12 +83,13 @@ function Navbar() {
         </div>
       </div>
 
-      {/* NAVBAR HIJAU */}
+      {/* NAVBAR */}
       <nav
         className="text-white shadow-md relative z-50"
         style={{ backgroundImage: "radial-gradient(circle, #96d649, #8aba4d)" }}
       >
         <div className="max-w-7xl mx-auto px-6">
+
           {/* DESKTOP MENU */}
           <div className="hidden lg:flex items-center justify-center w-full gap-25 py-4 font-bold">
             {menuItems.map((item) =>
@@ -99,10 +103,10 @@ function Navbar() {
                   </button>
 
                   {doctorDropdown && (
-                    <div className="absolute top-full left-0 mt-2 w-52 bg-white text-black rounded-lg shadow-xl border border-gray-100 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
+                    <div className="absolute top-full left-0 mt-2 w-52 bg-white text-black rounded-lg shadow-xl border border-gray-100 overflow-hidden">
                       <Link
                         to="/meet-doctor"
-                        className="block px-5 py-3 hover:bg-green-50 hover:text-green-600 font-medium transition-colors border-b border-gray-50"
+                        className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
                         onClick={() => setDoctorDropdown(false)}
                       >
                         Profil Dokter
@@ -110,10 +114,39 @@ function Navbar() {
 
                       <Link
                         to="/JadwalDokter"
-                        className="block px-5 py-3 hover:bg-green-50 hover:text-green-600 font-medium transition-colors"
+                        className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
                         onClick={() => setDoctorDropdown(false)}
                       >
                         Jadwal Dokter
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              ) : item.name === "Profil" ? (
+                <div key={item.path} className="relative">
+                  <button
+                    onClick={() => setProfileDropdown(!profileDropdown)}
+                    className="hover:text-yellow-200 focus:outline-none transition-colors"
+                  >
+                    Profil ▼
+                  </button>
+
+                  {profileDropdown && (
+                    <div className="absolute top-full left-0 mt-2 w-56 bg-white text-black rounded-lg shadow-xl border border-gray-100 overflow-hidden">
+                      <Link
+                        to="/profil"
+                        className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
+                        onClick={() => setProfileDropdown(false)}
+                      >
+                        Visi & Misi
+                      </Link>
+
+                      <Link
+                        to="/struktur-organisasi"
+                        className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
+                        onClick={() => setProfileDropdown(false)}
+                      >
+                        Struktur Organisasi
                       </Link>
                     </div>
                   )}
@@ -130,27 +163,77 @@ function Navbar() {
                 >
                   {item.name}
                 </Link>
-              ),
+              )
             )}
           </div>
 
           {/* MOBILE MENU */}
           {open && (
-            <div className="lg:hidden flex flex-col py-4 gap-4 animate-in slide-in-from-top-4 duration-300">
+            <div className="lg:hidden flex flex-col py-4 gap-4">
+
               {menuItems.map((item) =>
-                item.name === "Dokter" ? (
+                item.name === "Profil" ? (
+                  <div
+                    key={item.path}
+                    className="border-b border-white/20 pb-3 font-medium flex flex-col"
+                  >
+                    <button
+                      onClick={() => setProfileDropdown(!profileDropdown)}
+                      className="flex justify-between items-center w-full"
+                    >
+                      Profil
+                      <ChevronRight
+                        size={18}
+                        className={`transition-transform ${
+                          profileDropdown ? "rotate-90" : ""
+                        }`}
+                      />
+                    </button>
+
+                    <div
+                      className={`flex flex-col gap-3 overflow-hidden transition-all duration-300 ${
+                        profileDropdown
+                          ? "max-h-52 mt-3 opacity-100"
+                          : "max-h-0 opacity-0"
+                      }`}
+                    >
+                      <Link
+                        to="/profil"
+                        className="pl-4 text-sm text-yellow-100 hover:text-white"
+                        onClick={() => {
+                          setOpen(false);
+                          setProfileDropdown(false);
+                        }}
+                      >
+                        Visi & Misi
+                      </Link>
+                      <Link
+                        to="/struktur-organisasi"
+                        className="pl-4 text-sm text-yellow-100 hover:text-white"
+                        onClick={() => {
+                          setOpen(false);
+                          setProfileDropdown(false);
+                        }}
+                      >
+                        Struktur Organisasi
+                      </Link>
+                    </div>
+                  </div>
+                ) : item.name === "Dokter" ? (
                   <div
                     key={item.path}
                     className="border-b border-white/20 pb-3 font-medium flex flex-col"
                   >
                     <button
                       onClick={() => setDoctorDropdown(!doctorDropdown)}
-                      className="flex justify-between items-center w-full focus:outline-none"
+                      className="flex justify-between items-center w-full"
                     >
-                      {item.name}
+                      Dokter
                       <ChevronRight
                         size={18}
-                        className={`opacity-70 transition-transform ${doctorDropdown ? "rotate-90" : ""}`}
+                        className={`transition-transform ${
+                          doctorDropdown ? "rotate-90" : ""
+                        }`}
                       />
                     </button>
 
@@ -163,7 +246,7 @@ function Navbar() {
                     >
                       <Link
                         to="/meet-doctor"
-                        className="pl-4 text-sm text-yellow-100 hover:text-white transition-colors"
+                        className="pl-4 text-sm text-yellow-100 hover:text-white"
                         onClick={() => {
                           setOpen(false);
                           setDoctorDropdown(false);
@@ -171,9 +254,10 @@ function Navbar() {
                       >
                         Profil Dokter
                       </Link>
+
                       <Link
                         to="/JadwalDokter"
-                        className="pl-4 text-sm text-yellow-100 hover:text-white transition-colors"
+                        className="pl-4 text-sm text-yellow-100 hover:text-white"
                         onClick={() => {
                           setOpen(false);
                           setDoctorDropdown(false);
@@ -193,7 +277,7 @@ function Navbar() {
                     {item.name}
                     <ChevronRight size={18} className="opacity-70" />
                   </Link>
-                ),
+                )
               )}
             </div>
           )}
