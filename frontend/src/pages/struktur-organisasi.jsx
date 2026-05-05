@@ -40,7 +40,7 @@ export default function StrukturOrganisasi() {
           <div className="p-4 md:p-10">
             <div className="overflow-auto rounded-2xl border border-gray-200">
               <img
-                src={"/images/struktur-organisasi.png"}
+                src={"/strukturImg.jpeg"}
                 alt="Struktur Organisasi"
                 className="w-full object-contain"
               />
