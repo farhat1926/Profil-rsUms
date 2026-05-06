@@ -1,11 +1,11 @@
 function RawatInap() {
-  return 
+  return(
   <section className="w-full py-16 overflow-hidden">
   <div className="max-w-7xl mx-auto px-6">
     <div className="grid lg:grid-cols-2 gap-12 items-center">
 
       {/* KIRI */}
-      <div className="text-white">
+      <div className="text-black">
         <span className="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-5 backdrop-blur-sm">
           Rawat Inap RS UMS A.R. Fachrudin
         </span>
@@ -36,7 +36,7 @@ function RawatInap() {
             >
               <div className="w-3 h-3 rounded-full bg-yellow-300"></div>
 
-              <p className="text-white font-medium">
+              <p className="text-black font-medium">
                 {item}
               </p>
             </div>
@@ -75,6 +75,6 @@ function RawatInap() {
     </div>
   </div>
 </section>
-}
+)}
 
 export default RawatInap;

@@ -9,7 +9,7 @@ return (
     <div className="grid lg:grid-cols-2 gap-12 items-center">
 
       {/* KIRI */}
-      <div className="text-white">
+      <div className="text-black">
         <span className="inline-block bg-white/20 px-4 py-2 rounded-full text-sm font-semibold mb-5 backdrop-blur-sm">
           Apotek RS UMS A.R. Fachrudin
         </span>
@@ -42,7 +42,7 @@ return (
             >
               <div className="w-3 h-3 rounded-full bg-yellow-300"></div>
 
-              <p className="text-white font-medium">
+              <p className="text-black font-medium">
                 {item}
               </p>
             </div>
