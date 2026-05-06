@@ -1,5 +1,5 @@
-function Laboratorium() {
-  return <div>Laboratorium</div>;
+function Radiologi() {
+  return <div>Radiologi</div>;
 }
 
-export default Laboratorium;
+export default Radiologi;

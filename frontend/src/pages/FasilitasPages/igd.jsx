@@ -1,5 +1,5 @@
-function Laboratorium() {
-  return <div>Laboratorium</div>;
+function IGD() {
+  return <div>IGD</div>;
 }
 
-export default Laboratorium;
+export default IGD;
