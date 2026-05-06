@@ -18,16 +18,22 @@ const Footer = () => {
           <h3 className="font-semibold mb-3">Menu</h3>
           <ul className="space-y-2 text-sm text-gray-200">
             <li>
-              <a href="#">Beranda</a>
+              <a href="/">Beranda</a>
             </li>
             <li>
-              <a href="#">Profil</a>
+              <a href="/profil">Profil</a>
             </li>
             <li>
-              <a href="#">Fasilitas</a>
+              <a href="/fasilitas">Fasilitas</a>
             </li>
             <li>
-              <a href="#">Dokter</a>
+              <a href="/dokter">Dokter</a>
+            </li>
+            <li>
+              <a href="/informasi">Informasi</a>
+            </li>
+            <li>
+              <a href="/promo">Promo</a>
             </li>
           </ul>
         </div>

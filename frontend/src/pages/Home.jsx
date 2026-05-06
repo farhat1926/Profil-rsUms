@@ -161,24 +161,14 @@ const Home = () => {
       <section id="profil" className="w-full bg-white pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
-            <div
-              className="flex h-full transition-transform duration-1500 ease-in-out"
-              style={{
-                width: `${heroImages.length * 100}%`,
-                transform: `translateX(-${currentHero * (100 / heroImages.length)}%)`,
-              }}
-            >
-              {heroImages.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={`hero-${index}`}
-                  className="w-full h-full object-contain  flex-shrink-0"
-                  style={{ width: `${100 / heroImages.length}%` }}
-                  loading={index === 0 ? "eager" : "lazy"}
-                />
-              ))}
-            </div>
+            <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
+  <img
+    src={heroImages[currentHero]}
+    alt={`hero-${currentHero}`}
+    className="w-full h-full object-cover"
+    loading="eager"
+  />
+</div>
             {/* Overlay */}
             <div className="absolute "></div>
           </div>
