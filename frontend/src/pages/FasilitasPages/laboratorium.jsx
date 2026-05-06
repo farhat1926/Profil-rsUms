@@ -1,6 +1,9 @@
 function Laboratorium() {
   return (
   <section className="w-full py-16 overflow-hidden">
+    <div className="absolute top-0 left-0 w-72 h-72 bg-green-300/20 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 right-0 w-96 h-96 bg-emerald-400/20 rounded-full blur-3xl"></div>
+      <div className="absolute top-1/2 left-1/2 w-80 h-80 bg-lime-200/20 rounded-full blur-3xl -translate-x-1/2 -translate-y-1/2"></div>
   <div className="max-w-7xl mx-auto px-6">
     <div className="grid lg:grid-cols-2 gap-12 items-center">
 
