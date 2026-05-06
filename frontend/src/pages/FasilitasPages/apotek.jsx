@@ -67,7 +67,7 @@ return (
             {/* CARD IMAGE */}
             <div className="relative bg-white/70 backdrop-blur-md border border-white/50 shadow-2xl rounded-[2rem] p-5">
               <img
-                src="/apotek.webp"
+                src="/farmasi.webp"
                 alt="Ruang Apotek"
                 className="relative z-10 w-full max-h-[520px] object-contain drop-shadow-2xl rounded-2xl"
               />
