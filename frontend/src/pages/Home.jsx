@@ -160,7 +160,7 @@ const Home = () => {
       {/* Hero + Profil Overlay */}
       <section id="profil" className="w-full scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
+          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden">
             <div
               className="flex h-full transition-transform duration-1500 ease-in-out"
               style={{
@@ -173,7 +173,7 @@ const Home = () => {
                   key={index}
                   src={image}
                   alt={`hero-${index}`}
-                  className="w-full h-full object-contain  flex-shrink-0"
+                  className="w-full h-full object-contain  "
                   style={{ width: `${100 / heroImages.length}%` }}
                   loading={index === 0 ? "eager" : "lazy"}
                 />
