@@ -1,6 +1,7 @@
 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+// Menambahkan import icon untuk mempercantik card dokter
 import { Eye, CalendarDays, ChevronDown, ChevronUp } from "lucide-react";
 
 const InstagramEmbed = React.memo(({ children }) => {
@@ -159,14 +160,28 @@ const Home = () => {
       {/* Hero + Profil Overlay */}
       <section id="profil" className="w-full bg-white pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="relative w-full h-[220px] sm:h-[320px] md:h-[420px] lg:h-[550px] rounded-3xl overflow-hidden shadow-lg border border-gray-100 bg-white">
-  <img
-    src={heroImages[currentHero]}
-    alt={`hero-${currentHero}`}
-    loading="eager"
-    className="w-full h-full object-contain"
-  />
-</div>
+          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
+            <div
+              className="flex h-full transition-transform duration-1500 ease-in-out"
+              style={{
+                width: `${heroImages.length * 100}%`,
+                transform: `translateX(-${currentHero * (100 / heroImages.length)}%)`,
+              }}
+            >
+              {heroImages.map((image, index) => (
+                <img
+                  key={index}
+                  src={image}
+                  alt={`hero-${index}`}
+                  className="w-full h-full object-contain  flex-shrink-0"
+                  style={{ width: `${100 / heroImages.length}%` }}
+                  loading={index === 0 ? "eager" : "lazy"}
+                />
+              ))}
+            </div>
+            {/* Overlay */}
+            <div className="absolute "></div>
+          </div>
         </div>
       </section>
 
