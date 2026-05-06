@@ -72,7 +72,7 @@ function Navbar() {
             <div className="hidden lg:flex items-center gap-5 text-sm">
 
               {/* NOMOR UTAMA */}
-              <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
+              {/* <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
                 <Phone
                   size={18}
                   className="text-green-600"
@@ -81,7 +81,7 @@ function Navbar() {
                 <span className="font-medium text-gray-700">
                   0851-2997-2996
                 </span>
-              </div>
+              </div> */}
 
               {/* IGD */}
               <div className="flex items-center gap-2 bg-red-50 px-4 py-2 rounded-full shadow-sm border border-red-100 animate-pulse">

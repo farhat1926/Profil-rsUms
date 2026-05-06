@@ -4,7 +4,7 @@ import React from "react";
 export default function Apotek() {
 {/* PROMO APOTEK */}
 return (
- <section className="w-full py-16 bg-gradient-to-r from-green-600 to-green-500 overflow-hidden">
+ <section className="w-full py-16 overflow-hidden">
   <div className="max-w-7xl mx-auto px-6">
     <div className="grid lg:grid-cols-2 gap-12 items-center">
 
