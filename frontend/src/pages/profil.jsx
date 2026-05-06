@@ -17,7 +17,7 @@ export default function Profil() {
         />
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Visi & Misi Rumah Sakit
+            Visi & Misi RS UMS A.R. Fachrudin
           </h1>
 
           <p className="text-lg md:text-xl text-green-100 max-w-3xl mx-auto">
