@@ -29,27 +29,27 @@ export default function Profil() {
 
       {/* VISI */}
       <section className="max-w-6xl mx-auto px-6 py-16">
-        <div className="bg-white rounded-3xl shadow-lg p-8 md:p-12 border border-gray-100 hover:shadow-2xl transition-all duration-300">
-          <div className="flex items-center gap-4 mb-8">
-            <div className="bg-green-100 p-4 rounded-2xl">
-              <Eye size={40} className="text-green-600" />
-            </div>
+  <div className="bg-white rounded-3xl shadow-lg p-8 md:p-12 border border-gray-100 hover:shadow-2xl transition-all duration-300">
+    <div className="flex items-center gap-4 mb-8">
+      <div className="bg-green-100 p-4 rounded-2xl">
+        <Target size={40} className="text-green-600" />
+      </div>
 
-            <div>
-              <h2 className="text-3xl font-bold text-gray-800">Visi</h2>
-              <p className="text-gray-500">
-                Tujuan utama pelayanan rumah sakit
-              </p>
-            </div>
-          </div>
+      <div>
+        <h2 className="text-3xl font-bold text-gray-800">Visi</h2>
+        <p className="text-gray-500">
+          Tujuan utama pelayanan rumah sakit
+        </p>
+      </div>
+    </div>
 
-          <div className="bg-gradient-to-r from-green-50 to-white border-l-4 border-green-500 p-6 rounded-2xl">
-            <p className="text-lg leading-relaxed text-gray-700 font-medium">
-              “Visi RS UMS A.R. Fachrudin menjadi pusat pelayanan kesehatan yang profesional, komprehensif, bermutu, dan berkeadilan dengan semangat pelayanan yang Islami, humanis, serta berempati.”
-            </p>
-          </div>
-        </div>
-      </section>
+    <div className="bg-gradient-to-r from-green-50 to-white border-l-4 border-green-500 p-6 rounded-2xl">
+      <p className="text-lg leading-relaxed text-gray-700 font-medium">
+        “Visi RS UMS A.R. Fachrudin menjadi pusat pelayanan kesehatan yang profesional, komprehensif, bermutu, dan berkeadilan dengan semangat pelayanan yang Islami, humanis, serta berempati.”
+      </p>
+    </div>
+  </div>
+</section>
 
       {/* MISI */}
       <section className="max-w-6xl mx-auto px-6 pb-20">
