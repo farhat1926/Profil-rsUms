@@ -158,7 +158,7 @@ const Home = () => {
   return (
     <div className="font-sans w-full overflow-hidden">
       {/* Hero + Profil Overlay */}
-      <section id="profil" className="w-full scroll-mt-20">
+      <section id="profil" className="w-full pt-6 pb-10scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden">
             <div

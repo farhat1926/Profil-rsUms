@@ -6,9 +6,15 @@ import { Eye, Target, HeartHandshake } from "lucide-react";
 export default function Profil() {
   return (
     <div className="bg-gray-50 min-h-screen">
+
       {/* HERO */}
       
       <section className="relative bg-gradient-to-r from-green-700 to-green-500 text-white py-24">
+        <img
+          src="/images/banner-web.png"
+          alt="Banner Fasilitas"
+          className="absolute inset-0 w-full h-full object-cover z-10 mix-blend-multiply opacity-20"
+        />
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Visi & Misi Rumah Sakit
@@ -39,7 +45,7 @@ export default function Profil() {
 
           <div className="bg-gradient-to-r from-green-50 to-white border-l-4 border-green-500 p-6 rounded-2xl">
             <p className="text-lg leading-relaxed text-gray-700 font-medium">
-              “Visi RS UMS A.R. FachrudinMenjadi pusat pelayanan kesehatan yang profesional, komprehensif, bermutu, dan berkeadilan dengan semangat pelayanan yang Islami, humanis, serta berempati.”
+              “Visi RS UMS A.R. Fachrudin menjadi pusat pelayanan kesehatan yang profesional, komprehensif, bermutu, dan berkeadilan dengan semangat pelayanan yang Islami, humanis, serta berempati.”
             </p>
           </div>
         </div>
