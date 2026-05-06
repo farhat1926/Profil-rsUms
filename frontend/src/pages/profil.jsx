@@ -9,7 +9,7 @@ export default function Profil() {
 
       {/* HERO */}
       
-      <section className="relative bg-gradient-to-r from-green-700 to-green-500 text-white py-24">
+      <section className="relative bg-[#96d649]/70 text-white py-24">
         <img
           src="/images/banner-web.png"
           alt="Banner Fasilitas"
