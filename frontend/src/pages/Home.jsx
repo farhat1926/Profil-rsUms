@@ -66,39 +66,39 @@ const instagramEmbeds = [
 const fasilitas = [
   {
     title: "IGD",
-    slug: "igd",
     desc: "Fasilitas pelayanan darurat 24 jam untuk menangani kondisi kritis dan kebutuhan medis mendesak.",
     img: "/igd.webp",
+    link: "/FasilitasPages/igd",
   },
   {
     title: "Instalasi Rawat Inap",
-    slug: "rawat-inap",
-    desc: "Ruang perawatan dengan berbagai kelas yang nyaman.",
+    desc: "Ruang perawatan dengan berbagai kelas yang nyaman, higienis, dan dilengkapi fasilitas pendukung pasien.",
     img: "/rawat_Inap.webp",
+    link: "/FasilitasPages/rawat-inap",
   },
   {
     title: "Instalasi Bedah / Kamar Operasi",
-    slug: "operasi",
-    desc: "Ruang operasi modern dengan teknologi canggih.",
+    desc: "Ruang operasi modern dengan peralatan medis steril dan teknologi canggih untuk tindakan pembedahan.",
     img: "/ruang_operasi.webp",
+    link: "/FasilitasPages/ruang-operasi",
   },
   {
     title: "Instalasi Radiologi & Diagnostik",
-    slug: "radiologi",
-    desc: "Layanan pemeriksaan seperti X-ray dan USG.",
+    desc: "Layanan pemeriksaan seperti X-ray dan USG untuk diagnosa yang akurat dan cepat.",
     img: "/radiologi.webp",
+    link: "/FasilitasPages/radiologi",
   },
   {
     title: "Laboratorium Klinik",
-    slug: "laboratorium",
-    desc: "Fasilitas pemeriksaan darah dan tes medis.",
+    desc: "Fasilitas pemeriksaan darah, urin, dan berbagai tes medis untuk mendukung diagnosis dan pengobatan.",
     img: "/lab.webp",
+    link: "/FasilitasPages/laboratorium",
   },
   {
     title: "Apotek Rumah Sakit",
-    slug: "apotek",
-    desc: "Pelayanan farmasi lengkap untuk pasien.",
+    desc: "Pelayanan farmasi lengkap untuk memenuhi kebutuhan obat pasien sesuai resep dokter.",
     img: "/farmasi.webp",
+    link: "/FasilitasPages/apotek",
   },
 ];
 
@@ -203,31 +203,31 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {fasilitas.map((item) => (
-              <Link
-                  to={`/fasilitas/${item.slug}`}
-                  key={item.title}
-                  className="relative rounded-2xl overflow-hidden group shadow-md border border-gray-100 block"
-                >
-                  <img
-                    src={item.img}
-                    alt={item.title}
-                    loading="lazy"
-                    className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
-                  />
+          {fasilitas.map((item) => (
+            <Link
+              to={item.link}
+              key={item.title}
+              className="relative rounded-2xl overflow-hidden group shadow-md border border-gray-100 block cursor-pointer hover:-translate-y-2 transition-all duration-300"
+            >
+              <img
+                src={item.img}
+                alt={item.title}
+                loading="lazy"
+                className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
+              />
 
-                  <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
-                    <h3 className="text-green-400 font-bold text-lg mb-1">
-                      ✳ {item.title}
-                    </h3>
+              <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
+                <h3 className="text-green-400 font-bold text-lg mb-1">
+                  ✳ {item.title}
+                </h3>
 
-                    <p className="text-white text-sm">
-                      {item.desc}
-                    </p>
-                  </div>
-                </Link>
-            ))}
-          </div>
+                <p className="text-white text-sm">
+                  {item.desc}
+                </p>
+              </div>
+            </Link>
+          ))}
+        </div>
         </div>
       </section>
 
