@@ -148,30 +148,35 @@ const Home = () => {
       });
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
-    }, 6000);
-    return () => clearInterval(interval);
-  }, []);
+
+useEffect(() => {
+  const interval = setInterval(() => {
+    setCurrentHero((prev) =>
+      prev === heroImages.length - 1 ? 0 : prev + 1
+    );
+  }, 6000);
+
+  return () => clearInterval(interval);
+}, []);
 
   return (
     <div className="font-sans w-full overflow-hidden">
       {/* Hero + Profil Overlay */}
       <section id="profil" className="w-full bg-white pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
-            <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100">
-  <img
-    src={heroImages[currentHero]}
-    alt={`hero-${currentHero}`}
-    className="w-full h-full object-cover"
-    loading="eager"
-  />
+          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden shadow-lg border border-gray-100 bg-white">
+  {heroImages.map((image, index) => (
+    <img
+      key={index}
+      src={image}
+      alt={`hero-${index}`}
+      loading={index === 0 ? "eager" : "lazy"}
+      className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ease-in-out ${
+        currentHero === index ? "opacity-100" : "opacity-0"
+      }`}
+    />
+  ))}
 </div>
-            {/* Overlay */}
-            <div className="absolute "></div>
-          </div>
         </div>
       </section>
 
