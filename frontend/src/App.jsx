@@ -75,12 +75,12 @@ function AppContent() {
           <Route path="/profil" element={<Profil />} />
           <Route path="/struktur-organisasi" element={<StrukturOrganisasi />} />
           
-          <Route path="/fasilitas/igd" element={<IGD />} />
-          <Route path="/fasilitas/rawat-inap" element={<RawatInap />} />
-          <Route path="/fasilitas/apotek" element={<Apotek />} />
-          <Route path="/fasilitas/laboratorium" element={<Laboratorium />} />
-          <Route path="/fasilitas/radiologi" element={<Radiologi />} />
-          <Route path="/fasilitas/ruang-operasi" element={<RuangOperasi />} />
+          <Route path="/FasilitasPages/igd" element={<IGD />} />
+          <Route path="/FasilitasPages/rawat-inap" element={<RawatInap />} />
+          <Route path="/FasilitasPages/apotek" element={<Apotek />} />
+          <Route path="/FasilitasPages/laboratorium" element={<Laboratorium />} />
+          <Route path="/FasilitasPages/radiologi" element={<Radiologi />} />
+          <Route path="/FasilitasPages/ruang-operasi" element={<RuangOperasi />} />
           <Route path="/meet-doctor" element={<MeetDoctor />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
           <Route path="/dokter" element={<DokterPage />} />
