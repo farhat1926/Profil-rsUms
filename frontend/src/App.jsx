@@ -21,12 +21,14 @@ import ArticleDetail from "./pages/ArticleDetail";
 import PromoPage from "./pages/PromoPage";
 import Profil from "./pages/profil";
 import StrukturOrganisasi from "./pages/struktur-organisasi";
-import igd from "./pages/FasilitasPages/igd";
-import rawatInap from "./pages/FasilitasPages/rawat-inap";
-import apotek from "./pages/FasilitasPages/apotek";
-import laboratorium from "./pages/FasilitasPages/laboratorium";
-import radiologi from "./pages/FasilitasPages/radiologi";
-import ruangOperasi from "./pages/FasilitasPages/ruang-operasi";
+
+//kompoenen fasilitas
+import Apotek from "./pages/FasilitasPages/apotek";
+import IGD from "./pages/FasilitasPages/igd";
+import RawatInap from "./pages/FasilitasPages/rawat-inap";
+import Laboratorium from "./pages/FasilitasPages/laboratorium";
+import Radiologi from "./pages/FasilitasPages/radiologi";
+import RuangOperasi from "./pages/FasilitasPages/ruang-operasi";
 
 // Komponen Detail & Fitur Tambahan
 import MeetDoctor from "./components/MeetDoctor";
@@ -72,12 +74,13 @@ function AppContent() {
           <Route path="/fasilitas" element={<FasilitasPage />} />
           <Route path="/profil" element={<Profil />} />
           <Route path="/struktur-organisasi" element={<StrukturOrganisasi />} />
-          <Route path="/fasilitas/igd" element={<igd />} />
-          <Route path="/fasilitas/rawat-inap" element={<rawatInap />} />
-          <Route path="/fasilitas/apotek" element={<apotek />} />
-          <Route path="/fasilitas/laboratorium" element={<laboratorium />} />
-          <Route path="/fasilitas/radiologi" element={<radiologi />} />
-          <Route path="/fasilitas/ruang-operasi" element={<ruangOperasi />} />
+          
+          <Route path="/fasilitas/igd" element={<IGD />} />
+          <Route path="/fasilitas/rawat-inap" element={<RawatInap />} />
+          <Route path="/fasilitas/apotek" element={<Apotek />} />
+          <Route path="/fasilitas/laboratorium" element={<Laboratorium />} />
+          <Route path="/fasilitas/radiologi" element={<Radiologi />} />
+          <Route path="/fasilitas/ruang-operasi" element={<RuangOperasi />} />
           <Route path="/meet-doctor" element={<MeetDoctor />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
           <Route path="/dokter" element={<DokterPage />} />
