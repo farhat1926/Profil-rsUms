@@ -66,32 +66,38 @@ const instagramEmbeds = [
 const fasilitas = [
   {
     title: "IGD",
+    slug: "igd",
     desc: "Fasilitas pelayanan darurat 24 jam untuk menangani kondisi kritis dan kebutuhan medis mendesak.",
     img: "/igd.webp",
   },
   {
     title: "Instalasi Rawat Inap",
-    desc: "Ruang perawatan dengan berbagai kelas yang nyaman, higienis, dan dilengkapi fasilitas pendukung pasien.",
+    slug: "rawat-inap",
+    desc: "Ruang perawatan dengan berbagai kelas yang nyaman.",
     img: "/rawat_Inap.webp",
   },
   {
     title: "Instalasi Bedah / Kamar Operasi",
-    desc: "Ruang operasi modern dengan peralatan medis steril dan teknologi canggih untuk tindakan pembedahan.",
+    slug: "operasi",
+    desc: "Ruang operasi modern dengan teknologi canggih.",
     img: "/ruang_operasi.webp",
   },
   {
     title: "Instalasi Radiologi & Diagnostik",
-    desc: "Layanan pemeriksaan seperti X-ray dan USG untuk diagnosa yang akurat dan cepat.",
+    slug: "radiologi",
+    desc: "Layanan pemeriksaan seperti X-ray dan USG.",
     img: "/radiologi.webp",
   },
   {
     title: "Laboratorium Klinik",
-    desc: "Fasilitas pemeriksaan darah, urin, dan berbagai tes medis untuk mendukung diagnosis dan pengobatan.",
+    slug: "laboratorium",
+    desc: "Fasilitas pemeriksaan darah dan tes medis.",
     img: "/lab.webp",
   },
   {
     title: "Apotek Rumah Sakit",
-    desc: "Pelayanan farmasi lengkap untuk memenuhi kebutuhan obat pasien sesuai resep dokter.",
+    slug: "apotek",
+    desc: "Pelayanan farmasi lengkap untuk pasien.",
     img: "/farmasi.webp",
   },
 ];
@@ -198,23 +204,28 @@ const Home = () => {
 
           <div className="grid md:grid-cols-3 gap-6">
             {fasilitas.map((item) => (
-              <div
-                key={item.title}
-                className="relative rounded-2xl overflow-hidden group shadow-md border border-gray-100"
-              >
-                <img
-                  src={item.img}
-                  alt={item.title}
-                  loading="lazy"
-                  className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
-                />
-                <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
-                  <h3 className="text-green-400 font-bold text-lg mb-1">
-                    ✳ {item.title}
-                  </h3>
-                  <p className="text-white text-sm">{item.desc}</p>
-                </div>
-              </div>
+              <Link
+                  to={`/fasilitas/${item.slug}`}
+                  key={item.title}
+                  className="relative rounded-2xl overflow-hidden group shadow-md border border-gray-100 block"
+                >
+                  <img
+                    src={item.img}
+                    alt={item.title}
+                    loading="lazy"
+                    className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
+                  />
+
+                  <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
+                    <h3 className="text-green-400 font-bold text-lg mb-1">
+                      ✳ {item.title}
+                    </h3>
+
+                    <p className="text-white text-sm">
+                      {item.desc}
+                    </p>
+                  </div>
+                </Link>
             ))}
           </div>
         </div>

@@ -1,4 +1,3 @@
-// StrukturOrganisasi.jsx
 
 import React from "react";
 import { ArrowLeft } from "lucide-react";
@@ -15,12 +14,12 @@ export default function StrukturOrganisasi() {
         
         {/* BUTTON KEMBALI */}
         <button
-          onClick={() => navigate(-1)}
-          className="mb-6 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl shadow-md transition-all duration-300"
-        >
-          <ArrowLeft size={20} />
-          Kembali
-        </button>
+            onClick={() => navigate(-1)}
+            className="mb-6 flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-3 rounded-xl shadow-md transition-all duration-300 cursor-pointer"
+            >
+            <ArrowLeft size={20} />
+            Kembali
+            </button>
 
         {/* CARD */}
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">

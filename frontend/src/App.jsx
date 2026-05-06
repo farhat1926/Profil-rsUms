@@ -21,6 +21,7 @@ import ArticleDetail from "./pages/ArticleDetail";
 import PromoPage from "./pages/PromoPage";
 import Profil from "./pages/profil";
 import StrukturOrganisasi from "./pages/struktur-organisasi";
+import FasilitasDetail from "./pages/FasilitasDetail";
 
 // Komponen Detail & Fitur Tambahan
 import MeetDoctor from "./components/MeetDoctor";

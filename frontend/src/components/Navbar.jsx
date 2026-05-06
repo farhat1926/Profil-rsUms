@@ -1,5 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Menu, X, ChevronRight, Phone, MapPin, Clock3 } from "lucide-react";
+import {
+  Menu,
+  X,
+  ChevronRight,
+  Phone,
+  MapPin,
+  Clock3,
+} from "lucide-react";
+
 import logo from "/UMS.png";
 import { Link, useLocation } from "react-router-dom";
 
@@ -22,8 +30,12 @@ function Navbar() {
       }
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
+    return () =>
+      window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const menuItems = [
@@ -40,41 +52,83 @@ function Navbar() {
       {/* HEADER PUTIH */}
       <div
         className={`transition-all duration-500 ease-in-out overflow-hidden ${
-          isVisible ? "max-h-[150px] opacity-100" : "max-h-0 opacity-0"
+          isVisible
+            ? "max-h-[150px] opacity-100"
+            : "max-h-0 opacity-0"
         }`}
       >
         <div className="bg-gradient-to-r from-green-50 via-white to-blue-50 border-b border-gray-100">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             {/* LOGO */}
             <Link to="/" className="flex items-center gap-3">
-              <img src={logo} alt="logo" className="w-80 h-20 object-contain" />
+              <img
+                src={logo}
+                alt="logo"
+                className="w-80 h-20 object-contain"
+              />
             </Link>
 
             {/* CONTACT INFO */}
-            <div className="hidden lg:flex items-center gap-8 text-sm">
+            <div className="hidden lg:flex items-center gap-5 text-sm">
+
+              {/* NOMOR UTAMA */}
               <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
-                <Phone size={18} className="text-green-600" />
+                <Phone
+                  size={18}
+                  className="text-green-600"
+                />
+
                 <span className="font-medium text-gray-700">
                   0851-2997-2996
                 </span>
               </div>
 
+              {/* IGD */}
+              <div className="flex items-center gap-2 bg-red-50 px-4 py-2 rounded-full shadow-sm border border-red-100 animate-pulse">
+                <Phone
+                  size={18}
+                  className="text-red-600"
+                />
+
+                <div className="flex flex-col leading-tight">
+                  <span className="text-[11px] font-bold text-red-600">
+                    IGD 24 JAM
+                  </span>
+
+                  <span className="font-bold text-gray-700">
+                    085113055755
+                  </span>
+                </div>
+              </div>
+
+              {/* ALAMAT */}
               <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
-                <MapPin size={18} className="text-blue-600" />
+                <MapPin
+                  size={18}
+                  className="text-blue-600"
+                />
+
                 <span className="font-medium text-gray-700">
                   Jl. Adi Sucipto No.167, Surakarta
                 </span>
               </div>
 
+              {/* JAM */}
               <div className="flex items-center gap-2 bg-white px-4 py-2 rounded-full shadow-sm border border-gray-50">
-                <Clock3 size={18} className="text-green-600" />
-                <span className="font-medium text-gray-700">24 Jam</span>
+                <Clock3
+                  size={18}
+                  className="text-green-600"
+                />
+
+                <span className="font-medium text-gray-700">
+                  24 Jam
+                </span>
               </div>
             </div>
 
             {/* MOBILE BUTTON */}
             <button
-              className="lg:hidden text-gray-700"
+              className="lg:hidden text-gray-700 cursor-pointer"
               onClick={() => setOpen(!open)}
             >
               {open ? <X size={28} /> : <Menu size={28} />}
@@ -86,7 +140,10 @@ function Navbar() {
       {/* NAVBAR */}
       <nav
         className="text-white shadow-md relative z-50"
-        style={{ backgroundImage: "radial-gradient(circle, #96d649, #8aba4d)" }}
+        style={{
+          backgroundImage:
+            "radial-gradient(circle, #96d649, #8aba4d)",
+        }}
       >
         <div className="max-w-7xl mx-auto px-6">
 
@@ -94,10 +151,15 @@ function Navbar() {
           <div className="hidden lg:flex items-center justify-center w-full gap-25 py-4 font-bold">
             {menuItems.map((item) =>
               item.name === "Dokter" ? (
-                <div key={item.path} className="relative">
+                <div
+                  key={item.path}
+                  className="relative"
+                >
                   <button
-                    onClick={() => setDoctorDropdown(!doctorDropdown)}
-                    className="hover:text-yellow-200 focus:outline-none transition-colors"
+                    onClick={() =>
+                      setDoctorDropdown(!doctorDropdown)
+                    }
+                    className="hover:text-yellow-200 focus:outline-none transition-colors cursor-pointer"
                   >
                     Dokter ▼
                   </button>
@@ -107,7 +169,9 @@ function Navbar() {
                       <Link
                         to="/meet-doctor"
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
-                        onClick={() => setDoctorDropdown(false)}
+                        onClick={() =>
+                          setDoctorDropdown(false)
+                        }
                       >
                         Profil Dokter
                       </Link>
@@ -115,7 +179,9 @@ function Navbar() {
                       <Link
                         to="/JadwalDokter"
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
-                        onClick={() => setDoctorDropdown(false)}
+                        onClick={() =>
+                          setDoctorDropdown(false)
+                        }
                       >
                         Jadwal Dokter
                       </Link>
@@ -123,10 +189,15 @@ function Navbar() {
                   )}
                 </div>
               ) : item.name === "Profil" ? (
-                <div key={item.path} className="relative">
+                <div
+                  key={item.path}
+                  className="relative"
+                >
                   <button
-                    onClick={() => setProfileDropdown(!profileDropdown)}
-                    className="hover:text-yellow-200 focus:outline-none transition-colors"
+                    onClick={() =>
+                      setProfileDropdown(!profileDropdown)
+                    }
+                    className="hover:text-yellow-200 focus:outline-none transition-colors cursor-pointer"
                   >
                     Profil ▼
                   </button>
@@ -136,7 +207,9 @@ function Navbar() {
                       <Link
                         to="/profil"
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
-                        onClick={() => setProfileDropdown(false)}
+                        onClick={() =>
+                          setProfileDropdown(false)
+                        }
                       >
                         Visi & Misi
                       </Link>
@@ -144,7 +217,9 @@ function Navbar() {
                       <Link
                         to="/struktur-organisasi"
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600"
-                        onClick={() => setProfileDropdown(false)}
+                        onClick={() =>
+                          setProfileDropdown(false)
+                        }
                       >
                         Struktur Organisasi
                       </Link>
@@ -171,6 +246,32 @@ function Navbar() {
           {open && (
             <div className="lg:hidden flex flex-col py-4 gap-4">
 
+              {/* INFO MOBILE */}
+              <div className="flex flex-col gap-3 border-b border-white/20 pb-4">
+
+                <div className="flex items-center gap-2 text-sm">
+                  <Phone size={16} />
+                  <span>0851-2997-2996</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm text-red-200 font-bold">
+                  <Phone size={16} />
+                  <span>IGD 24 JAM : 085113055755</span>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm">
+                  <MapPin size={16} />
+                  <span>
+                    Jl. Adi Sucipto No.167, Surakarta
+                  </span>
+                </div>
+
+                <div className="flex items-center gap-2 text-sm">
+                  <Clock3 size={16} />
+                  <span>24 Jam</span>
+                </div>
+              </div>
+
               {menuItems.map((item) =>
                 item.name === "Profil" ? (
                   <div
@@ -178,14 +279,19 @@ function Navbar() {
                     className="border-b border-white/20 pb-3 font-medium flex flex-col"
                   >
                     <button
-                      onClick={() => setProfileDropdown(!profileDropdown)}
-                      className="flex justify-between items-center w-full"
+                      onClick={() =>
+                        setProfileDropdown(!profileDropdown)
+                      }
+                      className="flex justify-between items-center w-full cursor-pointer"
                     >
                       Profil
+
                       <ChevronRight
                         size={18}
                         className={`transition-transform ${
-                          profileDropdown ? "rotate-90" : ""
+                          profileDropdown
+                            ? "rotate-90"
+                            : ""
                         }`}
                       />
                     </button>
@@ -207,6 +313,7 @@ function Navbar() {
                       >
                         Visi & Misi
                       </Link>
+
                       <Link
                         to="/struktur-organisasi"
                         className="pl-4 text-sm text-yellow-100 hover:text-white"
@@ -225,14 +332,19 @@ function Navbar() {
                     className="border-b border-white/20 pb-3 font-medium flex flex-col"
                   >
                     <button
-                      onClick={() => setDoctorDropdown(!doctorDropdown)}
-                      className="flex justify-between items-center w-full"
+                      onClick={() =>
+                        setDoctorDropdown(!doctorDropdown)
+                      }
+                      className="flex justify-between items-center w-full cursor-pointer"
                     >
                       Dokter
+
                       <ChevronRight
                         size={18}
                         className={`transition-transform ${
-                          doctorDropdown ? "rotate-90" : ""
+                          doctorDropdown
+                            ? "rotate-90"
+                            : ""
                         }`}
                       />
                     </button>
@@ -275,7 +387,11 @@ function Navbar() {
                     onClick={() => setOpen(false)}
                   >
                     {item.name}
-                    <ChevronRight size={18} className="opacity-70" />
+
+                    <ChevronRight
+                      size={18}
+                      className="opacity-70"
+                    />
                   </Link>
                 )
               )}

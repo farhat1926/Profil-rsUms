@@ -7,6 +7,7 @@ export default function Profil() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* HERO */}
+      
       <section className="relative bg-gradient-to-r from-green-700 to-green-500 text-white py-24">
         <div className="max-w-7xl mx-auto px-6 text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
@@ -38,9 +39,7 @@ export default function Profil() {
 
           <div className="bg-gradient-to-r from-green-50 to-white border-l-4 border-green-500 p-6 rounded-2xl">
             <p className="text-lg leading-relaxed text-gray-700 font-medium">
-              “Menjadi rumah sakit unggulan yang memberikan pelayanan kesehatan
-              profesional, bermutu, islami, dan berorientasi pada keselamatan
-              pasien.”
+              “Visi RS UMS A.R. FachrudinMenjadi pusat pelayanan kesehatan yang profesional, komprehensif, bermutu, dan berkeadilan dengan semangat pelayanan yang Islami, humanis, serta berempati.”
             </p>
           </div>
         </div>
@@ -64,12 +63,10 @@ export default function Profil() {
 
           <div className="grid md:grid-cols-2 gap-6">
             {[
-              "Memberikan pelayanan kesehatan yang cepat, tepat, aman, dan profesional.",
-              "Mengutamakan keselamatan serta kenyamanan pasien dalam setiap pelayanan.",
-              "Meningkatkan kualitas sumber daya manusia yang kompeten dan berintegritas.",
-              "Mengembangkan fasilitas kesehatan berbasis teknologi modern.",
-              "Menjalankan pelayanan kesehatan yang humanis dan islami.",
-              "Meningkatkan kepuasan pasien melalui pelayanan prima.",
+              "Pelayanan Bermutu: Memberikan layanan kesehatan yang berkualitas tinggi, aman, dan berorientasi pada kepuasan pasien.",
+              "Pendekatan Humanis: Mengutamakan pelayanan yang ramah, santun, dan berempati (merawat dengan hati).",
+              "Layanan Inklusif: Menyediakan akses pelayanan yang adil dan dapat dijangkau oleh seluruh lapisan masyarakat.",
+              "Integrasi Pendidikan: Mendukung pengembangan SDM di bidang kesehatan dan menjadi sarana pendidikan.",
             ].map((item, index) => (
               <div
                 key={index}
