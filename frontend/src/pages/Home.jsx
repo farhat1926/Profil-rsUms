@@ -1,7 +1,6 @@
 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// Menambahkan import icon untuk mempercantik card dokter
 import { Eye, CalendarDays, ChevronDown, ChevronUp } from "lucide-react";
 
 const InstagramEmbed = React.memo(({ children }) => {
@@ -160,25 +159,13 @@ const Home = () => {
       {/* Hero + Profil Overlay */}
       <section id="profil" className="w-full bg-white pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="relative w-full h-[220px] sm:h-[320px] md:h-[420px] lg:h-[550px] rounded-3xl overflow-hidden shadow-lg">
-
-  {/* Background Blur */}
+          <div className="relative w-full h-[220px] sm:h-[320px] md:h-[420px] lg:h-[550px] rounded-3xl overflow-hidden shadow-lg border border-gray-100 bg-white">
   <img
     src={heroImages[currentHero]}
-    className="absolute inset-0 w-full h-full object-cover blur-2xl scale-110 opacity-40"
+    alt={`hero-${currentHero}`}
+    loading="eager"
+    className="w-full h-full object-contain"
   />
-
-  {/* Main Image */}
-  {heroImages.map((image, index) => (
-    <img
-      key={index}
-      src={image}
-      alt=""
-      className={`absolute inset-0 w-full h-full object-contain transition-opacity duration-1000 ${
-        currentHero === index ? "opacity-100" : "opacity-0"
-      }`}
-    />
-  ))}
 </div>
         </div>
       </section>
