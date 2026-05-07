@@ -15,9 +15,9 @@ export default function Profil() {
           alt="Banner Fasilitas"
           className="absolute inset-0 w-full h-full object-cover z-10 mix-blend-multiply opacity-20"
         />
-        <div className="max-w-7xl mx-auto px-6 text-center">
+        <div className="max-w-7xl mx-auto px-6 text-center z-10">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Visi & Misi RS UMS A.R. Fachrudin
+            Visi & Misi Rumah Sakit
           </h1>
 
           <p className="text-lg md:text-xl text-green-100 max-w-3xl mx-auto">

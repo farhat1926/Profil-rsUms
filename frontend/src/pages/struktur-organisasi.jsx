@@ -25,7 +25,7 @@ export default function StrukturOrganisasi() {
         <div className="bg-white rounded-3xl shadow-xl overflow-hidden border border-gray-100">
           
           {/* HEADER */}
-          <div className="bg-gradient-to-r from-green-700 to-green-500 text-white px-8 py-10 text-center">
+          <div className="bg-gradient-to-r bg-[#96d649]/70 text-white px-8 py-10 text-center">
             <h1 className="text-3xl md:text-4xl font-bold">
               Struktur Organisasi
             </h1>
