@@ -61,8 +61,11 @@ const Footer = () => {
       </div>
 
       {/* Bottom */}
-      <div className="border-t border-green-700 mt-8 pt-4 text-center text-sm text-gray-300">
-        © 2025 RS UMS A.R. Fachrudin. All rights reserved.
+      <div className="border-t border-green-700 mt-8 pt-4 text-center text-sm text-gray-300 space-y-2">
+        <p>© 2025 RS UMS A.R. Fachrudin. All rights reserved.</p>
+        <p className="text-gray-400">
+          Created by <span className="font-semibold text-white">Farhat & Fathur</span>
+        </p>
       </div>
     </footer>
   );
