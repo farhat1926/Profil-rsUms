@@ -152,7 +152,7 @@ export default function FasilitasPage() {
   return (
     <div className="min-h-screen bg-gray-100 pb-12">
       {/* ================= HERO HEADER SECTION ================= */}
-      <section className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
+      <section className="relative w-full h-[160px] md:h-[220px] bg-[#5aa1db]/90 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
         <img
           src="/images/banner-web.png"
           alt="Banner Fasilitas"

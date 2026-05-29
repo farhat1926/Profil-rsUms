@@ -15,18 +15,19 @@ export default function MeetDoctor() {
   const [search, setSearch] = useState("");
   const API_URL = import.meta.env.VITE_API_URL;
 
-  const filteredDoctors = doctorList.filter((doctor) =>
-  doctor.nama.toLowerCase().includes(search.toLowerCase()) ||
-  doctor.spesialis.toLowerCase().includes(search.toLowerCase())
-);
-useEffect(() => {
-  setVisibleCount(4);
-}, [search]);
-{filteredDoctors.length === 0 && (
-  <p className="text-center text-gray-500 mt-10">
-    Dokter tidak ditemukan
-  </p>
-)}
+  const filteredDoctors = doctorList.filter(
+    (doctor) =>
+      doctor.nama.toLowerCase().includes(search.toLowerCase()) ||
+      doctor.spesialis.toLowerCase().includes(search.toLowerCase()),
+  );
+  useEffect(() => {
+    setVisibleCount(4);
+  }, [search]);
+  {
+    filteredDoctors.length === 0 && (
+      <p className="text-center text-gray-500 mt-10">Dokter tidak ditemukan</p>
+    );
+  }
 
   const handleLoadMore = () => {
     setVisibleCount((prev) => prev + 4);
@@ -61,7 +62,7 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-gray-50/50">
       {/* ================= HERO HEADER SECTION ================= */}
-      <section className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
+      <section className="relative w-full h-[160px] md:h-[220px] bg-[#5aa1db]/90 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
         <img
           src="images/banner-web.png"
           alt="Banner Profil Dokter"
@@ -95,11 +96,11 @@ useEffect(() => {
               Dokter tidak ditemukan
             </p>
           ) : (
-            filteredDoctors.slice(0, visibleCount).map((doctor, index) => (
-              <div key={doctor.id}>
-                {/* isi card dokter kamu */}
-              </div>
-            ))
+            filteredDoctors
+              .slice(0, visibleCount)
+              .map((doctor, index) => (
+                <div key={doctor.id}>{/* isi card dokter kamu */}</div>
+              ))
           )}
         </div>
         <div className="grid md:grid-cols-2 gap-6">

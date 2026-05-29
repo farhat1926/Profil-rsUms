@@ -9,25 +9,25 @@ export default function DoctorDetail() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-  setLoading(true);
+    setLoading(true);
 
-  fetch(`${API_URL}/jadwal/${id}`)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Dokter tidak ditemukan");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      setDoctor(data);
-      setLoading(false);
-    })
-    .catch((err) => {
-      console.error(err);
-      setDoctor(null);
-      setLoading(false);
-    });
-}, [id]);
+    fetch(`${API_URL}/jadwal/${id}`)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error("Dokter tidak ditemukan");
+        }
+        return res.json();
+      })
+      .then((data) => {
+        setDoctor(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error(err);
+        setDoctor(null);
+        setLoading(false);
+      });
+  }, [id]);
 
   if (loading) {
     return (
@@ -45,19 +45,19 @@ export default function DoctorDetail() {
     );
   }
   const daysOfWeek = [
-  "senin",
-  "selasa",
-  "rabu",
-  "kamis",
-  "jumat",
-  "sabtu",
-  "minggu",
-];
+    "senin",
+    "selasa",
+    "rabu",
+    "kamis",
+    "jumat",
+    "sabtu",
+    "minggu",
+  ];
 
   return (
     <div className="min-h-screen bg-white pb-20">
       {/* HERO HEADER BACKGROUND */}
-      <section className="relative w-full h-[160px] md:h-[220px] bg-[#96d649]/70 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
+      <section className="relative w-full h-[160px] md:h-[220px] bg-[#5aa1db]/90 flex flex-col justify-center items-center text-center px-4 overflow-hidden shadow-inner">
         <img
           src="/images/banner-web.png"
           alt="Banner Profil Dokter"
@@ -83,7 +83,7 @@ export default function DoctorDetail() {
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 items-start">
           {/* FOTO DOKTER (Menembus Header) */}
           <div className="w-56 h-72 md:w-[280px] md:h-[380px] shrink-0 bg-white p-2.5 rounded-2xl shadow-xl border border-gray-100 -mt-12 md:-mt-20">
-           <img
+            <img
               src={
                 doctor.image
                   ? `${API_URL}${doctor.image}`
@@ -116,8 +116,8 @@ export default function DoctorDetail() {
 
             {/* Deskripsi */}
             <div className="mt-8 text-gray-600 text-[15px] leading-relaxed space-y-4 text-justify">
-  <p>{doctor.deskripsi || "Deskripsi belum tersedia"}</p>
-</div>
+              <p>{doctor.deskripsi || "Deskripsi belum tersedia"}</p>
+            </div>
           </div>
         </div>
 
