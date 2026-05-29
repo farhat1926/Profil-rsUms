@@ -58,7 +58,7 @@ const Footer = () => {
               Surakarta, Jawa Tengah 57145
             </li>
             <li>📞 +62 851-6979-9799</li>
-            <li>✉️ humas.rsumsarfachrudin@gmail.com</li>
+            <li>✉️ humas@rs.ums.id</li>
           </ul>
         </div>
       </div>
