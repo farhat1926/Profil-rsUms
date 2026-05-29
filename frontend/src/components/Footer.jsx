@@ -53,8 +53,11 @@ const Footer = () => {
         <div>
           <h3 className="font-semibold mb-3">Kontak</h3>
           <ul className="space-y-2 text-sm text-gray-200">
-            <li>📍 Surakarta, Jawa Tengah</li>
-            <li>📞 0851-2997-2996</li>
+            <li>
+              📍 Jl. Adi Sucipto No.167, Karangasem, Kec. Laweyan, Kota
+              Surakarta, Jawa Tengah 57145
+            </li>
+            <li>📞 +62 851-6979-9799</li>
             <li>✉️ humas.rsumsarfachrudin@gmail.com</li>
           </ul>
         </div>
