@@ -21,6 +21,7 @@ import ArticleDetail from "./pages/ArticleDetail";
 import PromoPage from "./pages/PromoPage";
 import Profil from "./pages/profil";
 import StrukturOrganisasi from "./pages/struktur-organisasi";
+import BedPage from "./pages/BedPage";
 
 //kompoenen fasilitas
 import Apotek from "./pages/FasilitasPages/apotek";
@@ -74,7 +75,7 @@ function AppContent() {
           <Route path="/fasilitas" element={<FasilitasPage />} />
           <Route path="/profil" element={<Profil />} />
           <Route path="/struktur-organisasi" element={<StrukturOrganisasi />} />
-          
+          <Route path="/bed" element={<BedPage />} />
           <Route path="/FasilitasPages/igd" element={<IGD />} />
           <Route path="/FasilitasPages/rawat-inap" element={<RawatInap />} />
           <Route path="/FasilitasPages/apotek" element={<Apotek />} />
