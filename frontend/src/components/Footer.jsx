@@ -11,6 +11,14 @@ const Footer = () => {
             Memberikan pelayanan kesehatan terbaik dengan fasilitas modern dan
             tenaga medis profesional.
           </p>
+          <div>
+            <p className="font-semibold text-white tracking-wider mb-1 mt-2">
+              C.A.R.E
+            </p>
+            <p className="text-sm text-gray-300">
+              Compassion • Accuracy • Responsibility • Empathy
+            </p>
+          </div>
         </div>
 
         {/* Menu */}

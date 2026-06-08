@@ -72,31 +72,43 @@ const InformasiPage = () => {
           ))}
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        {/* Grid ditambahkan items-stretch agar tinggi card sama rata */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {filteredArticles.map((article) => (
             <Link
               to={`/informasi/${article.id}`}
               key={article.id}
-              className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden"
+              // Tambahkan h-full agar card memenuhi tinggi grid
+              className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full"
             >
-              <img
-                src={`${API_URL}${article.image}`}
-                className="w-full h-52 object-cover"
-                alt={article.title}
-              />
-              <div className="p-5">
-                <p className="text-sm font-semibold text-green-600 uppercase tracking-wider">
+              {/* Box Gambar Terkunci Rasio 16:9 */}
+              <div className="w-full aspect-video bg-gray-100 overflow-hidden border-b border-gray-100">
+                <img
+                  src={`${API_URL}${article.image}`}
+                  // object-cover memastikan gambar memenuhi box 16:9 secara penuh
+                  className="w-full h-full object-cover"
+                  alt={article.title}
+                />
+              </div>
+
+              <div className="p-5 flex flex-col flex-grow">
+                <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">
                   {article.category}
                 </p>
-                <h2 className="text-xl font-bold mt-2 text-gray-800 leading-tight">
+                <h2 className="text-xl font-bold text-gray-800 leading-tight line-clamp-2">
                   {article.title}
                 </h2>
-                <p className="text-gray-600 mt-2 line-clamp-3">
+
+                <p className="text-gray-600 mt-3 line-clamp-3 text-justify text-sm">
                   {article.summary}
                 </p>
-                <p className="text-sm text-gray-400 mt-4 flex items-center gap-2">
-                  <span>{article.author}</span> •{" "}
-                  <span>{formatTanggal(article.date)}</span>
+
+                {/* mt-auto memastikan bagian tanggal/penulis selalu terdorong ke paling bawah card */}
+                <p className="text-xs text-gray-400 mt-auto pt-4 flex items-center gap-2 border-t border-gray-50">
+                  <span className="font-medium text-gray-600">
+                    {article.author}
+                  </span>{" "}
+                  • <span>{formatTanggal(article.date)}</span>
                 </p>
               </div>
             </Link>

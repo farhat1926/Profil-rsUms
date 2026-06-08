@@ -1,67 +1,14 @@
-
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// Menambahkan import icon untuk mempercantik card dokter
-import { Eye, CalendarDays, ChevronDown, ChevronUp } from "lucide-react";
-
-const InstagramEmbed = React.memo(({ children }) => {
-  useEffect(() => {
-    const processInsta = () => {
-      if (window.instgrm) {
-        window.instgrm.Embeds.process();
-      }
-    };
-
-    if (!window.instgrm) {
-      const script = document.createElement("script");
-      script.src = "https://www.instagram.com/embed.js";
-      script.async = true;
-      script.onload = processInsta;
-      document.body.appendChild(script);
-    } else {
-      setTimeout(processInsta, 100);
-    }
-  }, []);
-
-  return (
-    <div className="instagram-embed-container flex justify-center w-full">
-      {children}
-    </div>
-  );
-});
-
-const instagramEmbeds = [
-  {
-    id: 1,
-    embedCode: (
-      <blockquote
-        className="instagram-media"
-        data-instgrm-permalink="https://www.instagram.com/reel/DW2x9sXiRPL/"
-        data-instgrm-version="14"
-      />
-    ),
-  },
-  {
-    id: 2,
-    embedCode: (
-      <blockquote
-        className="instagram-media"
-        data-instgrm-permalink="https://www.instagram.com/reel/DXEH6PlCRPN/"
-        data-instgrm-version="14"
-      />
-    ),
-  },
-  {
-    id: 3,
-    embedCode: (
-      <blockquote
-        className="instagram-media"
-        data-instgrm-permalink="https://www.instagram.com/reel/DXHEs73iZnz/"
-        data-instgrm-version="14"
-      />
-    ),
-  },
-];
+// 1. Import ChevronLeft dan ChevronRight ditambahkan
+import {
+  Eye,
+  CalendarDays,
+  ChevronDown,
+  ChevronUp,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 
 const fasilitas = [
   {
@@ -111,6 +58,14 @@ const Home = () => {
   const [eventList, setEventList] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
+  // Memuat Script Elfsight Instagram secara aman di React
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "https://elfsightcdn.com/platform.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   useEffect(() => {
     fetch(`${API_URL}/event`)
       .then((res) => res.json())
@@ -148,21 +103,31 @@ const Home = () => {
       });
   }, []);
 
+  // 2. Logika untuk Slider (Next, Prev, dan perbaikan Timer)
+  const nextSlide = () => {
+    setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
+  };
+
+  const prevSlide = () => {
+    setCurrentHero((prev) => (prev === 0 ? heroImages.length - 1 : prev - 1));
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
+      nextSlide();
     }, 6000);
     return () => clearInterval(interval);
-  }, []);
+  }, [currentHero]);
 
   return (
     <div className="font-sans w-full overflow-hidden">
       {/* Hero + Profil Overlay */}
-      <section id="profil" className="w-full pt-6 pb-10scroll-mt-20">
+      <section id="profil" className="w-full pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden">
+          {/* Ditambahkan class group agar tombol panah muncul saat di-hover */}
+          <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden group shadow-md">
             <div
-              className="flex h-full transition-transform duration-1500 ease-in-out"
+              className="flex h-full transition-transform duration-700 ease-in-out"
               style={{
                 width: `${heroImages.length * 100}%`,
                 transform: `translateX(-${currentHero * (100 / heroImages.length)}%)`,
@@ -173,14 +138,49 @@ const Home = () => {
                   key={index}
                   src={image}
                   alt={`hero-${index}`}
-                  className="w-full h-full object-contain  "
+                  className="w-full h-full object-contain"
                   style={{ width: `${100 / heroImages.length}%` }}
                   loading={index === 0 ? "eager" : "lazy"}
                 />
               ))}
             </div>
+
+            {/* Tombol Panah Kiri */}
+            <button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft size={28} />
+            </button>
+
+            {/* Tombol Panah Kanan */}
+            <button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer"
+              aria-label="Next Slide"
+            >
+              <ChevronRight size={28} />
+            </button>
+
+            {/* Indikator Titik (Dots) di bawah */}
+            <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
+              {heroImages.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentHero(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 shadow-sm cursor-pointer ${
+                    currentHero === index
+                      ? "bg-[#96d649] w-6"
+                      : "bg-white/70 hover:bg-white"
+                  }`}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
+
             {/* Overlay */}
-            <div className="absolute "></div>
+            <div className="absolute"></div>
           </div>
         </div>
       </section>
@@ -203,36 +203,33 @@ const Home = () => {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-          {fasilitas.map((item) => (
-            <Link
-              to={item.link}
-              key={item.title}
-              className="relative rounded-2xl overflow-hidden group shadow-md border border-gray-100 block cursor-pointer hover:-translate-y-2 transition-all duration-300"
-            >
-              <img
-                src={item.img}
-                alt={item.title}
-                loading="lazy"
-                className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
-              />
+            {fasilitas.map((item) => (
+              <Link
+                to={item.link}
+                key={item.title}
+                className="relative rounded-2xl overflow-hidden group shadow-md border border-gray-100 block cursor-pointer hover:-translate-y-2 transition-all duration-300"
+              >
+                <img
+                  src={item.img}
+                  alt={item.title}
+                  loading="lazy"
+                  className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
+                />
 
-              <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
-                <h3 className="text-green-400 font-bold text-lg mb-1">
-                  ✳ {item.title}
-                </h3>
+                <div className="absolute inset-0 bg-black/50 p-6 flex flex-col justify-end">
+                  <h3 className="text-green-400 font-bold text-lg mb-1">
+                    ✳ {item.title}
+                  </h3>
 
-                <p className="text-white text-sm">
-                  {item.desc}
-                </p>
-              </div>
-            </Link>
-          ))}
-        </div>
+                  <p className="text-white text-sm">{item.desc}</p>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
       </section>
 
       {/* ================= DOKTER SPESIALIS ================= */}
-      {/* Background dikembalikan ke bg-green-50 */}
       <section id="dokter" className="w-full bg-green-50 py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
@@ -241,7 +238,7 @@ const Home = () => {
 
           <div className="flex gap-6 overflow-x-auto pb-8 custom-scrollbar px-1">
             {dokterList.length > 0 ? (
-              dokterList.slice(0,5).map((dokter, index) => (
+              dokterList.slice(0, 5).map((dokter, index) => (
                 <div
                   key={dokter.id}
                   className="min-w-[340px] sm:min-w-[380px] max-w-[400px] bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col snap-center"
@@ -259,7 +256,7 @@ const Home = () => {
                       }}
                     />
 
-                    {/* Info Teks (Dengan min-w-0 agar tidak melar jika teks panjang) */}
+                    {/* Info Teks */}
                     <div className="flex-1 min-w-0">
                       <h3
                         className="text-base sm:text-lg font-bold text-gray-900 leading-snug line-clamp-2"
@@ -290,7 +287,7 @@ const Home = () => {
                     </div>
                   </div>
 
-                  {/* Bottom Schedule Section (Hanya Jadwal, Tanpa Booking) */}
+                  {/* Bottom Schedule Section */}
                   <div className="mt-auto border-t border-gray-100">
                     <button
                       onClick={() =>
@@ -401,30 +398,23 @@ const Home = () => {
               </p>
             </div>
           </div>
-            
 
-          {/* Grid Embed Instagram */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {instagramEmbeds.map((item) => (
-              <div
-                key={item.id}
-                className="w-full overflow-hidden flex justify-center bg-white rounded-2xl p-2 border border-gray-100 shadow-sm"
-              >
-                <InstagramEmbed>{item.embedCode}</InstagramEmbed>
-              </div>
-            ))}
+          {/* Elfsight Widget */}
+          <div className="w-full">
+            <div
+              className="elfsight-app-dceffb66-10fd-4021-befb-f21163ff55b1"
+              data-elfsight-app-lazy
+            ></div>
           </div>
-
         </div>
-          <a
-            href="https://www.instagram.com/rsumsarfachrudin/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-8 block w-fit mx-auto text-sm bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-md"
-          >
-            Kunjungi Instagram
-          </a>
-        
+        <a
+          href="https://www.instagram.com/rsumsarfachrudin/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-8 block w-fit mx-auto text-sm bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-full font-bold shadow-md"
+        >
+          Kunjungi Instagram
+        </a>
       </section>
 
       {/* Lokasi Rumah Sakit */}
