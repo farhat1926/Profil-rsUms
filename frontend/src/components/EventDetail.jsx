@@ -47,9 +47,12 @@ const EventDetail = () => {
 
         <p className="text-gray-500 mt-3 text-lg">{event.short_desc}</p>
 
-        {/* Ditambahkan text-justify agar paragraf rata kanan-kiri */}
-        <div className="mt-6 text-gray-700 leading-8 text-lg whitespace-pre-line text-justify">
-          {event.full_desc}
+        <div className="mt-6 text-gray-700 leading-8 text-lg text-justify space-y-5">
+          {event.full_desc
+            .split("\n")
+            .map((paragraf, index) =>
+              paragraf.trim() !== "" ? <p key={index}>{paragraf}</p> : null,
+            )}
         </div>
 
         <p className="mt-8 pt-6 border-t border-gray-100 text-sm text-gray-400 font-medium">

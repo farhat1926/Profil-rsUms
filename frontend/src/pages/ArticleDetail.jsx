@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { fetchArticleById } from "../data/articles";
-import { Link } from "react-router-dom";
 
 const ArticleDetail = () => {
   const { id } = useParams();
@@ -37,31 +36,52 @@ const ArticleDetail = () => {
 
   return (
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
-      <Link 
-  to="/informasi" 
-  className="mb-4 text-green-600 hover:underline cursor-pointer"
->
-  ← Kembali ke halaman informasi
-</Link>
       <div className="max-w-5xl mx-auto">
-        <img
-          src={`${API_URL}${article.image}`}
-          alt={article.title}
-          className="w-full h-[450px] object-cover rounded-2xl shadow-lg"
-        />
+        <Link
+          to="/informasi"
+          className="inline-block mb-6 text-green-600 hover:text-green-700 hover:underline font-medium transition-colors cursor-pointer"
+        >
+          &larr; Kembali ke halaman informasi
+        </Link>
+
+        {/* ================= BAGIAN GAMBAR 16:9 CINEMATIC ================= */}
+        <div className="relative w-full aspect-video rounded-2xl shadow-lg overflow-hidden border border-gray-100 bg-gray-900 flex items-center justify-center">
+          {/* 1. Gambar Background Blur (Mengisi ruang yang kosong) */}
+          <img
+            src={`${API_URL}${article.image}`}
+            alt="Background"
+            className="absolute inset-0 w-full h-full object-cover blur-2xl opacity-60 scale-110"
+          />
+
+          {/* 2. Gambar Utama (Pas 100% tanpa terpotong) */}
+          <img
+            src={`${API_URL}${article.image}`}
+            alt={article.title}
+            className="relative z-10 w-full h-full object-contain drop-shadow-2xl"
+          />
+        </div>
+        {/* ================================================================ */}
 
         <h1 className="text-4xl font-bold mt-8 text-green-600">
           {article.title}
         </h1>
 
-        <p className="text-sm text-gray-500 mt-2">
-          {article.author} • {formatTanggal(article.date)}
+        <p className="text-sm text-gray-500 mt-3 border-b border-gray-100 pb-4">
+          <span className="font-semibold text-gray-600">{article.author}</span>{" "}
+          • {formatTanggal(article.date)}
         </p>
 
-        <p className="text-gray-600 mt-4 text-lg">{article.summary}</p>
+        <p className="text-gray-600 mt-5 text-lg font-medium">
+          {article.summary}
+        </p>
 
-        <div className="mt-6 text-gray-700 leading-8 text-lg whitespace-pre-line">
-          {article.content}
+        {/* Pemecah paragraf dan penerapan rata kanan-kiri (text-justify) */}
+        <div className="mt-6 text-gray-700 leading-8 text-lg text-justify space-y-5">
+          {article.content
+            ?.split("\n")
+            .map((paragraf, index) =>
+              paragraf.trim() !== "" ? <p key={index}>{paragraf}</p> : null,
+            )}
         </div>
       </div>
     </div>
