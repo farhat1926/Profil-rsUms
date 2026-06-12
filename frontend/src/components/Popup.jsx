@@ -10,16 +10,18 @@ export default function PromoPopup() {
 
   const promos = ["/jantung.webp", "/MCU.webp", "/Persalinan.webp"];
 
-  useEffect(() => {
-    const hasSeenPopup = sessionStorage.getItem("hasSeenPromo");
-    if (!hasSeenPopup) {
-      const timer = setTimeout(() => {
-        setShow(true);
-        sessionStorage.setItem("hasSeenPromo", "true");
-      }, 1000);
 
-      return () => clearTimeout(timer);
-    }
+  //TAK MATIKAN DULU YAAHHH  
+  useEffect(() => {
+    // const hasSeenPopup = sessionStorage.getItem("hasSeenPromo");
+    // if (!hasSeenPopup) {
+    //   const timer = setTimeout(() => {
+    //     setShow(true);
+    //     sessionStorage.setItem("hasSeenPromo", "true");
+    //   }, 1000);
+
+    //   return () => clearTimeout(timer);
+    // }
   }, []);
   if (!show) return null;
 
