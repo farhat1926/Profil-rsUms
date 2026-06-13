@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// 1. Import ChevronLeft dan ChevronRight ditambahkan
 import {
   Eye,
   CalendarDays,
@@ -51,14 +50,31 @@ const fasilitas = [
 
 const heroImages = ["/slider.webp", "/Slider2.webp"];
 
+// ================= DATA MITRA KERJASAMA =================
+const mitraList = [
+  "/images/bjs.webp",
+  "/images/jasaraharja.webp",
+  "/images/isomedik.webp",
+  "/images/reliance.webp",
+];
+
 const Home = () => {
   const [currentHero, setCurrentHero] = useState(0);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [dokterList, setDokterList] = useState([]);
   const [eventList, setEventList] = useState([]);
+  const [articleList, setArticleList] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Memuat Script Elfsight Instagram secara aman di React
+  const formatTanggal = (tanggal) => {
+    if (!tanggal) return "";
+    return new Date(tanggal).toLocaleDateString("id-ID", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+
   useEffect(() => {
     const script = document.createElement("script");
     script.src = "https://elfsightcdn.com/platform.js";
@@ -69,7 +85,17 @@ const Home = () => {
   useEffect(() => {
     fetch(`${API_URL}/event`)
       .then((res) => res.json())
-      .then((data) => setEventList(data));
+      .then((data) => setEventList(data))
+      .catch((err) => console.error("Gagal mengambil event:", err));
+  }, []);
+
+  useEffect(() => {
+    fetch(`${API_URL}/informasi`)
+      .then((res) => res.json())
+      .then((data) => {
+        setArticleList(data.slice(0, 3));
+      })
+      .catch((err) => console.error("Gagal mengambil artikel:", err));
   }, []);
 
   useEffect(() => {
@@ -103,7 +129,6 @@ const Home = () => {
       });
   }, []);
 
-  // 2. Logika untuk Slider (Next, Prev, dan perbaikan Timer)
   const nextSlide = () => {
     setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
   };
@@ -121,10 +146,9 @@ const Home = () => {
 
   return (
     <div className="font-sans w-full overflow-hidden">
-      {/* Hero + Profil Overlay */}
+      {/* Hero Slider */}
       <section id="profil" className="w-full pt-6 pb-10 scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          {/* Ditambahkan class group agar tombol panah muncul saat di-hover */}
           <div className="relative w-full h-[180px] sm:h-[280px] md:h-[380px] lg:h-[500px] rounded-3xl overflow-hidden group shadow-md">
             <div
               className="flex h-full transition-transform duration-700 ease-in-out"
@@ -145,25 +169,20 @@ const Home = () => {
               ))}
             </div>
 
-            {/* Tombol Panah Kiri */}
             <button
               onClick={prevSlide}
               className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer"
-              aria-label="Previous Slide"
             >
               <ChevronLeft size={28} />
             </button>
 
-            {/* Tombol Panah Kanan */}
             <button
               onClick={nextSlide}
               className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/70 text-white p-2.5 rounded-full opacity-0 group-hover:opacity-100 transition-all duration-300 z-10 cursor-pointer"
-              aria-label="Next Slide"
             >
               <ChevronRight size={28} />
             </button>
 
-            {/* Indikator Titik (Dots) di bawah */}
             <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2.5 z-10">
               {heroImages.map((_, index) => (
                 <button
@@ -174,13 +193,75 @@ const Home = () => {
                       ? "bg-[#96d649] w-6"
                       : "bg-white/70 hover:bg-white"
                   }`}
-                  aria-label={`Go to slide ${index + 1}`}
                 />
               ))}
             </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Overlay */}
-            <div className="absolute"></div>
+      {/* ================= ARTIKEL & BERITA ================= */}
+      <section
+        id="artikel-terbaru"
+        className="w-full py-16 bg-gray-50 border-b border-gray-100"
+      >
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="mb-10">
+            <h2 className="text-3xl font-bold text-green-600 mb-2">
+              Informasi & Artikel Kesehatan RS UMS{" "}
+            </h2>
+            <p className="text-base text-gray-600 w-full">
+              Dapatkan tips kesehatan terkini dan informasi medis terpercaya
+              seputar RS UMS A.R. Fachrudin.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+            {articleList.map((article) => (
+              <Link
+                to={`/informasi/${article.id}`}
+                key={article.id}
+                className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full border border-gray-100 group"
+              >
+                <div className="w-full aspect-video bg-gray-100 overflow-hidden border-b border-gray-100">
+                  <img
+                    src={`${API_URL}${article.image}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    alt={article.title}
+                    loading="lazy"
+                  />
+                </div>
+
+                <div className="p-5 flex flex-col flex-grow">
+                  <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">
+                    {article.category}
+                  </p>
+                  <h2 className="text-xl font-bold text-gray-800 leading-tight line-clamp-2">
+                    {article.title}
+                  </h2>
+
+                  <p className="text-gray-600 mt-3 line-clamp-3 text-justify text-sm">
+                    {article.summary}
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-auto pt-4 flex items-center gap-2 border-t border-gray-50">
+                    <span className="font-medium text-gray-600">
+                      {article.author}
+                    </span>{" "}
+                    • <span>{formatTanggal(article.date)}</span>
+                  </p>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          <div className="mt-12 flex justify-center">
+            <Link
+              to="/informasi"
+              className="text-sm font-bold bg-white text-green-600 hover:text-white hover:bg-green-500 border border-green-500 px-8 py-3 rounded-full transition-colors shadow-sm"
+            >
+              Lihat Semua Artikel →
+            </Link>
           </div>
         </div>
       </section>
@@ -243,9 +324,7 @@ const Home = () => {
                   key={dokter.id}
                   className="min-w-[340px] sm:min-w-[380px] max-w-[400px] bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col snap-center"
                 >
-                  {/* Top Info Section */}
                   <div className="p-6 flex gap-5 items-start">
-                    {/* Foto Melingkar */}
                     <img
                       src={dokter.img}
                       alt={dokter.nama}
@@ -256,7 +335,6 @@ const Home = () => {
                       }}
                     />
 
-                    {/* Info Teks */}
                     <div className="flex-1 min-w-0">
                       <h3
                         className="text-base sm:text-lg font-bold text-gray-900 leading-snug line-clamp-2"
@@ -287,7 +365,6 @@ const Home = () => {
                     </div>
                   </div>
 
-                  {/* Bottom Schedule Section */}
                   <div className="mt-auto border-t border-gray-100">
                     <button
                       onClick={() =>
@@ -306,7 +383,6 @@ const Home = () => {
                       )}
                     </button>
 
-                    {/* Dropdown Content */}
                     {openDropdown === index && dokter.jadwal && (
                       <div className="px-6 pb-6 pt-2">
                         <div className="bg-white rounded-xl p-0 border border-gray-100 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
@@ -338,54 +414,64 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Kegiatan & Event / Informasi */}
-      <section id="informasi" className="w-full py-16 bg-white scroll-mt-20">
+      {/* ================= KEGIATAN & AGENDA ================= */}
+      <section id="kegiatan" className="w-full py-16 bg-white scroll-mt-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="mb-10">
             <h2 className="text-3xl font-bold text-green-600 mb-2">
-              Informasi Rumah Sakit
+              Kegiatan Rumah Sakit
             </h2>
-            <p className="text-base text-gray-600 max-w-3xl">
-              Berbagai informasi terbaru mengenai kegiatan, event, serta artikel
-              kesehatan dari rumah sakit.
+            <p className="text-base text-gray-600 w-full">
+              Dokumentasi berbagai agenda, acara, dan program rutin yang
+              diselenggarakan oleh RS UMS A.R. Fachrudin.
             </p>
           </div>
 
-          <div className="mb-12">
-            <h3 className="text-xl font-semibold mb-6 text-gray-800">
-              Kegiatan & Event
-            </h3>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {eventList.map((event, index) => (
-                <Link
-                  to={`/event/${event.id || index}`}
-                  key={event.id || index}
-                  className="relative rounded-2xl overflow-hidden shadow-md group block border border-gray-200"
-                >
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+            {eventList.slice(0, 3).map((event, index) => (
+              <Link
+                to={`/event/${event.id || index}`}
+                key={event.id || index}
+                className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full border border-gray-100 group"
+              >
+                <div className="w-full aspect-video bg-gray-100 overflow-hidden border-b border-gray-100">
                   <img
                     src={`${API_URL}${event.image}`}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     alt={event.title}
                     loading="lazy"
-                    className="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-500"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex flex-col justify-end p-6">
-                    <h3 className="text-white text-xl font-bold mb-2">
-                      {event.title}
-                    </h3>
-                    <p className="text-gray-200 text-sm line-clamp-2">
-                      {event.short_desc}
-                    </p>
-                  </div>
-                </Link>
-              ))}
-            </div>
+                </div>
+
+                <div className="p-5 flex flex-col flex-grow">
+                  <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">
+                    Kegiatan
+                  </p>
+                  <h2 className="text-xl font-bold text-gray-800 leading-tight line-clamp-2">
+                    {event.title}
+                  </h2>
+
+                  <p className="text-gray-600 mt-3 line-clamp-3 text-justify text-sm">
+                    {event.short_desc}
+                  </p>
+
+                  <p className="text-xs text-gray-400 mt-auto pt-4 flex items-center gap-2 border-t border-gray-50">
+                    <span className="font-medium text-gray-600">
+                      RS UMS A.R. Fachrudin
+                    </span>
+                  </p>
+                </div>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
       {/* ================= RS UMS UPDATE ================= */}
-      <section id="rs-ums-update" className="w-full py-16 bg-gray-50">
+      <section
+        id="rs-ums-update"
+        className="w-full py-16 bg-gray-50 border-t border-gray-100"
+      >
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex justify-between items-end mb-8">
             <div>
@@ -399,7 +485,6 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Elfsight Widget */}
           <div className="w-full">
             <div
               className="elfsight-app-dceffb66-10fd-4021-befb-f21163ff55b1"
@@ -417,8 +502,68 @@ const Home = () => {
         </a>
       </section>
 
+      {/* ================= MITRA & KERJASAMA (CAROUSEL) ================= */}
+      <section
+        id="mitra"
+        className="w-full py-16 bg-white border-t border-gray-100 overflow-hidden"
+      >
+        <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10 text-center">
+          <h2 className="text-3xl font-bold text-green-600 mb-2">
+            Mitra & Kerjasama
+          </h2>
+          <p className="text-base text-gray-600">
+            Kami bekerja sama dengan berbagai instansi untuk memberikan
+            pelayanan kesehatan terbaik.
+          </p>
+        </div>
+
+        <div
+          className="relative w-full max-w-7xl mx-auto flex items-center"
+          style={{
+            maskImage:
+              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+            WebkitMaskImage:
+              "linear-gradient(to right, transparent, black 10%, black 90%, transparent)",
+          }}
+        >
+          <style>
+            {`
+              @keyframes scroll-mitra {
+                0% { transform: translateX(0); }
+                100% { transform: translateX(-50%); }
+              }
+              .animate-scroll-mitra {
+                display: flex;
+                width: max-content;
+                animation: scroll-mitra 30s linear infinite;
+              }
+              .animate-scroll-mitra:hover {
+                animation-play-state: paused;
+              }
+            `}
+          </style>
+
+          <div className="animate-scroll-mitra gap-12 md:gap-24 items-center">
+            {[...mitraList, ...mitraList].map((logo, index) => (
+              <img
+                key={index}
+                src={logo}
+                alt="Mitra RS"
+                className="w-28 md:w-40 h-12 md:h-16 object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
+                onError={(e) => {
+                  e.target.style.display = "none";
+                }}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Lokasi Rumah Sakit */}
-      <section id="lokasi" className="w-full py-16 bg-white scroll-mt-20">
+      <section
+        id="lokasi"
+        className="w-full py-16 bg-gray-50 border-t border-gray-100 scroll-mt-20"
+      >
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="grid md:grid-cols-2 gap-10 items-center">
             {/* MAP */}
