@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Menu, X, ChevronRight, Phone, MapPin, Clock3 } from "lucide-react";
-import logo from "/UMS.png";
+import logo from "/logo_rs.png";
 import { Link, useLocation } from "react-router-dom";
 
 function Navbar() {
