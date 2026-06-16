@@ -50,7 +50,6 @@ const fasilitas = [
 
 const heroImages = ["/slider.webp", "/Slider2.webp"];
 
-// ================= DATA MITRA KERJASAMA =================
 const mitraList = [
   "/images/bjs.webp",
   "/images/jasaraharja.webp",
@@ -64,6 +63,8 @@ const Home = () => {
   const [dokterList, setDokterList] = useState([]);
   const [eventList, setEventList] = useState([]);
   const [articleList, setArticleList] = useState([]);
+  const [reelsList, setReelsList] = useState([]);
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   const formatTanggal = (tanggal) => {
@@ -74,13 +75,6 @@ const Home = () => {
       year: "numeric",
     });
   };
-
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://elfsightcdn.com/platform.js";
-    script.async = true;
-    document.body.appendChild(script);
-  }, []);
 
   useEffect(() => {
     fetch(`${API_URL}/event`)
@@ -128,6 +122,31 @@ const Home = () => {
         console.error("Gagal mengambil dokter:", err);
       });
   }, []);
+
+  // ================= PERUBAHAN: FETCH REELS DENGAN AUTO-UPDATE =================
+  useEffect(() => {
+    const fetchReels = () => {
+      fetch(`${API_URL}/reels`)
+        .then((res) => res.json())
+        .then((data) => {
+          // Tetap batasi hanya 3 data teratas
+          setReelsList(data.slice(0, 3));
+        })
+        .catch((err) => console.error("Gagal mengambil data reels:", err));
+    };
+
+    // Panggil saat pertama kali web dibuka
+    fetchReels();
+
+    // Jalankan fungsi fetchReels secara otomatis setiap 30 detik (30000 milidetik)
+    const intervalReels = setInterval(() => {
+      fetchReels();
+    }, 30000);
+
+    // Hapus interval jika pengunjung pindah ke halaman lain (mencegah kebocoran memori)
+    return () => clearInterval(intervalReels);
+  }, []);
+  // ==============================================================================
 
   const nextSlide = () => {
     setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
@@ -208,11 +227,11 @@ const Home = () => {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="mb-10">
             <h2 className="text-3xl font-bold text-green-600 mb-2">
-              Informasi & Artikel Kesehatan RS UMS{" "}
+              Artikel Terbaru RS UMS{" "}
             </h2>
             <p className="text-base text-gray-600 w-full">
-              Dapatkan tips kesehatan terkini dan informasi medis terpercaya
-              seputar RS UMS A.R. Fachrudin.
+              Dapatkan informasi kesehatan terkini, tips medis, dan berita
+              terbaru seputar pelayanan RS UMS A.R. Fachrudin.
             </p>
           </div>
 
@@ -467,7 +486,7 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= RS UMS UPDATE ================= */}
+      {/* ================= RS UMS UPDATE (INSTAGRAM EMBED NATIVE) ================= */}
       <section
         id="rs-ums-update"
         className="w-full py-16 bg-gray-50 border-t border-gray-100"
@@ -485,11 +504,27 @@ const Home = () => {
             </div>
           </div>
 
-          <div className="w-full">
-            <div
-              className="elfsight-app-dceffb66-10fd-4021-befb-f21163ff55b1"
-              data-elfsight-app-lazy
-            ></div>
+          {/* Menampilkan 3 Reels dari State Database */}
+          <div className="w-full flex flex-wrap justify-center gap-6">
+            {reelsList.length > 0 ? (
+              reelsList.map((reel, index) => (
+                <iframe
+                  key={reel.id || index}
+                  src={reel.link}
+                  width="320"
+                  height="540"
+                  frameBorder="0"
+                  scrolling="no"
+                  allowTransparency="true"
+                  className="rounded-2xl shadow-md border border-gray-200 bg-white"
+                  title={`Instagram Reel ${index + 1}`}
+                ></iframe>
+              ))
+            ) : (
+              <p className="text-gray-500 py-10">
+                Belum ada tayangan Reels terbaru yang ditambahkan.
+              </p>
+            )}
           </div>
         </div>
         <a

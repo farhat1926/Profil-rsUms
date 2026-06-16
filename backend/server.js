@@ -20,11 +20,13 @@ const eventRoutes = require("./routes/eventRoutes");
 const promoRoutes = require("./routes/promoRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const informasiRoutes = require("./routes/informasiRoutes");
+const reelRoutes = require("./routes/reelsRoutes");
 
 app.use("/admin", adminRoutes);
 app.use("/jadwal", jadwalRoutes);
 app.use("/event", eventRoutes);
 app.use("/promo", promoRoutes);
+app.use("/reels", reelRoutes);
 app.use("/doctor", doctorRoutes(db));
 app.use("/informasi", informasiRoutes);
 

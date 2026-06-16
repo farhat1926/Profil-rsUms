@@ -11,6 +11,7 @@ import {
   X,
   Activity,
   TrendingUp,
+  Video,
 } from "lucide-react";
 import {
   LineChart,
@@ -24,13 +25,12 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-// Import Komponen Manajemen Anda
 import ManageDokter from "./ManageDokter";
 import ManageEvent from "./ManageEvent";
 import ManageInformasi from "./ManageInformasi";
 import ManagePromo from "./ManagePromo";
+import ManageReels from "./ManageReels"; // Import komponen ManageReels baru
 
-// Data Dummy untuk Grafik Pengunjung
 const visitorData = [
   { name: "Sen", pengunjung: 400 },
   { name: "Sel", pengunjung: 300 },
@@ -44,43 +44,43 @@ const visitorData = [
 export default function DashboardAdmin() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("dashboard");
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false); // State untuk Sidebar Mobile
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
     dokter: 0,
     event: 0,
     informasi: 0,
     promo: 0,
+    reels: 0,
   });
 
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Proteksi Route
-    useEffect(() => {
+  useEffect(() => {
     const token = localStorage.getItem("adminToken");
     if (!token) {
       navigate("/admin", { replace: true });
     }
   }, [navigate]);
-  
 
-  // Fetch Summary Data secara Real-time
   useEffect(() => {
     if (activeMenu === "dashboard") {
       const fetchStats = async () => {
         try {
-          const [resDokter, resEvent, resInfo, resPromo] = await Promise.all([
-            fetch(`${API_URL}/jadwal`),
-            fetch(`${API_URL}/event`),
-            fetch(`${API_URL}/informasi`),
-            fetch(`${API_URL}/promo`),
-          ]);
+          const [resDokter, resEvent, resInfo, resPromo, resReels] =
+            await Promise.all([
+              fetch(`${API_URL}/jadwal`),
+              fetch(`${API_URL}/event`),
+              fetch(`${API_URL}/informasi`),
+              fetch(`${API_URL}/promo`),
+              fetch(`${API_URL}/reels`),
+            ]);
 
           const dataDokter = await resDokter.json();
           const dataEvent = await resEvent.json();
           const dataInfo = await resInfo.json();
           const dataPromo = await resPromo.json();
+          const dataReels = await resReels.json();
 
-          // Menghitung jumlah dokter unik (karena 1 dokter bisa punya banyak jadwal)
           const uniqueDokter = new Set(dataDokter.map((d) => d.id)).size;
 
           setStats({
@@ -88,6 +88,7 @@ export default function DashboardAdmin() {
             event: dataEvent.length,
             informasi: dataInfo.length,
             promo: dataPromo.length,
+            reels: dataReels.length,
           });
         } catch (error) {
           console.error("Gagal mengambil data statistik:", error);
@@ -96,39 +97,35 @@ export default function DashboardAdmin() {
       fetchStats();
     }
   }, [activeMenu, API_URL]);
+
   useEffect(() => {
-  // push beberapa state biar back gak tembus
-  window.history.pushState(null, "", window.location.href);
-  window.history.pushState(null, "", window.location.href);
+    window.history.pushState(null, "", window.location.href);
+    window.history.pushState(null, "", window.location.href);
 
-  const handlePopState = () => {
-    // setiap back ditekan → dorong lagi ke depan
-    window.history.go(1);
-  };
+    const handlePopState = () => {
+      window.history.go(1);
+    };
 
-  window.addEventListener("popstate", handlePopState);
+    window.addEventListener("popstate", handlePopState);
 
-  return () => {
-    window.removeEventListener("popstate", handlePopState);
-  };
-}, []);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   const handleLogout = () => {
-  localStorage.removeItem("adminToken");
-  navigate("/admin", { replace: true });
-};
+    localStorage.removeItem("adminToken");
+    navigate("/admin", { replace: true });
+  };
 
-  // Tutup sidebar jika menu diklik (khusus di mobile)
   const handleMenuClick = (menuId) => {
     setActiveMenu(menuId);
     setIsSidebarOpen(false);
   };
 
-  // Render Konten Utama Dashboard
   const renderDashboardSummary = () => (
     <div className="animate-in fade-in duration-500 space-y-6">
-      {/* Kartu Ringkasan (Stats Cards) */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
             <Users size={24} />
@@ -167,11 +164,18 @@ export default function DashboardAdmin() {
             <h4 className="text-2xl font-bold text-gray-800">{stats.promo}</h4>
           </div>
         </div>
+        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
+          <div className="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center shrink-0">
+            <Video size={24} />
+          </div>
+          <div>
+            <p className="text-sm text-gray-500 font-medium">Total Reels</p>
+            <h4 className="text-2xl font-bold text-gray-800">{stats.reels}</h4>
+          </div>
+        </div>
       </div>
 
-      {/* Area Grafik */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Grafik Garis - Pengunjung Website */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-6">
             <Activity className="text-blue-500" size={20} />
@@ -224,7 +228,6 @@ export default function DashboardAdmin() {
           </div>
         </div>
 
-        {/* Grafik Batang - Interaksi */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
           <div className="flex items-center gap-2 mb-6">
             <TrendingUp className="text-green-500" size={20} />
@@ -283,6 +286,8 @@ export default function DashboardAdmin() {
         return <ManageInformasi API_URL={API_URL} />;
       case "promo":
         return <ManagePromo API_URL={API_URL} />;
+      case "reels":
+        return <ManageReels API_URL={API_URL} />;
       default:
         return renderDashboardSummary();
     }
@@ -310,7 +315,6 @@ export default function DashboardAdmin() {
             <X size={24} />
           </button>
           <div className="bg-white p-2 rounded-full mb-3 mt-4">
-            {/* Pastikan Anda memiliki logo-rs.png di folder public frontend Anda */}
             <img
               src="/images/logo square.png"
               alt="Logo RS"
@@ -347,6 +351,11 @@ export default function DashboardAdmin() {
               label: "Kelola Informasi",
             },
             { id: "promo", icon: <Tag size={20} />, label: "Kelola Promo" },
+            {
+              id: "reels",
+              icon: <Video size={20} />,
+              label: "Kelola Reels",
+            },
           ].map((item) => (
             <button
               key={item.id}
@@ -383,12 +392,9 @@ export default function DashboardAdmin() {
         </div>
       </aside>
 
-      {/* ================= MAIN CONTENT ================= */}
       <main className="flex-1 flex flex-col min-h-screen md:ml-72 transition-all duration-300">
-        {/* Header Top Bar */}
         <header className="bg-white/80 backdrop-blur-md sticky top-0 z-30 border-b border-gray-100 px-6 py-4 flex justify-between items-center shadow-sm">
           <div className="flex items-center gap-4">
-            {/* Tombol Hamburger Mobile */}
             <button
               onClick={() => setIsSidebarOpen(true)}
               className="md:hidden p-2 bg-gray-100 rounded-lg text-gray-600 hover:bg-gray-200"
@@ -419,7 +425,6 @@ export default function DashboardAdmin() {
           </div>
         </header>
 
-        {/* Dynamic Content */}
         <div className="flex-1 p-4 md:p-8 overflow-y-auto">
           {renderContent()}
         </div>
