@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
-  Calendar,
   FileText,
   Tag,
   LogOut,
@@ -26,10 +25,9 @@ import {
 } from "recharts";
 
 import ManageDokter from "./ManageDokter";
-import ManageEvent from "./ManageEvent";
 import ManageInformasi from "./ManageInformasi";
 import ManagePromo from "./ManagePromo";
-import ManageReels from "./ManageReels"; // Import komponen ManageReels baru
+import ManageReels from "./ManageReels";
 
 const visitorData = [
   { name: "Sen", pengunjung: 400 },
@@ -47,7 +45,6 @@ export default function DashboardAdmin() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [stats, setStats] = useState({
     dokter: 0,
-    event: 0,
     informasi: 0,
     promo: 0,
     reels: 0,
@@ -66,17 +63,14 @@ export default function DashboardAdmin() {
     if (activeMenu === "dashboard") {
       const fetchStats = async () => {
         try {
-          const [resDokter, resEvent, resInfo, resPromo, resReels] =
-            await Promise.all([
-              fetch(`${API_URL}/jadwal`),
-              fetch(`${API_URL}/event`),
-              fetch(`${API_URL}/informasi`),
-              fetch(`${API_URL}/promo`),
-              fetch(`${API_URL}/reels`),
-            ]);
+          const [resDokter, resInfo, resPromo, resReels] = await Promise.all([
+            fetch(`${API_URL}/jadwal`),
+            fetch(`${API_URL}/informasi`),
+            fetch(`${API_URL}/promo`),
+            fetch(`${API_URL}/reels`),
+          ]);
 
           const dataDokter = await resDokter.json();
-          const dataEvent = await resEvent.json();
           const dataInfo = await resInfo.json();
           const dataPromo = await resPromo.json();
           const dataReels = await resReels.json();
@@ -85,7 +79,6 @@ export default function DashboardAdmin() {
 
           setStats({
             dokter: uniqueDokter,
-            event: dataEvent.length,
             informasi: dataInfo.length,
             promo: dataPromo.length,
             reels: dataReels.length,
@@ -125,7 +118,8 @@ export default function DashboardAdmin() {
 
   const renderDashboardSummary = () => (
     <div className="animate-in fade-in duration-500 space-y-6">
-      <div className="grid grid-cols-2 md:grid-cols-5 gap-4 md:gap-6">
+      {/* PERUBAHAN GRID: Menjadi 4 kolom (md:grid-cols-4) agar 4 kartu tersusun rapi[cite: 10] */}
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
             <Users size={24} />
@@ -135,26 +129,19 @@ export default function DashboardAdmin() {
             <h4 className="text-2xl font-bold text-gray-800">{stats.dokter}</h4>
           </div>
         </div>
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
-          <div className="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center shrink-0">
-            <Calendar size={24} />
-          </div>
-          <div>
-            <p className="text-sm text-gray-500 font-medium">Event Aktif</p>
-            <h4 className="text-2xl font-bold text-gray-800">{stats.event}</h4>
-          </div>
-        </div>
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center shrink-0">
             <FileText size={24} />
           </div>
           <div>
-            <p className="text-sm text-gray-500 font-medium">Informasi</p>
+            <p className="text-sm text-gray-500 font-medium">Artikel</p>
             <h4 className="text-2xl font-bold text-gray-800">
               {stats.informasi}
             </h4>
           </div>
         </div>
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center shrink-0">
             <Tag size={24} />
@@ -164,6 +151,7 @@ export default function DashboardAdmin() {
             <h4 className="text-2xl font-bold text-gray-800">{stats.promo}</h4>
           </div>
         </div>
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center shrink-0">
             <Video size={24} />
@@ -280,8 +268,6 @@ export default function DashboardAdmin() {
     switch (activeMenu) {
       case "dokter":
         return <ManageDokter API_URL={API_URL} />;
-      case "event":
-        return <ManageEvent API_URL={API_URL} />;
       case "informasi":
         return <ManageInformasi API_URL={API_URL} />;
       case "promo":
@@ -341,14 +327,9 @@ export default function DashboardAdmin() {
             },
             { id: "dokter", icon: <Users size={20} />, label: "Kelola Dokter" },
             {
-              id: "event",
-              icon: <Calendar size={20} />,
-              label: "Kelola Event",
-            },
-            {
               id: "informasi",
               icon: <FileText size={20} />,
-              label: "Kelola Informasi",
+              label: "Kelola Artikel", // Nama menu disesuaikan[cite: 10]
             },
             { id: "promo", icon: <Tag size={20} />, label: "Kelola Promo" },
             {

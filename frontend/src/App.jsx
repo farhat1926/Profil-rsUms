@@ -35,7 +35,6 @@ import RuangOperasi from "./pages/FasilitasPages/ruang-operasi";
 import MeetDoctor from "./components/MeetDoctor";
 import DoctorDetail from "./components/DoctorDetail";
 import JadwalDokter from "./components/JadwalDokter";
-import EventDetail from "./components/EventDetail";
 import DetailPromo from "./components/DetailPromo";
 
 // Halaman Admin
@@ -79,16 +78,21 @@ function AppContent() {
           <Route path="/FasilitasPages/igd" element={<IGD />} />
           <Route path="/FasilitasPages/rawat-inap" element={<RawatInap />} />
           <Route path="/FasilitasPages/apotek" element={<Apotek />} />
-          <Route path="/FasilitasPages/laboratorium" element={<Laboratorium />} />
+          <Route
+            path="/FasilitasPages/laboratorium"
+            element={<Laboratorium />}
+          />
           <Route path="/FasilitasPages/radiologi" element={<Radiologi />} />
-          <Route path="/FasilitasPages/ruang-operasi" element={<RuangOperasi />} />
+          <Route
+            path="/FasilitasPages/ruang-operasi"
+            element={<RuangOperasi />}
+          />
           <Route path="/meet-doctor" element={<MeetDoctor />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
           <Route path="/dokter" element={<DokterPage />} />
           <Route path="/JadwalDokter" element={<JadwalDokter />} />
           <Route path="/informasi" element={<InformasiPage />} />
           <Route path="/informasi/:id" element={<ArticleDetail />} />
-          <Route path="/event/:id" element={<EventDetail />} />
           <Route path="/promo" element={<PromoPage />} />
           <Route path="/promo/:id" element={<DetailPromo />} />
 

@@ -61,7 +61,6 @@ const Home = () => {
   const [currentHero, setCurrentHero] = useState(0);
   const [openDropdown, setOpenDropdown] = useState(null);
   const [dokterList, setDokterList] = useState([]);
-  const [eventList, setEventList] = useState([]);
   const [articleList, setArticleList] = useState([]);
   const [reelsList, setReelsList] = useState([]);
 
@@ -75,13 +74,6 @@ const Home = () => {
       year: "numeric",
     });
   };
-
-  useEffect(() => {
-    fetch(`${API_URL}/event`)
-      .then((res) => res.json())
-      .then((data) => setEventList(data))
-      .catch((err) => console.error("Gagal mengambil event:", err));
-  }, []);
 
   useEffect(() => {
     fetch(`${API_URL}/informasi`)
@@ -123,30 +115,24 @@ const Home = () => {
       });
   }, []);
 
-  // ================= PERUBAHAN: FETCH REELS DENGAN AUTO-UPDATE =================
   useEffect(() => {
     const fetchReels = () => {
       fetch(`${API_URL}/reels`)
         .then((res) => res.json())
         .then((data) => {
-          // Tetap batasi hanya 3 data teratas
           setReelsList(data.slice(0, 3));
         })
         .catch((err) => console.error("Gagal mengambil data reels:", err));
     };
 
-    // Panggil saat pertama kali web dibuka
     fetchReels();
 
-    // Jalankan fungsi fetchReels secara otomatis setiap 30 detik (30000 milidetik)
     const intervalReels = setInterval(() => {
       fetchReels();
     }, 30000);
 
-    // Hapus interval jika pengunjung pindah ke halaman lain (mencegah kebocoran memori)
     return () => clearInterval(intervalReels);
   }, []);
-  // ==============================================================================
 
   const nextSlide = () => {
     setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
@@ -183,7 +169,8 @@ const Home = () => {
                   alt={`hero-${index}`}
                   className="w-full h-full object-contain"
                   style={{ width: `${100 / heroImages.length}%` }}
-                  loading={index === 0 ? "eager" : "lazy"}
+                  loading={index === 0 ? "eager" : "lazy"} // Tetap eager untuk hero pertama
+                  decoding={index === 0 ? "sync" : "async"}
                 />
               ))}
             </div>
@@ -248,6 +235,7 @@ const Home = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     alt={article.title}
                     loading="lazy"
+                    decoding="async" // Menghindari block pada main thread
                   />
                 </div>
 
@@ -313,6 +301,7 @@ const Home = () => {
                   src={item.img}
                   alt={item.title}
                   loading="lazy"
+                  decoding="async"
                   className="w-full h-52 object-cover group-hover:scale-110 transition duration-300"
                 />
 
@@ -348,6 +337,7 @@ const Home = () => {
                       src={dokter.img}
                       alt={dokter.nama}
                       loading="lazy"
+                      decoding="async"
                       className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover object-top border border-gray-200 shrink-0 shadow-sm"
                       onError={(e) => {
                         e.target.src = "/default-doctor.jpg";
@@ -433,59 +423,6 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= KEGIATAN & AGENDA ================= */}
-      <section id="kegiatan" className="w-full py-16 bg-white scroll-mt-20">
-        <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <div className="mb-10">
-            <h2 className="text-3xl font-bold text-green-600 mb-2">
-              Kegiatan Rumah Sakit
-            </h2>
-            <p className="text-base text-gray-600 w-full">
-              Dokumentasi berbagai agenda, acara, dan program rutin yang
-              diselenggarakan oleh RS UMS A.R. Fachrudin.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-            {eventList.slice(0, 3).map((event, index) => (
-              <Link
-                to={`/event/${event.id || index}`}
-                key={event.id || index}
-                className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full border border-gray-100 group"
-              >
-                <div className="w-full aspect-video bg-gray-100 overflow-hidden border-b border-gray-100">
-                  <img
-                    src={`${API_URL}${event.image}`}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    alt={event.title}
-                    loading="lazy"
-                  />
-                </div>
-
-                <div className="p-5 flex flex-col flex-grow">
-                  <p className="text-xs font-bold text-green-600 uppercase tracking-wider mb-2">
-                    Kegiatan
-                  </p>
-                  <h2 className="text-xl font-bold text-gray-800 leading-tight line-clamp-2">
-                    {event.title}
-                  </h2>
-
-                  <p className="text-gray-600 mt-3 line-clamp-3 text-justify text-sm">
-                    {event.short_desc}
-                  </p>
-
-                  <p className="text-xs text-gray-400 mt-auto pt-4 flex items-center gap-2 border-t border-gray-50">
-                    <span className="font-medium text-gray-600">
-                      RS UMS A.R. Fachrudin
-                    </span>
-                  </p>
-                </div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ================= RS UMS UPDATE (INSTAGRAM EMBED NATIVE) ================= */}
       <section
         id="rs-ums-update"
@@ -504,21 +441,23 @@ const Home = () => {
             </div>
           </div>
 
-          {/* Menampilkan 3 Reels dari State Database */}
           <div className="w-full flex flex-wrap justify-center gap-6">
             {reelsList.length > 0 ? (
               reelsList.map((reel, index) => (
-                <iframe
+                <div
                   key={reel.id || index}
-                  src={reel.link}
-                  width="320"
-                  height="540"
-                  frameBorder="0"
-                  scrolling="no"
-                  allowTransparency="true"
-                  className="rounded-2xl shadow-md border border-gray-200 bg-white"
-                  title={`Instagram Reel ${index + 1}`}
-                ></iframe>
+                  className="w-[300px] h-[533px] rounded-2xl overflow-hidden shadow-md border border-gray-200 bg-white"
+                >
+                  <iframe
+                    src={reel.link}
+                    className="w-full h-full"
+                    frameBorder="0"
+                    scrolling="no"
+                    allowTransparency="true"
+                    loading="lazy" // Penting untuk performa agar iframe Instagram tidak diload di awal
+                    title={`Instagram Reel ${index + 1}`}
+                  ></iframe>
+                </div>
               ))
             ) : (
               <p className="text-gray-500 py-10">
@@ -563,14 +502,16 @@ const Home = () => {
         >
           <style>
             {`
+              /* Animasi sekarang mengandalkan GPU dengan translate3d */
               @keyframes scroll-mitra {
-                0% { transform: translateX(0); }
-                100% { transform: translateX(-50%); }
+                0% { transform: translate3d(0, 0, 0); }
+                100% { transform: translate3d(-50%, 0, 0); }
               }
               .animate-scroll-mitra {
                 display: flex;
                 width: max-content;
                 animation: scroll-mitra 30s linear infinite;
+                will-change: transform; /* Memberitahu browser untuk optimasi hardware acceleration */
               }
               .animate-scroll-mitra:hover {
                 animation-play-state: paused;
@@ -584,6 +525,8 @@ const Home = () => {
                 key={index}
                 src={logo}
                 alt="Mitra RS"
+                loading="lazy"
+                decoding="async"
                 className="w-28 md:w-40 h-12 md:h-16 object-contain grayscale hover:grayscale-0 opacity-70 hover:opacity-100 transition-all duration-300"
                 onError={(e) => {
                   e.target.style.display = "none";
@@ -607,7 +550,7 @@ const Home = () => {
                 title="Lokasi RS"
                 src="https://www.google.com/maps?q=RS%20UMS%20A.R.%20Facrudin&output=embed"
                 className="w-full h-full border-0"
-                loading="lazy"
+                loading="lazy" // Memastikan Google Maps tidak melambatkan load awal
               ></iframe>
             </div>
 
