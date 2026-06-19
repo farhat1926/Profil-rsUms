@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   trackVisitor,
   getVisitorStats,
-} = require("../controllers/VisitorController");
+} = require("../controllers/visitorController");
 
 router.post("/track", trackVisitor);
 router.get("/stats", getVisitorStats);
