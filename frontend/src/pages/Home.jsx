@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Eye,
   CalendarDays,
@@ -7,6 +7,12 @@ import {
   ChevronUp,
   ChevronLeft,
   ChevronRight,
+  Search,
+  Filter,
+  ArrowRight,
+  UsersRound,
+  Stethoscope,
+  ShieldCheck,
 } from "lucide-react";
 
 const fasilitas = [
@@ -58,11 +64,16 @@ const mitraList = [
 ];
 
 const Home = () => {
+  const navigate = useNavigate();
   const [currentHero, setCurrentHero] = useState(0);
-  const [openDropdown, setOpenDropdown] = useState(null);
   const [dokterList, setDokterList] = useState([]);
   const [articleList, setArticleList] = useState([]);
   const [reelsList, setReelsList] = useState([]);
+
+  // State untuk Pencarian di Home
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedSpesialis, setSelectedSpesialis] = useState("Semua");
+  const [currentDoctorSlide, setCurrentDoctorSlide] = useState(0);
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -134,10 +145,10 @@ const Home = () => {
     return () => clearInterval(intervalReels);
   }, []);
 
+  // Animasi Hero Slider
   const nextSlide = () => {
     setCurrentHero((prev) => (prev === heroImages.length - 1 ? 0 : prev + 1));
   };
-
   const prevSlide = () => {
     setCurrentHero((prev) => (prev === 0 ? heroImages.length - 1 : prev - 1));
   };
@@ -148,6 +159,34 @@ const Home = () => {
     }, 6000);
     return () => clearInterval(interval);
   }, [currentHero]);
+
+  // ================= LOGIKA PENCARIAN DOKTER =================
+  const uniqueSpesialisHome = [
+    "Semua",
+    ...new Set(dokterList.map((d) => d.spesialis || "Lainnya")),
+  ].sort();
+
+  const handleSearchDoctor = (e) => {
+    e.preventDefault();
+    navigate("/meet-doctor", {
+      state: {
+        searchQuery: searchQuery,
+        selectedSpesialis: selectedSpesialis,
+      },
+    });
+  };
+
+  // Animasi otomatis Carousel Dokter di Home
+  useEffect(() => {
+    if (dokterList.length > 0) {
+      const doctorInterval = setInterval(() => {
+        setCurrentDoctorSlide((prev) =>
+          prev === dokterList.length - 1 ? 0 : prev + 1,
+        );
+      }, 3500);
+      return () => clearInterval(doctorInterval);
+    }
+  }, [dokterList]);
 
   return (
     <div className="font-sans w-full overflow-hidden">
@@ -169,7 +208,7 @@ const Home = () => {
                   alt={`hero-${index}`}
                   className="w-full h-full object-contain"
                   style={{ width: `${100 / heroImages.length}%` }}
-                  loading={index === 0 ? "eager" : "lazy"} // Tetap eager untuk hero pertama
+                  loading={index === 0 ? "eager" : "lazy"}
                   decoding={index === 0 ? "sync" : "async"}
                 />
               ))}
@@ -235,7 +274,7 @@ const Home = () => {
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                     alt={article.title}
                     loading="lazy"
-                    decoding="async" // Menghindari block pada main thread
+                    decoding="async"
                   />
                 </div>
 
@@ -318,107 +357,188 @@ const Home = () => {
         </div>
       </section>
 
-      {/* ================= DOKTER SPESIALIS ================= */}
-      <section id="dokter" className="w-full bg-green-50 py-20">
+      {/* ================= DOKTER SPESIALIS (KEMBALI KE STYLE STANDARD) ================= */}
+      <section
+        id="dokter"
+        className="w-full bg-green-50 py-16 border-t border-gray-100"
+      >
         <div className="max-w-7xl mx-auto px-4 md:px-8">
-          <h2 className="text-3xl font-bold text-center mb-12 text-gray-800">
-            Dokter Spesialis
-          </h2>
+          <div className="text-center mb-10">
+            <h2 className="text-3xl font-bold text-green-600 mb-2">
+              Cari Dokter Spesialis
+            </h2>
+            <p className="text-base text-gray-600 max-w-2xl mx-auto">
+              Temukan jadwal praktek dan profil lengkap dari puluhan dokter ahli
+              kami yang siap memberikan pelayanan kesehatan terbaik untuk Anda.
+            </p>
+          </div>
 
-          <div className="flex gap-6 overflow-x-auto pb-8 custom-scrollbar px-1">
-            {dokterList.length > 0 ? (
-              dokterList.slice(0, 5).map((dokter, index) => (
-                <div
-                  key={dokter.id}
-                  className="min-w-[340px] sm:min-w-[380px] max-w-[400px] bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-300 border border-gray-100 flex flex-col snap-center"
+          {/* ================= SEARCH BAR ================= */}
+          <form
+            onSubmit={handleSearchDoctor}
+            className="max-w-4xl mx-auto bg-white p-5 md:p-6 rounded-3xl shadow-md border border-gray-100 mb-8 relative"
+          >
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Input Nama */}
+              <div className="relative group flex-1">
+                <Search
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400"
+                  size={22}
+                />
+                <input
+                  type="text"
+                  placeholder="Ketik nama dokter atau keahlian..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-14 pr-5 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:bg-white transition-all text-sm md:text-base font-medium placeholder-gray-400"
+                />
+              </div>
+
+              {/* Filter Spesialis */}
+              <div className="relative shrink-0 w-full md:w-[280px]">
+                <Filter
+                  className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  size={20}
+                />
+                <select
+                  value={selectedSpesialis}
+                  onChange={(e) => setSelectedSpesialis(e.target.value)}
+                  className="w-full appearance-none pl-12 pr-10 py-4 bg-gray-50 border border-gray-200 rounded-2xl text-gray-800 focus:outline-none focus:ring-2 focus:ring-green-500 focus:bg-white transition-all text-sm md:text-base font-medium cursor-pointer"
                 >
-                  <div className="p-6 flex gap-5 items-start">
-                    <img
-                      src={dokter.img}
-                      alt={dokter.nama}
-                      loading="lazy"
-                      decoding="async"
-                      className="w-20 h-20 sm:w-24 sm:h-24 rounded-full object-cover object-top border border-gray-200 shrink-0 shadow-sm"
-                      onError={(e) => {
-                        e.target.src = "/default-doctor.jpg";
-                      }}
-                    />
+                  {uniqueSpesialisHome.map((spesialis) => (
+                    <option key={spesialis} value={spesialis}>
+                      {spesialis === "Semua" ? "Semua Spesialis" : spesialis}
+                    </option>
+                  ))}
+                </select>
+                <ChevronDown
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none"
+                  size={20}
+                />
+              </div>
 
-                    <div className="flex-1 min-w-0">
-                      <h3
-                        className="text-base sm:text-lg font-bold text-gray-900 leading-snug line-clamp-2"
-                        title={dokter.nama}
-                      >
-                        {dokter.nama}
-                      </h3>
+              {/* Tombol Submit */}
+              <button
+                type="submit"
+                className="bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded-2xl transition-all shadow-sm text-sm md:text-base whitespace-nowrap"
+              >
+                Cari Jadwal
+              </button>
+            </div>
+          </form>
 
-                      <p className="text-[11px] text-gray-400 mt-2.5 uppercase tracking-wider font-bold">
-                        SPESIALIS
-                      </p>
-                      <p
-                        className="text-sm font-bold text-green-700 mt-0.5 truncate"
-                        title={dokter.spesialis}
-                      >
-                        {dokter.spesialis}
-                      </p>
+          {/* ================= STATISTIK BADGES ================= */}
+          <div className="flex flex-wrap justify-center gap-3 md:gap-5 mb-14 px-2">
+            <div className="bg-white border border-gray-100 shadow-sm px-5 py-3 rounded-full flex items-center gap-3">
+              <div className="bg-green-100 p-2 rounded-full text-green-600">
+                <UsersRound size={18} />
+              </div>
+              <p className="text-sm text-gray-600 font-medium">
+                Lebih dari{" "}
+                <span className="font-bold text-green-600">
+                  {dokterList.length}
+                </span>{" "}
+                Dokter
+              </p>
+            </div>
 
-                      <Link
-                        to={`/doctor/${dokter.id}`}
-                        className="inline-flex items-center gap-1.5 text-xs text-green-700 hover:text-green-900 mt-4 font-semibold transition-colors group"
-                      >
-                        <span className="group-hover:underline">
-                          Lihat Profil Selengkapnya
+            <div className="bg-white border border-gray-100 shadow-sm px-5 py-3 rounded-full flex items-center gap-3">
+              <div className="bg-blue-100 p-2 rounded-full text-[#175e97]">
+                <Stethoscope size={18} />
+              </div>
+              <p className="text-sm text-gray-600 font-medium">
+                <span className="font-bold text-[#175e97]">
+                  {uniqueSpesialisHome.length > 1
+                    ? uniqueSpesialisHome.length - 1
+                    : 0}
+                </span>{" "}
+                Spesialisasi
+              </p>
+            </div>
+
+            <div className="bg-white border border-gray-100 shadow-sm px-5 py-3 rounded-full hidden sm:flex items-center gap-3">
+              <div className="bg-orange-100 p-2 rounded-full text-orange-500">
+                <ShieldCheck size={18} />
+              </div>
+              <p className="text-sm text-gray-600 font-medium">
+                Pelayanan{" "}
+                <span className="font-bold text-orange-500">Terpercaya</span>
+              </p>
+            </div>
+          </div>
+
+          {/* ================= SMALLER CAROUSEL ================= */}
+          <div className="relative max-w-[320px] sm:max-w-[360px] mx-auto">
+            {dokterList.length > 0 ? (
+              <div className="relative h-[180px] w-full">
+                {dokterList.map((dokter, index) => (
+                  <div
+                    key={dokter.id}
+                    className={`absolute inset-0 bg-white rounded-[2rem] shadow-[0_8px_30px_rgb(0,0,0,0.06)] border border-gray-50 flex flex-col justify-center p-5 transition-all duration-700 ease-in-out ${
+                      currentDoctorSlide === index
+                        ? "opacity-100 translate-x-0 z-10"
+                        : "opacity-0 translate-x-8 -z-10"
+                    }`}
+                  >
+                    <div className="flex gap-4 items-center">
+                      {/* Image Container */}
+                      <div className="relative shrink-0">
+                        {/* Efek Glow di Belakang Gambar */}
+                        <div className="absolute inset-0 bg-green-400 rounded-full blur-md opacity-30 scale-110"></div>
+                        <img
+                          src={dokter.img}
+                          alt={dokter.nama}
+                          loading="lazy"
+                          className="relative w-28 h-28 object-cover object-top rounded-full border-4 border-white shadow-md z-10"
+                          onError={(e) => {
+                            e.target.src = "/default-doctor.jpg";
+                          }}
+                        />
+                      </div>
+
+                      <div className="flex-1 min-w-0 pr-1">
+                        <span className="text-[10px] font-bold text-green-700 bg-green-50 border border-green-100 px-2 py-1 rounded-md uppercase tracking-wider mb-2 inline-block">
+                          {dokter.spesialis}
                         </span>
-                        <Eye size={14} />
-                      </Link>
+                        <h3 className="text-base font-extrabold text-gray-800 leading-snug line-clamp-2">
+                          {dokter.nama}
+                        </h3>
+                        <Link
+                          to={`/doctor/${dokter.id}`}
+                          className="inline-flex items-center gap-1 text-[11px] text-[#175e97] hover:text-blue-800 mt-2 font-bold transition-colors group uppercase tracking-wide"
+                        >
+                          <span className="group-hover:underline">
+                            Lihat Profil
+                          </span>
+                          <ArrowRight
+                            size={12}
+                            className="group-hover:translate-x-0.5 transition-transform"
+                          />
+                        </Link>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="mt-auto border-t border-gray-100">
-                    <button
-                      onClick={() =>
-                        setOpenDropdown(openDropdown === index ? null : index)
-                      }
-                      className="w-full px-6 py-4 flex justify-between items-center text-sm font-bold text-gray-800 hover:bg-green-50/50 transition-colors rounded-b-2xl"
-                    >
-                      <span className="flex items-center gap-2.5">
-                        <CalendarDays size={18} className="text-green-700" />
-                        Lihat Jadwal Praktek
-                      </span>
-                      {openDropdown === index ? (
-                        <ChevronUp size={18} className="text-gray-500" />
-                      ) : (
-                        <ChevronDown size={18} className="text-gray-500" />
-                      )}
-                    </button>
-
-                    {openDropdown === index && dokter.jadwal && (
-                      <div className="px-6 pb-6 pt-2">
-                        <div className="bg-white rounded-xl p-0 border border-gray-100 shadow-sm animate-in fade-in slide-in-from-top-2 duration-300">
-                          {Object.entries(dokter.jadwal).map(([hari, jam]) => (
-                            <div
-                              key={hari}
-                              className="flex justify-between py-3 px-4 border-b border-gray-50 last:border-b-0 text-sm"
-                            >
-                              <span className="font-semibold text-gray-700">
-                                {hari}
-                              </span>
-                              <span className="text-gray-600 font-medium">
-                                {jam}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))
+                ))}
+              </div>
             ) : (
-              <p className="text-center w-full text-base text-gray-500">
-                Belum ada data dokter
+              <p className="text-center w-full text-sm text-gray-500">
+                Memuat data dokter...
               </p>
             )}
+
+            {/* Indikator Titik Carousel */}
+            <div className="flex justify-center gap-2 mt-8">
+              {dokterList.map((_, idx) => (
+                <div
+                  key={idx}
+                  className={`h-1.5 rounded-full transition-all duration-500 ease-out ${
+                    currentDoctorSlide === idx
+                      ? "w-6 bg-green-500"
+                      : "w-2 bg-gray-200"
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -454,7 +574,7 @@ const Home = () => {
                     frameBorder="0"
                     scrolling="no"
                     allowTransparency="true"
-                    loading="lazy" // Penting untuk performa agar iframe Instagram tidak diload di awal
+                    loading="lazy"
                     title={`Instagram Reel ${index + 1}`}
                   ></iframe>
                 </div>
@@ -502,7 +622,6 @@ const Home = () => {
         >
           <style>
             {`
-              /* Animasi sekarang mengandalkan GPU dengan translate3d */
               @keyframes scroll-mitra {
                 0% { transform: translate3d(0, 0, 0); }
                 100% { transform: translate3d(-50%, 0, 0); }
@@ -511,7 +630,7 @@ const Home = () => {
                 display: flex;
                 width: max-content;
                 animation: scroll-mitra 30s linear infinite;
-                will-change: transform; /* Memberitahu browser untuk optimasi hardware acceleration */
+                will-change: transform;
               }
               .animate-scroll-mitra:hover {
                 animation-play-state: paused;
@@ -550,7 +669,7 @@ const Home = () => {
                 title="Lokasi RS"
                 src="https://www.google.com/maps?q=RS%20UMS%20A.R.%20Facrudin&output=embed"
                 className="w-full h-full border-0"
-                loading="lazy" // Memastikan Google Maps tidak melambatkan load awal
+                loading="lazy"
               ></iframe>
             </div>
 

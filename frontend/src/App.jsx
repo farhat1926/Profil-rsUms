@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -15,7 +16,6 @@ import WhatsAppFloat from "./components/WhatsAppFloat";
 // Halaman Publik
 import Home from "./pages/Home";
 import FasilitasPage from "./pages/FasilitasPage";
-import DokterPage from "./pages/DokterPage";
 import InformasiPage from "./pages/Informasipage";
 import ArticleDetail from "./pages/ArticleDetail";
 import PromoPage from "./pages/PromoPage";
@@ -56,6 +56,12 @@ const ProtectedAdminRoute = ({ children }) => {
 function AppContent() {
   const location = useLocation();
 
+  useEffect(() => {
+    const API_URL = import.meta.env.VITE_API_URL;
+    fetch(`${API_URL}/visitors/track`, { method: "POST" }).catch((err) =>
+      console.error("Gagal merekam visitor", err),
+    );
+  }, []);
   // Sembunyikan Navbar, Footer, dll jika di halaman login/register atau di dalam area admin
   const hideLayout =
     ["/login"].includes(location.pathname) ||
@@ -89,7 +95,6 @@ function AppContent() {
           />
           <Route path="/meet-doctor" element={<MeetDoctor />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
-          <Route path="/dokter" element={<DokterPage />} />
           <Route path="/JadwalDokter" element={<JadwalDokter />} />
           <Route path="/informasi" element={<InformasiPage />} />
           <Route path="/informasi/:id" element={<ArticleDetail />} />

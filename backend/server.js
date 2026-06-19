@@ -20,6 +20,7 @@ const promoRoutes = require("./routes/promoRoutes");
 const doctorRoutes = require("./routes/doctorRoutes");
 const informasiRoutes = require("./routes/informasiRoutes");
 const reelRoutes = require("./routes/reelsRoutes");
+const visitorRoutes = require("./routes/visitorRoutes");
 
 app.use("/admin", adminRoutes);
 app.use("/jadwal", jadwalRoutes);
@@ -27,6 +28,7 @@ app.use("/promo", promoRoutes);
 app.use("/reels", reelRoutes);
 app.use("/doctor", doctorRoutes(db));
 app.use("/informasi", informasiRoutes);
+app.use("/visitors", visitorRoutes);
 
 app.listen(port, () => {
   console.log(`Server jalan di http://localhost:${port}`);

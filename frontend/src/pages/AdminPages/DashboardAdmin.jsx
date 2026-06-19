@@ -29,26 +29,20 @@ import ManageInformasi from "./ManageInformasi";
 import ManagePromo from "./ManagePromo";
 import ManageReels from "./ManageReels";
 
-const visitorData = [
-  { name: "Sen", pengunjung: 400 },
-  { name: "Sel", pengunjung: 300 },
-  { name: "Rab", pengunjung: 550 },
-  { name: "Kam", pengunjung: 450 },
-  { name: "Jum", pengunjung: 600 },
-  { name: "Sab", pengunjung: 800 },
-  { name: "Min", pengunjung: 750 },
-];
-
 export default function DashboardAdmin() {
   const navigate = useNavigate();
   const [activeMenu, setActiveMenu] = useState("dashboard");
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   const [stats, setStats] = useState({
     dokter: 0,
     informasi: 0,
     promo: 0,
     reels: 0,
   });
+
+  const [visitorChartData, setVisitorChartData] = useState([]);
+  const [timeFilter, setTimeFilter] = useState("7days");
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -92,6 +86,23 @@ export default function DashboardAdmin() {
   }, [activeMenu, API_URL]);
 
   useEffect(() => {
+    if (activeMenu === "dashboard") {
+      const fetchChartData = async () => {
+        try {
+          const res = await fetch(
+            `${API_URL}/visitors/stats?filter=${timeFilter}`,
+          );
+          const data = await res.json();
+          setVisitorChartData(data);
+        } catch (error) {
+          console.error("Gagal mengambil data grafik pengunjung:", error);
+        }
+      };
+      fetchChartData();
+    }
+  }, [activeMenu, timeFilter, API_URL]);
+
+  useEffect(() => {
     window.history.pushState(null, "", window.location.href);
     window.history.pushState(null, "", window.location.href);
 
@@ -118,7 +129,7 @@ export default function DashboardAdmin() {
 
   const renderDashboardSummary = () => (
     <div className="animate-in fade-in duration-500 space-y-6">
-      {/* PERUBAHAN GRID: Menjadi 4 kolom (md:grid-cols-4) agar 4 kartu tersusun rapi[cite: 10] */}
+      {/* KARTU STATISTIK ATAS */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 flex items-center gap-4">
           <div className="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
@@ -163,101 +174,139 @@ export default function DashboardAdmin() {
         </div>
       </div>
 
+      {/* AREA GRAFIK */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* GRAFIK GARIS (LINE CHART) */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 mb-6">
-            <Activity className="text-blue-500" size={20} />
-            <h3 className="text-lg font-bold text-gray-800">
-              Trafik Pengunjung (Mingguan)
-            </h3>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+            <div className="flex items-center gap-2">
+              <Activity className="text-blue-500" size={20} />
+              <h3 className="text-lg font-bold text-gray-800">
+                Trafik Pengunjung
+              </h3>
+            </div>
+
+            {/* ================= PERUBAHAN LABEL DROPDOWN FILTER ================= */}
+            <select
+              value={timeFilter}
+              onChange={(e) => setTimeFilter(e.target.value)}
+              className="bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-700 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm hover:bg-gray-100 transition-colors"
+            >
+              <option value="7days">7 Hari Terakhir (H-7 s/d Hari Ini)</option>
+              <option value="this_week">Minggu Ini (Senin s/d Hari Ini)</option>
+              <option value="last_week">Minggu Kemarin (Full 1 Minggu)</option>
+              <option value="this_month">Bulan Ini (Tgl 1 s/d Hari Ini)</option>
+              <option value="last_month">Bulan Kemarin (Full 1 Bulan)</option>
+            </select>
+            {/* ==================================================================== */}
           </div>
+
           <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={visitorData}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  vertical={false}
-                  stroke="#eee"
-                />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9ca3af" }}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9ca3af" }}
-                />
-                <Tooltip
-                  cursor={{ fill: "transparent" }}
-                  contentStyle={{
-                    borderRadius: "12px",
-                    border: "none",
-                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                  }}
-                />
-                <Line
-                  type="monotone"
-                  dataKey="pengunjung"
-                  stroke="#3b82f6"
-                  strokeWidth={4}
-                  dot={{
-                    r: 4,
-                    fill: "#3b82f6",
-                    strokeWidth: 2,
-                    stroke: "#fff",
-                  }}
-                  activeDot={{ r: 6 }}
-                />
-              </LineChart>
-            </ResponsiveContainer>
+            {visitorChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={visitorChartData}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="#eee"
+                  />
+                  <XAxis
+                    dataKey="name"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: "#9ca3af", fontSize: 12 }}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: "#9ca3af" }}
+                    allowDecimals={false}
+                  />
+                  <Tooltip
+                    cursor={{ fill: "transparent" }}
+                    contentStyle={{
+                      borderRadius: "12px",
+                      border: "none",
+                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                    }}
+                    formatter={(value) => [`${value} Orang`, "Pengunjung"]}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="pengunjung"
+                    stroke="#3b82f6"
+                    strokeWidth={4}
+                    dot={{
+                      r: 4,
+                      fill: "#3b82f6",
+                      strokeWidth: 2,
+                      stroke: "#fff",
+                    }}
+                    activeDot={{ r: 6 }}
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-400 font-medium">
+                Belum ada data di rentang waktu ini
+              </div>
+            )}
           </div>
         </div>
 
+        {/* GRAFIK BATANG (BAR CHART) */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex items-center gap-2 mb-6">
-            <TrendingUp className="text-green-500" size={20} />
-            <h3 className="text-lg font-bold text-gray-800">
-              Interaksi Layanan
-            </h3>
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+            <div className="flex items-center gap-2">
+              <TrendingUp className="text-green-500" size={20} />
+              <h3 className="text-lg font-bold text-gray-800">
+                Interaksi Pengunjung
+              </h3>
+            </div>
           </div>
           <div className="h-[300px] w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={visitorData}>
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  vertical={false}
-                  stroke="#eee"
-                />
-                <XAxis
-                  dataKey="name"
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9ca3af" }}
-                />
-                <YAxis
-                  axisLine={false}
-                  tickLine={false}
-                  tick={{ fill: "#9ca3af" }}
-                />
-                <Tooltip
-                  cursor={{ fill: "#f3f4f6" }}
-                  contentStyle={{
-                    borderRadius: "12px",
-                    border: "none",
-                    boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                  }}
-                />
-                <Bar
-                  dataKey="pengunjung"
-                  fill="#10b981"
-                  radius={[4, 4, 0, 0]}
-                  barSize={30}
-                />
-              </BarChart>
-            </ResponsiveContainer>
+            {visitorChartData.length > 0 ? (
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={visitorChartData}>
+                  <CartesianGrid
+                    strokeDasharray="3 3"
+                    vertical={false}
+                    stroke="#eee"
+                  />
+                  <XAxis
+                    dataKey="name"
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: "#9ca3af", fontSize: 12 }}
+                  />
+                  <YAxis
+                    axisLine={false}
+                    tickLine={false}
+                    tick={{ fill: "#9ca3af" }}
+                    allowDecimals={false}
+                  />
+                  <Tooltip
+                    cursor={{ fill: "#f3f4f6" }}
+                    contentStyle={{
+                      borderRadius: "12px",
+                      border: "none",
+                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                    }}
+                    formatter={(value) => [`${value} Orang`, "Pengunjung"]}
+                  />
+                  <Bar
+                    dataKey="pengunjung"
+                    fill="#10b981"
+                    radius={[4, 4, 0, 0]}
+                    barSize={30}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            ) : (
+              <div className="flex items-center justify-center h-full text-gray-400 font-medium">
+                Belum ada data di rentang waktu ini
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -329,7 +378,7 @@ export default function DashboardAdmin() {
             {
               id: "informasi",
               icon: <FileText size={20} />,
-              label: "Kelola Artikel", // Nama menu disesuaikan[cite: 10]
+              label: "Kelola Artikel",
             },
             { id: "promo", icon: <Tag size={20} />, label: "Kelola Promo" },
             {

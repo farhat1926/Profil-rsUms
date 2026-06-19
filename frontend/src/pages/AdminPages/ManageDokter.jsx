@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { Search } from "lucide-react"; // Import ikon search
 import EditPage from "./EditPage";
 import UpdateDokter from "./UpdateDokter";
 
@@ -7,6 +8,10 @@ export default function ManageDokter() {
   const [view, setView] = useState("list");
   const [data, setData] = useState([]);
   const [editData, setEditData] = useState(null);
+
+  // State untuk pencarian
+  const [searchQuery, setSearchQuery] = useState("");
+
   const API_URL = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
@@ -73,9 +78,28 @@ export default function ManageDokter() {
     });
   };
 
+  // ==================== LOGIKA FILTER & PENGELOMPOKAN ====================
+  // 1. Filter data berdasarkan pencarian (nama atau spesialis)
+  const filteredData = data.filter(
+    (dokter) =>
+      dokter.nama.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      dokter.spesialis.toLowerCase().includes(searchQuery.toLowerCase()),
+  );
+
+  // 2. Kelompokkan data yang sudah difilter berdasarkan spesialis
+  const groupedBySpesialis = filteredData.reduce((acc, dokter) => {
+    const spesialis = dokter.spesialis || "Spesialis Lainnya";
+    if (!acc[spesialis]) {
+      acc[spesialis] = [];
+    }
+    acc[spesialis].push(dokter);
+    return acc;
+  }, {});
+  // =======================================================================
+
   return (
-    <div className="animate-in fade-in duration-500">
-      <div className="flex justify-between items-center mb-8">
+    <div className="animate-in fade-in duration-500 pb-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
           <h2 className="text-2xl font-bold text-gray-800">
             {view === "list"
@@ -102,109 +126,147 @@ export default function ManageDokter() {
           {view === "list" ? "+ Tambah Dokter" : "← Kembali ke Daftar"}
         </button>
       </div>
+
       {view === "list" && (
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
-          <table className="w-full text-left border-collapse">
-            <thead>
-              <tr className="bg-gray-50/50 border-b border-gray-100">
-                <th className="px-6 py-4 font-bold text-gray-700">
-                  Profil Dokter
-                </th>
-                <th className="px-6 py-4 font-bold text-gray-700">
-                  Spesialisasi
-                </th>
-                <th className="px-6 py-4 font-bold text-gray-700">
-                  Jadwal Praktek
-                </th>
-                <th className="px-6 py-4 font-bold text-gray-700 text-center">
-                  Aksi
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {data.length > 0 ? (
-                data.map((dokter) => (
-                  <tr
-                    key={dokter.id}
-                    className="hover:bg-gray-50/30 transition-colors"
+        <>
+          {/* ================= KOTAK PENCARIAN ================= */}
+          <div className="mb-6 relative">
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+            <input
+              type="text"
+              placeholder="Cari nama dokter atau spesialis..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full md:w-1/2 pl-12 pr-4 py-3 rounded-xl border border-gray-200 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all text-sm font-medium"
+            />
+          </div>
+
+          {/* ================= TABEL BERDASARKAN SPESIALIS ================= */}
+          {Object.keys(groupedBySpesialis).length > 0 ? (
+            <div className="space-y-8">
+              {Object.entries(groupedBySpesialis).map(
+                ([spesialis, dokters]) => (
+                  <div
+                    key={spesialis}
+                    className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden"
                   >
-                    <td className="px-6 py-4">
-                      <div className="flex items-center gap-4">
-                        <img
-                          src={dokter.img}
-                          alt={dokter.nama}
-                          className="w-12 h-12 rounded-full object-cover border-2 border-white shadow-sm"
-                          onError={(e) =>
-                            (e.target.src = "/default-doctor.jpg")
-                          }
-                        />
-                        <div>
-                          <p className="font-bold text-gray-900">
-                            {dokter.nama}
-                          </p>
-                          <p className="text-xs text-gray-400 line-clamp-1 max-w-[200px]">
-                            {dokter.deskripsi || "Tidak ada deskripsi"}
-                          </p>
-                        </div>
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <span className="px-3 py-1 bg-blue-50 text-blue-700 rounded-lg text-xs font-bold uppercase tracking-wide">
-                        {dokter.spesialis}
+                    {/* Header Spesialis */}
+                    <div className="bg-gray-50 border-b border-gray-100 px-6 py-4 flex items-center gap-3">
+                      <div className="w-2 h-6 bg-blue-500 rounded-full"></div>
+                      <h3 className="font-extrabold text-gray-800 text-lg uppercase tracking-wide">
+                        {spesialis}
+                      </h3>
+                      <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2.5 py-1 rounded-md ml-2">
+                        {dokters.length} Dokter
                       </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="space-y-1">
-                        {Object.entries(dokter.jadwal).length > 0 ? (
-                          Object.entries(dokter.jadwal).map(([hari, jam]) => (
-                            <div
-                              key={hari}
-                              className="text-xs text-gray-600 flex gap-2"
-                            >
-                              <span className="font-bold w-12 text-gray-800">
-                                {hari}
-                              </span>
-                              <span>: {jam}</span>
-                            </div>
-                          ))
-                        ) : (
-                          <span className="text-xs italic text-gray-400">
-                            Jadwal belum diatur
-                          </span>
-                        )}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="flex justify-center gap-2">
-                        <button
-                          onClick={() => handleEdit(dokter)}
-                          className="bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white px-3 py-2 rounded-lg transition-all font-bold text-xs border border-blue-100"
-                        >
-                          Edit
-                        </button>
-                        <button
-                          onClick={() => handleDelete(dokter.id)}
-                          className="bg-red-50 text-red-600 hover:bg-red-600 hover:text-white px-3 py-2 rounded-lg transition-all font-bold text-xs border border-red-100"
-                        >
-                          Hapus
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td
-                    colSpan="4"
-                    className="px-6 py-20 text-center text-gray-400 italic"
-                  >
-                    Belum ada data dokter yang tersimpan.
-                  </td>
-                </tr>
+                    </div>
+
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-white border-b border-gray-100">
+                          <th className="px-6 py-3 font-bold text-gray-500 text-xs uppercase tracking-wider w-[40%]">
+                            Profil Dokter
+                          </th>
+                          <th className="px-6 py-3 font-bold text-gray-500 text-xs uppercase tracking-wider w-[40%]">
+                            Jadwal Praktek
+                          </th>
+                          <th className="px-6 py-3 font-bold text-gray-500 text-xs uppercase tracking-wider text-center w-[20%]">
+                            Aksi
+                          </th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-50">
+                        {dokters.map((dokter) => (
+                          <tr
+                            key={dokter.id}
+                            className="hover:bg-blue-50/20 transition-colors"
+                          >
+                            <td className="px-6 py-4">
+                              <div className="flex items-center gap-4">
+                                <img
+                                  src={dokter.img}
+                                  alt={dokter.nama}
+                                  className="w-12 h-12 rounded-full object-cover border-2 border-gray-100 shadow-sm shrink-0"
+                                  onError={(e) =>
+                                    (e.target.src = "/default-doctor.jpg")
+                                  }
+                                />
+                                <div>
+                                  <p className="font-bold text-gray-900 leading-tight">
+                                    {dokter.nama}
+                                  </p>
+                                  <p className="text-xs text-gray-400 line-clamp-1 mt-0.5">
+                                    {dokter.deskripsi || "Tidak ada deskripsi"}
+                                  </p>
+                                </div>
+                              </div>
+                            </td>
+
+                            <td className="px-6 py-4">
+                              <div className="space-y-1">
+                                {Object.entries(dokter.jadwal).length > 0 ? (
+                                  Object.entries(dokter.jadwal).map(
+                                    ([hari, jam]) => (
+                                      <div
+                                        key={hari}
+                                        className="text-xs flex items-center gap-2"
+                                      >
+                                        <span className="font-bold text-gray-700 w-10 uppercase tracking-wide">
+                                          {hari}
+                                        </span>
+                                        <span className="text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded">
+                                          {jam}
+                                        </span>
+                                      </div>
+                                    ),
+                                  )
+                                ) : (
+                                  <span className="text-xs italic text-red-400 bg-red-50 px-2 py-1 rounded">
+                                    Jadwal belum diatur
+                                  </span>
+                                )}
+                              </div>
+                            </td>
+                            <td className="px-6 py-4">
+                              <div className="flex justify-center gap-2">
+                                <button
+                                  onClick={() => handleEdit(dokter)}
+                                  className="bg-white text-blue-600 hover:bg-blue-600 hover:text-white px-4 py-2 rounded-lg transition-all font-bold text-xs border border-blue-200 shadow-sm"
+                                >
+                                  Edit
+                                </button>
+                                <button
+                                  onClick={() => handleDelete(dokter.id)}
+                                  className="bg-white text-red-600 hover:bg-red-600 hover:text-white px-4 py-2 rounded-lg transition-all font-bold text-xs border border-red-200 shadow-sm"
+                                >
+                                  Hapus
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                ),
               )}
-            </tbody>
-          </table>
-        </div>
+            </div>
+          ) : (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-20 text-center">
+              <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Search className="text-gray-400" size={24} />
+              </div>
+              <p className="text-gray-500 font-medium">
+                {searchQuery
+                  ? `Tidak ada dokter dengan nama atau spesialis "${searchQuery}"`
+                  : "Belum ada data dokter yang tersimpan."}
+              </p>
+            </div>
+          )}
+        </>
       )}
 
       {/* Kondisional Render Form Tambah & Edit */}
