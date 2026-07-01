@@ -67,6 +67,15 @@ function AppContent() {
     ["/login"].includes(location.pathname) ||
     location.pathname.startsWith("/admin");
 
+  function ScrollToTop() {
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+      window.scrollTo(0, 0);
+    }, [pathname]);
+
+    return null;
+  }
   return (
     <div className="min-h-screen flex flex-col">
       {!hideLayout && <Navbar />}
@@ -74,6 +83,7 @@ function AppContent() {
       {!hideLayout && <WhatsAppFloat />}
 
       <main className="flex-1">
+        <ScrollToTop />
         <Routes>
           {/* ================= RUTE PUBLIK ================= */}
           <Route path="/" element={<Home />} />
