@@ -12,8 +12,8 @@ const Home = () => {
     <div className="font-sans w-full overflow-hidden">
       <HeroSlider />
       <ArticleSection />
-      <FasilitasSection />
       <DoctorSection />
+      <FasilitasSection />
       <ReelsSection />
       <MitraSection />
       <LokasiSection />
