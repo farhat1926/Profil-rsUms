@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-const heroImages = ["/slider.webp", "/Slider2.webp"];
+const heroImages = [
+  "images/banner_umroh.webp",
+  "images/banner-jantung.webp",
+  "images/banner-mcu.webp",
+  "images/banner-fet.webp",
+];
 
 const HeroSlider = () => {
   const [currentHero, setCurrentHero] = useState(0);
