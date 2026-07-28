@@ -5,6 +5,7 @@ import FasilitasSection from "../components/HomeSections/FasilitasSection";
 import DoctorSection from "../components/HomeSections/DoctorSection";
 import ReelsSection from "../components/HomeSections/ReelsSection";
 import MitraSection from "../components/HomeSections/MitraSection";
+import QuickActionSection from "../components/HomeSections/QuickActionSection";
 import LokasiSection from "../components/HomeSections/LokasiSection";
 
 const Home = () => {
@@ -16,6 +17,7 @@ const Home = () => {
       <FasilitasSection />
       <ReelsSection />
       <MitraSection />
+      <QuickActionSection />
       <LokasiSection />
     </div>
   );

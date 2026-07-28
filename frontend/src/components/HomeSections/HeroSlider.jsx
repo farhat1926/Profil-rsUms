@@ -5,7 +5,6 @@ const heroImages = [
   "images/banner_umroh.webp",
   "images/banner-jantung.webp",
   "images/banner-mcu.webp",
-  "images/banner-fet.webp",
 ];
 
 const HeroSlider = () => {
