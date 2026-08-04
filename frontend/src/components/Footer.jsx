@@ -53,7 +53,7 @@ const Footer = () => {
             <li>IGD 24 Jam</li>
             <li>Rawat Inap</li>
             <li>Laboratorium</li>
-            <li>Apotek</li>
+            <li>Rawat Jalan</li>
           </ul>
         </div>
 

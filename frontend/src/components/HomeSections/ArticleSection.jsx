@@ -31,7 +31,7 @@ const ArticleSection = () => {
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         <div className="mb-10">
           <h2 className="text-3xl font-bold text-green-600 mb-2">
-            Artikel Terbaru RS UMS{" "}
+            Artikel Terbaru RS UMS A.R Fachrudin{" "}
           </h2>
           <p className="text-base text-gray-600 w-full">
             Dapatkan informasi kesehatan terkini, tips medis, dan berita terbaru
