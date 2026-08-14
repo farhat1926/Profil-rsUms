@@ -1,3 +1,4 @@
+import { HelmetProvider } from "react-helmet-async";
 import { useEffect } from "react";
 import {
   BrowserRouter as Router,
@@ -134,9 +135,11 @@ function AppContent() {
 
 function App() {
   return (
-    <Router>
-      <AppContent />
-    </Router>
+    <HelmetProvider>
+      <Router>
+        <AppContent />
+      </Router>
+    </HelmetProvider>
   );
 }
 
