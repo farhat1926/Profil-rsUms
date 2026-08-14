@@ -11,6 +11,8 @@ import {
   Activity,
   TrendingUp,
   Video,
+  Eye, // Ditambahkan untuk icon views
+  Award, // Ditambahkan untuk icon terpopuler
 } from "lucide-react";
 import {
   LineChart,
@@ -41,6 +43,8 @@ export default function DashboardAdmin() {
     reels: 0,
   });
 
+  // State baru untuk menyimpan Top 5 Artikel Terpopuler
+  const [popularArticles, setPopularArticles] = useState([]);
   const [visitorChartData, setVisitorChartData] = useState([]);
   const [timeFilter, setTimeFilter] = useState("7days");
 
@@ -77,6 +81,15 @@ export default function DashboardAdmin() {
             promo: dataPromo.length,
             reels: dataReels.length,
           });
+
+          // LOGIKA MENGAMBIL ARTIKEL TERPOPULER
+          // 1. Urutkan berdasarkan 'views' dari yang paling besar ke kecil
+          // 2. Ambil 5 data teratas (slice)
+          const sortedArticles = [...dataInfo]
+            .sort((a, b) => (b.views || 0) - (a.views || 0))
+            .slice(0, 5);
+
+          setPopularArticles(sortedArticles);
         } catch (error) {
           console.error("Gagal mengambil data statistik:", error);
         }
@@ -174,139 +187,197 @@ export default function DashboardAdmin() {
         </div>
       </div>
 
-      {/* AREA GRAFIK */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* GRAFIK GARIS (LINE CHART) */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-            <div className="flex items-center gap-2">
-              <Activity className="text-blue-500" size={20} />
-              <h3 className="text-lg font-bold text-gray-800">
-                Trafik Pengunjung
-              </h3>
-            </div>
-
-            {/* ================= PERUBAHAN LABEL DROPDOWN FILTER ================= */}
-            <select
-              value={timeFilter}
-              onChange={(e) => setTimeFilter(e.target.value)}
-              className="bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-700 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm hover:bg-gray-100 transition-colors"
-            >
-              <option value="7days">7 Hari Terakhir (H-7 s/d Hari Ini)</option>
-              <option value="this_week">Minggu Ini (Senin s/d Hari Ini)</option>
-              <option value="last_week">Minggu Kemarin (Full 1 Minggu)</option>
-              <option value="this_month">Bulan Ini (Tgl 1 s/d Hari Ini)</option>
-              <option value="last_month">Bulan Kemarin (Full 1 Bulan)</option>
-            </select>
-            {/* ==================================================================== */}
-          </div>
-
-          <div className="h-[300px] w-full">
-            {visitorChartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={visitorChartData}>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="#eee"
-                  />
-                  <XAxis
-                    dataKey="name"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#9ca3af", fontSize: 12 }}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#9ca3af" }}
-                    allowDecimals={false}
-                  />
-                  <Tooltip
-                    cursor={{ fill: "transparent" }}
-                    contentStyle={{
-                      borderRadius: "12px",
-                      border: "none",
-                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                    }}
-                    formatter={(value) => [`${value} Orang`, "Pengunjung"]}
-                  />
-                  <Line
-                    type="monotone"
-                    dataKey="pengunjung"
-                    stroke="#3b82f6"
-                    strokeWidth={4}
-                    dot={{
-                      r: 4,
-                      fill: "#3b82f6",
-                      strokeWidth: 2,
-                      stroke: "#fff",
-                    }}
-                    activeDot={{ r: 6 }}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-400 font-medium">
-                Belum ada data di rentang waktu ini
+      {/* AREA GRAFIK PENGUNJUNG & ARTIKEL TERPOPULER */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* KOLOM KIRI (LEBAR 2/3) - Grafik Interaksi */}
+        <div className="lg:col-span-2 space-y-6">
+          {/* GRAFIK GARIS */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+              <div className="flex items-center gap-2">
+                <Activity className="text-blue-500" size={20} />
+                <h3 className="text-lg font-bold text-gray-800">
+                  Trafik Pengunjung
+                </h3>
               </div>
-            )}
+              <select
+                value={timeFilter}
+                onChange={(e) => setTimeFilter(e.target.value)}
+                className="bg-gray-50 border border-gray-200 text-sm font-semibold text-gray-700 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer shadow-sm hover:bg-gray-100 transition-colors"
+              >
+                <option value="7days">7 Hari Terakhir</option>
+                <option value="this_week">Minggu Ini</option>
+                <option value="last_week">Minggu Kemarin</option>
+                <option value="this_month">Bulan Ini</option>
+                <option value="last_month">Bulan Kemarin</option>
+              </select>
+            </div>
+            <div className="h-[300px] w-full">
+              {visitorChartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={visitorChartData}>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#eee"
+                    />
+                    <XAxis
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#9ca3af", fontSize: 12 }}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#9ca3af" }}
+                      allowDecimals={false}
+                    />
+                    <Tooltip
+                      cursor={{ fill: "transparent" }}
+                      contentStyle={{
+                        borderRadius: "12px",
+                        border: "none",
+                        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      }}
+                      formatter={(value) => [`${value} Orang`, "Pengunjung"]}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="pengunjung"
+                      stroke="#3b82f6"
+                      strokeWidth={4}
+                      dot={{
+                        r: 4,
+                        fill: "#3b82f6",
+                        strokeWidth: 2,
+                        stroke: "#fff",
+                      }}
+                      activeDot={{ r: 6 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400 font-medium">
+                  Belum ada data
+                </div>
+              )}
+            </div>
           </div>
-        </div>
 
-        {/* GRAFIK BATANG (BAR CHART) */}
-        <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
-            <div className="flex items-center gap-2">
+          {/* GRAFIK BATANG */}
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+            <div className="flex items-center gap-2 mb-6">
               <TrendingUp className="text-green-500" size={20} />
               <h3 className="text-lg font-bold text-gray-800">
                 Interaksi Pengunjung
               </h3>
             </div>
+            <div className="h-[300px] w-full">
+              {visitorChartData.length > 0 ? (
+                <ResponsiveContainer width="100%" height="100%">
+                  <BarChart data={visitorChartData}>
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#eee"
+                    />
+                    <XAxis
+                      dataKey="name"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#9ca3af", fontSize: 12 }}
+                    />
+                    <YAxis
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fill: "#9ca3af" }}
+                      allowDecimals={false}
+                    />
+                    <Tooltip
+                      cursor={{ fill: "#f3f4f6" }}
+                      contentStyle={{
+                        borderRadius: "12px",
+                        border: "none",
+                        boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
+                      }}
+                      formatter={(value) => [`${value} Orang`, "Pengunjung"]}
+                    />
+                    <Bar
+                      dataKey="pengunjung"
+                      fill="#10b981"
+                      radius={[4, 4, 0, 0]}
+                      barSize={30}
+                    />
+                  </BarChart>
+                </ResponsiveContainer>
+              ) : (
+                <div className="flex items-center justify-center h-full text-gray-400 font-medium">
+                  Belum ada data
+                </div>
+              )}
+            </div>
           </div>
-          <div className="h-[300px] w-full">
-            {visitorChartData.length > 0 ? (
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={visitorChartData}>
-                  <CartesianGrid
-                    strokeDasharray="3 3"
-                    vertical={false}
-                    stroke="#eee"
-                  />
-                  <XAxis
-                    dataKey="name"
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#9ca3af", fontSize: 12 }}
-                  />
-                  <YAxis
-                    axisLine={false}
-                    tickLine={false}
-                    tick={{ fill: "#9ca3af" }}
-                    allowDecimals={false}
-                  />
-                  <Tooltip
-                    cursor={{ fill: "#f3f4f6" }}
-                    contentStyle={{
-                      borderRadius: "12px",
-                      border: "none",
-                      boxShadow: "0 4px 6px -1px rgb(0 0 0 / 0.1)",
-                    }}
-                    formatter={(value) => [`${value} Orang`, "Pengunjung"]}
-                  />
-                  <Bar
-                    dataKey="pengunjung"
-                    fill="#10b981"
-                    radius={[4, 4, 0, 0]}
-                    barSize={30}
-                  />
-                </BarChart>
-              </ResponsiveContainer>
-            ) : (
-              <div className="flex items-center justify-center h-full text-gray-400 font-medium">
-                Belum ada data di rentang waktu ini
-              </div>
-            )}
+        </div>
+
+        {/* KOLOM KANAN (LEBAR 1/3) - Artikel Terpopuler */}
+        <div className="lg:col-span-1">
+          <div className="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 sticky top-24">
+            <div className="flex items-center gap-2 mb-6 border-b border-gray-100 pb-4">
+              <Award className="text-yellow-500" size={24} />
+              <h3 className="text-lg font-bold text-gray-800">
+                5 Artikel Terpopuler
+              </h3>
+            </div>
+
+            <div className="space-y-4">
+              {popularArticles.length > 0 ? (
+                popularArticles.map((article, index) => (
+                  <div
+                    key={article.id}
+                    className="flex items-center justify-between gap-3 p-3 rounded-xl hover:bg-gray-50 transition-colors border border-transparent hover:border-gray-100"
+                  >
+                    <div className="flex items-center gap-3 flex-1 overflow-hidden">
+                      {/* Desain Ranking Number */}
+                      <div
+                        className={`w-8 h-8 rounded-full flex items-center justify-center font-bold text-sm shrink-0 shadow-sm ${
+                          index === 0
+                            ? "bg-yellow-100 text-yellow-600"
+                            : index === 1
+                              ? "bg-gray-200 text-gray-600"
+                              : index === 2
+                                ? "bg-orange-100 text-orange-600"
+                                : "bg-blue-50 text-blue-400"
+                        }`}
+                      >
+                        {index + 1}
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p
+                          className="text-sm font-bold text-gray-800 line-clamp-1 truncate"
+                          title={article.title}
+                        >
+                          {article.title}
+                        </p>
+                        <p className="text-[10px] uppercase font-bold tracking-wider text-green-600 mt-0.5">
+                          {article.category}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Badge Views */}
+                    <div className="flex items-center gap-1.5 bg-gray-100/80 text-gray-600 px-3 py-1.5 rounded-full text-xs font-bold shrink-0">
+                      <Eye size={14} className="text-blue-500" />
+                      {article.views || 0}
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p className="text-sm text-gray-400 italic text-center py-4">
+                  Belum ada data pembaca.
+                </p>
+              )}
+            </div>
           </div>
         </div>
       </div>

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 
 const kategoriList = [
+  "Fasilitas Umum",
+  "Layanan Unggulan",
+  "Fasilitas Penunjang",
   "Rawat Jalan",
   "Rawat Inap",
-  "Layanan Unggulan",
-  "Fasilitas Umum",
-  "Fasilitas Penunjang",
 ];
 
 const fasilitasData = [

@@ -5,23 +5,75 @@ import { fetchArticleById } from "../data/articles";
 const ArticleDetail = () => {
   const { id } = useParams();
   const [article, setArticle] = useState(null);
+  const [recommendedArticles, setRecommendedArticles] = useState([]);
+  const [latestArticles, setLatestArticles] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
+  // 1. Efek untuk memuat data artikel
   useEffect(() => {
+    // Agar saat ganti artikel otomatis scroll ke atas
+    window.scrollTo(0, 0);
+
     const loadDetail = async () => {
       try {
         const data = await fetchArticleById(id);
         setArticle(data);
+
+        // Ambil data untuk rekomendasi & terbaru
+        const res = await fetch(`${API_URL}/informasi`);
+        const allArticles = await res.json();
+
+        // Filter: Artikel Terkait (Kategori sama, kecualikan yang sedang dibaca)
+        const recommendations = allArticles
+          .filter(
+            (item) =>
+              item.category === data.category && String(item.id) !== String(id),
+          )
+          .slice(0, 4);
+
+        // Filter: Artikel Terbaru (Kecualikan yang sedang dibaca)
+        const latest = allArticles
+          .filter((item) => String(item.id) !== String(id))
+          .slice(0, 4);
+
+        setRecommendedArticles(recommendations);
+        setLatestArticles(latest);
       } catch (err) {
         console.error(err);
       }
     };
 
     loadDetail();
-  }, [id]);
+  }, [id, API_URL]);
+
+  // 2. Efek BARU untuk mencatat tayangan (views)
+  useEffect(() => {
+    const recordView = async () => {
+      // Membuat kunci unik untuk sesi pembaca ini (contoh: viewed_article_5)
+      const viewedKey = `viewed_article_${id}`;
+
+      // Jika pengunjung belum melihat artikel ini di sesi ini, kirim sinyal +1
+      if (!sessionStorage.getItem(viewedKey)) {
+        try {
+          await fetch(`${API_URL}/informasi/${id}/views`, { method: "PATCH" });
+          sessionStorage.setItem(viewedKey, "true"); // Tandai sudah dilihat
+        } catch (error) {
+          console.error("Gagal mencatat tayangan:", error);
+        }
+      }
+    };
+
+    if (id) {
+      recordView();
+    }
+  }, [id, API_URL]);
 
   if (!article) {
-    return <div className="p-10 text-center">Memuat artikel...</div>;
+    return (
+      <div className="p-10 text-center font-medium text-gray-500">
+        Memuat artikel...
+      </div>
+    );
   }
 
   // Fungsi untuk memformat tanggal ke format Indonesia
@@ -38,7 +90,7 @@ const ArticleDetail = () => {
     <div className="min-h-screen bg-white py-16 px-6 md:px-12">
       <div className="max-w-5xl mx-auto">
         <Link
-          to="/informasi"
+          to="/artikel"
           className="inline-block mb-6 text-green-600 hover:text-green-700 hover:underline font-medium transition-colors cursor-pointer"
         >
           &larr; Kembali ke halaman informasi
@@ -82,6 +134,93 @@ const ArticleDetail = () => {
             .map((paragraf, index) =>
               paragraf.trim() !== "" ? <p key={index}>{paragraf}</p> : null,
             )}
+        </div>
+
+        {/* ================= BAGIAN BAWAH: REKOMENDASI & TERBARU ================= */}
+        <div className="mt-20 pt-10 border-t-2 border-gray-100 flex flex-col gap-12">
+          {/* --- ARTIKEL TERKAIT --- */}
+          <div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <span className="w-1.5 h-7 bg-green-500 rounded-full"></span>
+              Artikel Terkait
+            </h3>
+            {recommendedArticles.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {recommendedArticles.map((item) => (
+                  <Link
+                    to={`/artikel/${item.id}`}
+                    key={item.id}
+                    className="group flex flex-col sm:flex-row gap-5 bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="w-full sm:w-36 md:w-40 h-48 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                      <img
+                        src={`${API_URL}${item.image}`}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center h-full w-full">
+                      <p className="text-[11px] font-bold text-green-600 uppercase tracking-wider mb-1.5">
+                        {item.category}
+                      </p>
+                      <h4 className="text-base lg:text-lg font-bold text-gray-800 leading-snug line-clamp-2 group-hover:text-green-600 transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-sm text-gray-400 mt-2 font-medium">
+                        {formatTanggal(item.date)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500 italic">
+                Belum ada artikel terkait di kategori ini.
+              </p>
+            )}
+          </div>
+
+          {/* --- ARTIKEL TERBARU --- */}
+          <div>
+            <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+              <span className="w-1.5 h-7 bg-blue-500 rounded-full"></span>
+              Artikel Terbaru
+            </h3>
+            {latestArticles.length > 0 ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {latestArticles.map((item) => (
+                  <Link
+                    to={`/artikel/${item.id}`}
+                    key={item.id}
+                    className="group flex flex-col sm:flex-row gap-5 bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
+                  >
+                    <div className="w-full sm:w-36 md:w-40 h-48 sm:h-32 shrink-0 rounded-xl overflow-hidden bg-gray-100">
+                      <img
+                        src={`${API_URL}${item.image}`}
+                        alt={item.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center h-full w-full">
+                      <p className="text-[11px] font-bold text-blue-500 uppercase tracking-wider mb-1.5">
+                        {item.category}
+                      </p>
+                      <h4 className="text-base lg:text-lg font-bold text-gray-800 leading-snug line-clamp-2 group-hover:text-blue-600 transition-colors">
+                        {item.title}
+                      </h4>
+                      <p className="text-sm text-gray-400 mt-2 font-medium">
+                        {formatTanggal(item.date)}
+                      </p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            ) : (
+              <p className="text-sm text-gray-500 italic">
+                Belum ada artikel terbaru.
+              </p>
+            )}
+          </div>
         </div>
       </div>
     </div>

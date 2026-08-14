@@ -11,6 +11,7 @@ const {
   getInformasiById,
   deleteInformasi,
   updateInformasi,
+  incrementViews,
 } = require("../controllers/informasiController");
 
 // Definisikan rute (Endpoint)
@@ -19,5 +20,6 @@ router.get("/", getAllInformasi);
 router.get("/:id", getInformasiById);
 router.put("/:id", upload.single("image"), updateInformasi);
 router.delete("/:id", deleteInformasi);
+router.patch("/:id/views", incrementViews);
 
 module.exports = router;

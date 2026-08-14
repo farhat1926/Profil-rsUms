@@ -76,7 +76,7 @@ const InformasiPage = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {filteredArticles.map((article) => (
             <Link
-              to={`/informasi/${article.id}`}
+              to={`/artikel/${article.id}`}
               key={article.id}
               // Tambahkan h-full agar card memenuhi tinggi grid
               className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full"

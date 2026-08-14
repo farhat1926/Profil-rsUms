@@ -106,8 +106,8 @@ function AppContent() {
           <Route path="/meet-doctor" element={<MeetDoctor />} />
           <Route path="/doctor/:id" element={<DoctorDetail />} />
           <Route path="/JadwalDokter" element={<JadwalDokter />} />
-          <Route path="/informasi" element={<InformasiPage />} />
-          <Route path="/informasi/:id" element={<ArticleDetail />} />
+          <Route path="/artikel" element={<InformasiPage />} />
+          <Route path="/artikel/:id" element={<ArticleDetail />} />
           <Route path="/promo" element={<PromoPage />} />
           <Route path="/promo/:id" element={<DetailPromo />} />
 

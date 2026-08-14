@@ -149,7 +149,7 @@ function Navbar() {
                         Bed
                       </Link>
                       <Link
-                        to="/informasi"
+                        to="/artikel"
                         className="block px-5 py-3 hover:bg-green-50 hover:text-green-600 font-medium transition-colors"
                         onClick={() => setInfoDropdown(false)}
                       >

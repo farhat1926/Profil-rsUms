@@ -38,7 +38,7 @@ const Footer = () => {
               <a href="/dokter">Dokter</a>
             </li>
             <li>
-              <a href="/informasi">Informasi</a>
+              <a href="/artikel">Informasi</a>
             </li>
             <li>
               <a href="/promo">Promo</a>
@@ -53,7 +53,7 @@ const Footer = () => {
             <li>IGD 24 Jam</li>
             <li>Rawat Inap</li>
             <li>Laboratorium</li>
-            <li>Apotek</li>
+            <li>Rawat Jalan</li>
           </ul>
         </div>
 

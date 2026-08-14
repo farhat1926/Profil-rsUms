@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Swal from "sweetalert2";
+import { Eye } from "lucide-react"; // Import ikon mata
 import InputInformasi from "./InputInformasi";
 import UpdateInformasi from "./UpdateInformasi";
 
@@ -20,7 +21,7 @@ export default function ManageInformasi() {
           console.error("Gagal mengambil informasi:", err);
         });
     }
-  }, [view]);
+  }, [view, API_URL]);
 
   const handleEdit = (item) => {
     setEditData(item);
@@ -75,7 +76,10 @@ export default function ManageInformasi() {
                   Judul Artikel
                 </th>
                 <th className="px-6 py-4 font-bold text-gray-700">Kategori</th>
-                <th className="px-6 py-4 font-bold text-gray-700">Penulis</th>
+                {/* Kolom Tayangan Baru */}
+                <th className="px-6 py-4 font-bold text-gray-700 text-center">
+                  Tayangan
+                </th>
                 <th className="px-6 py-4 font-bold text-gray-700 text-center">
                   Aksi
                 </th>
@@ -85,26 +89,33 @@ export default function ManageInformasi() {
               {data.map((item) => (
                 <tr key={item.id} className="hover:bg-gray-50/50">
                   <td className="px-6 py-4 font-bold text-gray-800">
-                    {item.title}
+                    <div className="line-clamp-2">{item.title}</div>
+                    <div className="text-xs text-gray-400 font-medium mt-1">
+                      Oleh: {item.author}
+                    </div>
                   </td>
                   <td className="px-6 py-4">
                     <span className="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold uppercase">
                       {item.category}
                     </span>
                   </td>
-                  <td className="px-6 py-4 text-gray-600 text-sm italic">
-                    {item.author}
+                  {/* Data Tayangan */}
+                  <td className="px-6 py-4 text-center">
+                    <div className="flex items-center justify-center gap-1.5 text-gray-600 font-bold bg-gray-100/50 py-1.5 px-3 rounded-xl w-fit mx-auto">
+                      <Eye size={16} className="text-blue-500" />
+                      {item.views || 0}
+                    </div>
                   </td>
                   <td className="px-6 py-4 text-center">
                     <button
                       onClick={() => handleEdit(item)}
-                      className="text-blue-600 font-bold bg-blue-50 hover:bg-blue-100 hover:text-blue-800 px-3 py-1 rounded-lg mr-2 transition-colors"
+                      className="text-blue-600 font-bold bg-blue-50 hover:bg-blue-100 hover:text-blue-800 px-3 py-1.5 rounded-lg mr-2 transition-colors"
                     >
                       Edit
                     </button>
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="text-red-500 font-bold bg-red-50 hover:bg-red-100 hover:text-red-700 px-3 py-1 rounded-lg transition-colors"
+                      className="text-red-500 font-bold bg-red-50 hover:bg-red-100 hover:text-red-700 px-3 py-1.5 rounded-lg transition-colors"
                     >
                       Hapus
                     </button>
@@ -116,7 +127,6 @@ export default function ManageInformasi() {
         </div>
       )}
 
-      {/* Kondisional Render Form */}
       {view === "add" && <InputInformasi onSuccess={() => setView("list")} />}
       {view === "edit" && (
         <UpdateInformasi data={editData} onSuccess={() => setView("list")} />

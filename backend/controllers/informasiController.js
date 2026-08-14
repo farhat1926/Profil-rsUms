@@ -78,6 +78,18 @@ const updateInformasi = (req, res) => {
     },
   );
 };
+const incrementViews = (req, res) => {
+  const { id } = req.params;
+  const sql = "UPDATE informasi SET views = views + 1 WHERE id = ?";
+
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      console.error("Gagal menambah views:", err);
+      return res.status(500).json({ message: "Server error" });
+    }
+    res.status(200).json({ message: "Views berhasil ditambahkan" });
+  });
+};
 
 // Export semua fungsi agar bisa dipanggil di routes
 module.exports = {
@@ -86,4 +98,5 @@ module.exports = {
   getInformasiById,
   deleteInformasi,
   updateInformasi,
+  incrementViews,
 };
