@@ -44,7 +44,7 @@ export default function UpdateInformasi({ data, onSuccess }) {
       formData.append("image", form.image);
     }
 
-    fetch(`${API_URL}//${data.id}`, {
+    fetch(`${API_URL}/informasi/${data.id}`, {
       method: "PUT",
       body: formData,
     })
