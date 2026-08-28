@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom"; // Pastikan Link di-import
 
 const mitraList = [
   "/images/bjs.webp",
@@ -6,6 +7,7 @@ const mitraList = [
   "/images/isomedik.webp",
   "/images/reliance.webp",
   "/images/mag.webp",
+  "/images/meditap.webp",
 ];
 
 const MitraSection = () => {
@@ -14,14 +16,22 @@ const MitraSection = () => {
       id="mitra"
       className="w-full py-16 bg-white border-t border-gray-100 overflow-hidden"
     >
-      <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10 text-center">
-        <h2 className="text-3xl font-bold text-green-600 mb-2">
-          Mitra & Kerjasama
-        </h2>
-        <p className="text-base text-gray-600">
-          Kami bekerja sama dengan berbagai instansi untuk memberikan pelayanan
-          kesehatan terbaik.
-        </p>
+      <div className="max-w-7xl mx-auto px-4 md:px-8 mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
+        <div className="text-left">
+          <h2 className="text-3xl font-bold text-green-600 mb-2">
+            Mitra & Kerjasama
+          </h2>
+          <p className="text-base text-gray-600">
+            Kami bekerja sama dengan berbagai instansi untuk memberikan
+            pelayanan kesehatan terbaik.
+          </p>
+        </div>
+        <Link
+          to="/asuransi"
+          className="shrink-0 text-sm font-bold text-green-600 hover:text-blue-500 transition-colors  text-left"
+        >
+          Lihat Semua Asuransi & Mitra &rarr;
+        </Link>
       </div>
 
       <div

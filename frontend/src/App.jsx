@@ -23,6 +23,7 @@ import PromoPage from "./pages/PromoPage";
 import Profil from "./pages/profil";
 import StrukturOrganisasi from "./pages/struktur-organisasi";
 import BedPage from "./pages/BedPage";
+import AsuransiPage from "./pages/AsuransiPage";
 
 //kompoenen fasilitas
 import Apotek from "./pages/FasilitasPages/apotek";
@@ -111,6 +112,7 @@ function AppContent() {
           <Route path="/artikel/:id" element={<ArticleDetail />} />
           <Route path="/promo" element={<PromoPage />} />
           <Route path="/promo/:id" element={<DetailPromo />} />
+          <Route path="/asuransi" element={<AsuransiPage />} />
 
           {/* ================= RUTE ADMIN PANEL ================= */}
           {/* Halaman Login Admin */}
