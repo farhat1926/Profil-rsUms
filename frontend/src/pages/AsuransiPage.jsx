@@ -25,6 +25,7 @@ export default function AsuransiPage() {
     { id: 4, name: "Reliance", logo: "/images/reliance.webp" },
     { id: 5, name: "MAG Insurance", logo: "/images/mag.webp" },
     { id: 6, name: "Meditap", logo: "/images/meditap.webp" },
+    { id: 7, name: "Grab", logo: "/images/grab.webp" },
   ];
 
   const filteredAsuransi = asuransiData.filter((item) =>
@@ -53,7 +54,7 @@ export default function AsuransiPage() {
           </Link>
 
           <h1 className="text-3xl md:text-4xl font-extrabold text-[#245fa9] mb-8">
-            Asuransi
+            Asuransi & Perusahaan
           </h1>
 
           <div className="relative mb-12">
