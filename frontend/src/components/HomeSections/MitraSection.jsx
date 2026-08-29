@@ -8,6 +8,7 @@ const mitraList = [
   "/images/reliance.webp",
   "/images/mag.webp",
   "/images/meditap.webp",
+  "/images/grab.webp",
 ];
 
 const MitraSection = () => {
@@ -30,7 +31,7 @@ const MitraSection = () => {
           to="/asuransi"
           className="shrink-0 text-sm font-bold text-green-600 hover:text-blue-500 transition-colors  text-left"
         >
-          Lihat Semua Asuransi & Mitra &rarr;
+          Lihat Semua Asuransi &rarr;
         </Link>
       </div>
 
