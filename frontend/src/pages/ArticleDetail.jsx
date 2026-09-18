@@ -3,15 +3,15 @@ import { useParams, Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 
 const ArticleDetail = () => {
-  // Menangkap parameter judul dari URL (misal: "pentingnya-inhaler")
   const { id: slugParam } = useParams();
 
   const [article, setArticle] = useState(null);
   const [recommendedArticles, setRecommendedArticles] = useState([]);
   const [latestArticles, setLatestArticles] = useState([]);
+  const [isCopied, setIsCopied] = useState(false);
+
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // FUNGSI SLUG: Mengubah string judul database menjadi format URL agar bisa dicocokkan
   const buatSlug = (teks) => {
     if (!teks) return "";
     return teks
@@ -25,11 +25,9 @@ const ArticleDetail = () => {
 
     const loadDetail = async () => {
       try {
-        // Tarik semua data artikel terlebih dahulu
         const res = await fetch(`${API_URL}/informasi`);
         const allArticles = await res.json();
 
-        // Cari artikel yang hasil konversi judulnya persis dengan judul di URL
         const data = allArticles.find(
           (item) => buatSlug(item.title) === slugParam,
         );
@@ -37,14 +35,12 @@ const ArticleDetail = () => {
         if (data) {
           setArticle(data);
 
-          // Siapkan artikel rekomendasi
           const recommendations = allArticles
             .filter(
               (item) => item.category === data.category && item.id !== data.id,
             )
             .slice(0, 4);
 
-          // Siapkan artikel terbaru
           const latest = allArticles
             .filter((item) => item.id !== data.id)
             .slice(0, 4);
@@ -52,7 +48,6 @@ const ArticleDetail = () => {
           setRecommendedArticles(recommendations);
           setLatestArticles(latest);
 
-          // Catat Views (Gunakan ID asli artikel yang ditemukan untuk database)
           const viewedKey = `viewed_article_${data.id}`;
           if (!sessionStorage.getItem(viewedKey)) {
             fetch(`${API_URL}/informasi/${data.id}/views`, { method: "PATCH" })
@@ -70,6 +65,12 @@ const ArticleDetail = () => {
     }
   }, [slugParam, API_URL]);
 
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
   if (!article) {
     return (
       <div className="p-10 text-center font-medium text-gray-500 min-h-screen flex items-center justify-center">
@@ -86,6 +87,9 @@ const ArticleDetail = () => {
       year: "numeric",
     });
   };
+
+  const shareUrl = window.location.href;
+  const shareTitle = article.title;
 
   return (
     <>
@@ -144,7 +148,151 @@ const ArticleDetail = () => {
               )}
           </div>
 
-          <div className="mt-20 pt-10 border-t-2 border-gray-100 flex flex-col gap-12">
+          {/* ================= BAGIAN SHARE SOSIAL MEDIA ================= */}
+          <div className="mt-12 py-6 border-y border-gray-100 flex flex-col sm:flex-row items-center justify-between gap-5">
+            <span className="text-gray-700 font-bold text-lg">
+              Bagikan artikel ini:
+            </span>
+            <div className="flex items-center gap-3">
+              {/* Tombol WhatsApp */}
+              <a
+                href={`https://api.whatsapp.com/send?text=${encodeURIComponent(shareTitle + "\n\nBaca selengkapnya di: " + shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-green-50 text-green-600 hover:bg-green-500 hover:text-white rounded-full transition-all duration-300 shadow-sm"
+                title="Bagikan ke WhatsApp"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+                </svg>
+              </a>
+
+              {/* Tombol Facebook */}
+              <a
+                href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white rounded-full transition-all duration-300 shadow-sm"
+                title="Bagikan ke Facebook"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                </svg>
+              </a>
+
+              {/* Tombol Twitter/X */}
+              <a
+                href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-sky-50 text-sky-500 hover:bg-sky-500 hover:text-white rounded-full transition-all duration-300 shadow-sm"
+                title="Bagikan ke Twitter"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" />
+                </svg>
+              </a>
+
+              {/* Tombol Telegram */}
+              <a
+                href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-3 bg-indigo-50 text-indigo-500 hover:bg-indigo-500 hover:text-white rounded-full transition-all duration-300 shadow-sm"
+                title="Bagikan ke Telegram"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="22"
+                  height="22"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="22" y1="2" x2="11" y2="13" />
+                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                </svg>
+              </a>
+
+              {/* Tombol Salin Tautan */}
+              <button
+                onClick={handleCopyLink}
+                className={`p-3 rounded-full transition-all duration-300 shadow-sm flex items-center justify-center ${
+                  isCopied
+                    ? "bg-gray-800 text-white"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white"
+                }`}
+                title="Salin Tautan"
+              >
+                {isCopied ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                    <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+                  </svg>
+                )}
+              </button>
+            </div>
+          </div>
+          {/* ============================================================= */}
+
+          <div className="mt-12 pt-10 flex flex-col gap-12">
             <div>
               <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <span className="w-1.5 h-7 bg-green-500 rounded-full"></span>
@@ -154,7 +302,6 @@ const ArticleDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {recommendedArticles.map((item) => (
                     <Link
-                      // URL di bagian rekomendasi juga diubah menjadi Slug
                       to={`/artikel/${buatSlug(item.title)}`}
                       key={item.id}
                       className="group flex flex-col sm:flex-row gap-5 bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
@@ -196,7 +343,6 @@ const ArticleDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {latestArticles.map((item) => (
                     <Link
-                      // URL di bagian artikel terbaru juga diubah menjadi Slug
                       to={`/artikel/${buatSlug(item.title)}`}
                       key={item.id}
                       className="group flex flex-col sm:flex-row gap-5 bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"

@@ -71,7 +71,6 @@ app.get("/artikel/:slug", (req, res, next) => {
     const imageUrl = `${BASE_URL}${article.image}`;
     const fullUrl = `${BASE_URL}/artikel/${slug}`;
 
-    // 5. Baca kerangka website (index.html) lalu suntikkan meta tag
     fs.readFile(indexPath, "utf8", (err, htmlData) => {
       if (err) {
         console.error("Gagal membaca index.html:", err);
