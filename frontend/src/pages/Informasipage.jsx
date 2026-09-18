@@ -35,6 +35,15 @@ const InformasiPage = () => {
     });
   };
 
+  // FUNGSI BARU: Mengubah string judul menjadi URL (slug)
+  const buatSlug = (teks) => {
+    if (!teks) return "";
+    return teks
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+  };
+
   return (
     <div className="min-h-screen bg-gray-100 pb-12">
       {/* ================= HERO HEADER SECTION ================= */}
@@ -72,20 +81,17 @@ const InformasiPage = () => {
           ))}
         </div>
 
-        {/* Grid ditambahkan items-stretch agar tinggi card sama rata */}
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {filteredArticles.map((article) => (
             <Link
-              to={`/artikel/${article.id}`}
+              // PERUBAHAN: Hanya mengirimkan judul (slug) ke URL
+              to={`/artikel/${buatSlug(article.title)}`}
               key={article.id}
-              // Tambahkan h-full agar card memenuhi tinggi grid
               className="bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden flex flex-col h-full"
             >
-              {/* Box Gambar Terkunci Rasio 16:9 */}
               <div className="w-full aspect-video bg-gray-100 overflow-hidden border-b border-gray-100">
                 <img
                   src={`${API_URL}${article.image}`}
-                  // object-cover memastikan gambar memenuhi box 16:9 secara penuh
                   className="w-full h-full object-cover"
                   alt={article.title}
                 />
@@ -103,7 +109,6 @@ const InformasiPage = () => {
                   {article.summary}
                 </p>
 
-                {/* mt-auto memastikan bagian tanggal/penulis selalu terdorong ke paling bawah card */}
                 <p className="text-xs text-gray-400 mt-auto pt-4 flex items-center gap-2 border-t border-gray-50">
                   <span className="font-medium text-gray-600">
                     {article.author}

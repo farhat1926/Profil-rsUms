@@ -1,69 +1,79 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { fetchArticleById } from "../data/articles";
-import { Helmet } from "react-helmet-async"; // 1. IMPORT HELMET
+import { Helmet } from "react-helmet-async";
 
 const ArticleDetail = () => {
-  const { id } = useParams();
+  // Menangkap parameter judul dari URL (misal: "pentingnya-inhaler")
+  const { id: slugParam } = useParams();
+
   const [article, setArticle] = useState(null);
   const [recommendedArticles, setRecommendedArticles] = useState([]);
   const [latestArticles, setLatestArticles] = useState([]);
   const API_URL = import.meta.env.VITE_API_URL;
 
-  // Efek memuat data artikel
+  // FUNGSI SLUG: Mengubah string judul database menjadi format URL agar bisa dicocokkan
+  const buatSlug = (teks) => {
+    if (!teks) return "";
+    return teks
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
 
     const loadDetail = async () => {
       try {
-        const data = await fetchArticleById(id);
-        setArticle(data);
-
+        // Tarik semua data artikel terlebih dahulu
         const res = await fetch(`${API_URL}/informasi`);
         const allArticles = await res.json();
 
-        const recommendations = allArticles
-          .filter(
-            (item) =>
-              item.category === data.category && String(item.id) !== String(id),
-          )
-          .slice(0, 4);
+        // Cari artikel yang hasil konversi judulnya persis dengan judul di URL
+        const data = allArticles.find(
+          (item) => buatSlug(item.title) === slugParam,
+        );
 
-        const latest = allArticles
-          .filter((item) => String(item.id) !== String(id))
-          .slice(0, 4);
+        if (data) {
+          setArticle(data);
 
-        setRecommendedArticles(recommendations);
-        setLatestArticles(latest);
+          // Siapkan artikel rekomendasi
+          const recommendations = allArticles
+            .filter(
+              (item) => item.category === data.category && item.id !== data.id,
+            )
+            .slice(0, 4);
+
+          // Siapkan artikel terbaru
+          const latest = allArticles
+            .filter((item) => item.id !== data.id)
+            .slice(0, 4);
+
+          setRecommendedArticles(recommendations);
+          setLatestArticles(latest);
+
+          // Catat Views (Gunakan ID asli artikel yang ditemukan untuk database)
+          const viewedKey = `viewed_article_${data.id}`;
+          if (!sessionStorage.getItem(viewedKey)) {
+            fetch(`${API_URL}/informasi/${data.id}/views`, { method: "PATCH" })
+              .then(() => sessionStorage.setItem(viewedKey, "true"))
+              .catch((err) => console.error("Gagal mencatat tayangan:", err));
+          }
+        }
       } catch (err) {
         console.error(err);
       }
     };
 
-    loadDetail();
-  }, [id, API_URL]);
-
-  // Efek mencatat tayangan (views)
-  useEffect(() => {
-    const recordView = async () => {
-      const viewedKey = `viewed_article_${id}`;
-      if (!sessionStorage.getItem(viewedKey)) {
-        try {
-          await fetch(`${API_URL}/informasi/${id}/views`, { method: "PATCH" });
-          sessionStorage.setItem(viewedKey, "true");
-        } catch (error) {
-          console.error("Gagal mencatat tayangan:", error);
-        }
-      }
-    };
-
-    if (id) recordView();
-  }, [id, API_URL]);
+    if (slugParam) {
+      loadDetail();
+    }
+  }, [slugParam, API_URL]);
 
   if (!article) {
     return (
-      <div className="p-10 text-center font-medium text-gray-500">
-        Memuat artikel...
+      <div className="p-10 text-center font-medium text-gray-500 min-h-screen flex items-center justify-center">
+        Memuat artikel atau artikel tidak ditemukan...
       </div>
     );
   }
@@ -79,22 +89,15 @@ const ArticleDetail = () => {
 
   return (
     <>
-      {/* ================= BAGIAN SEO / META TAGS DINAMIS ================= */}
       <Helmet>
-        {/* Title Tab Browser & Google */}
         <title>{article.title} - RS UMS A.R. Fachrudin</title>
-
-        {/* Meta Deskripsi Google */}
         <meta name="description" content={article.summary} />
-
-        {/* Open Graph (Untuk share di WhatsApp, Facebook, LinkedIn, dll) */}
         <meta property="og:title" content={`${article.title} - RS UMS`} />
         <meta property="og:description" content={article.summary} />
         <meta property="og:image" content={`${API_URL}${article.image}`} />
         <meta property="og:type" content="article" />
         <meta property="og:url" content={window.location.href} />
       </Helmet>
-      {/* ================================================================== */}
 
       <div className="min-h-screen bg-white py-16 px-6 md:px-12">
         <div className="max-w-5xl mx-auto">
@@ -141,9 +144,7 @@ const ArticleDetail = () => {
               )}
           </div>
 
-          {/* ================= BAGIAN BAWAH: REKOMENDASI & TERBARU ================= */}
           <div className="mt-20 pt-10 border-t-2 border-gray-100 flex flex-col gap-12">
-            {/* --- ARTIKEL TERKAIT --- */}
             <div>
               <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <span className="w-1.5 h-7 bg-green-500 rounded-full"></span>
@@ -153,7 +154,8 @@ const ArticleDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {recommendedArticles.map((item) => (
                     <Link
-                      to={`/artikel/${item.id}`}
+                      // URL di bagian rekomendasi juga diubah menjadi Slug
+                      to={`/artikel/${buatSlug(item.title)}`}
                       key={item.id}
                       className="group flex flex-col sm:flex-row gap-5 bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
                     >
@@ -185,7 +187,6 @@ const ArticleDetail = () => {
               )}
             </div>
 
-            {/* --- ARTIKEL TERBARU --- */}
             <div>
               <h3 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
                 <span className="w-1.5 h-7 bg-blue-500 rounded-full"></span>
@@ -195,7 +196,8 @@ const ArticleDetail = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {latestArticles.map((item) => (
                     <Link
-                      to={`/artikel/${item.id}`}
+                      // URL di bagian artikel terbaru juga diubah menjadi Slug
+                      to={`/artikel/${buatSlug(item.title)}`}
                       key={item.id}
                       className="group flex flex-col sm:flex-row gap-5 bg-white p-5 rounded-[1.5rem] border border-gray-100 shadow-sm hover:shadow-md transition-all duration-300"
                     >
