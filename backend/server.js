@@ -1,5 +1,5 @@
 const path = require("path");
-const fs = require("fs"); // Wajib untuk membaca file index.html frontend
+const fs = require("fs");
 const dotenv = require("dotenv");
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 const express = require("express");
@@ -31,24 +31,23 @@ app.use("/doctor", doctorRoutes(db));
 app.use("/informasi", informasiRoutes);
 app.use("/visitors", visitorRoutes);
 
-// =========================================================================
-// ROUTE KHUSUS INJEKSI META TAG UNTUK SEMUA SOSIAL MEDIA
-// =========================================================================
+app.get(["/artikel", "/artikel/"], (req, res) => {
+  const indexPath = path.join(__dirname, "../frontend/dist/index.html");
+  res.sendFile(indexPath);
+});
+
 app.get("/artikel/:slug", (req, res, next) => {
   const slug = req.params.slug;
 
-  // 1. Tarik semua artikel dari database
   const sql = "SELECT * FROM informasi";
 
   db.query(sql, (err, results) => {
-    // Sesuaikan path ke file index.html React/Vite Anda
     const indexPath = path.join(__dirname, "../frontend/dist/index.html");
 
     if (err || results.length === 0) {
       return res.sendFile(indexPath);
     }
 
-    // 2. Fungsi untuk mengubah judul database menjadi format URL (slug)
     const buatSlug = (teks) => {
       if (!teks) return "";
       return teks
@@ -57,16 +56,11 @@ app.get("/artikel/:slug", (req, res, next) => {
         .replace(/(^-|-$)+/g, "");
     };
 
-    // 3. Cari artikel yang hasil konversi judulnya persis sama dengan parameter URL
     const article = results.find((item) => buatSlug(item.title) === slug);
 
     if (!article) {
-      // Jika judul tidak ditemukan, kembalikan halaman web standar
       return res.sendFile(indexPath);
     }
-
-    // 4. Siapkan URL gambar dan URL artikel
-    // PENTING: UBAH BASE_URL MENJADI "https://rs.ums.ac.id" SAAT DEPLOY KE VPS / ONLINE
     const BASE_URL = `https://rs.ums.ac.id`;
     const imageUrl = `${BASE_URL}${article.image}`;
     const fullUrl = `${BASE_URL}/artikel/${slug}`;
@@ -85,7 +79,7 @@ app.get("/artikel/:slug", (req, res, next) => {
         .replace(
           "</head>",
           `
-            <!-- Standar SEO & Open Graph (WhatsApp, FB, LinkedIn, Telegram) -->
+            <!-- Standar SEO & Open Graph -->
             <meta name="description" content="${article.summary}" />
             <meta property="og:title" content="${article.title} - RS UMS" />
             <meta property="og:description" content="${article.summary}" />
@@ -93,7 +87,7 @@ app.get("/artikel/:slug", (req, res, next) => {
             <meta property="og:url" content="${fullUrl}" />
             <meta property="og:type" content="article" />
             
-            <!-- Standar Twitter Cards (X / Twitter) -->
+            <!-- Standar Twitter Cards -->
             <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:image" content="${imageUrl}" />
             <meta name="twitter:title" content="${article.title}" />
@@ -106,7 +100,6 @@ app.get("/artikel/:slug", (req, res, next) => {
     });
   });
 });
-// =========================================================================
 
 app.listen(port, () => {
   console.log(`Server jalan di http://localhost:${port}`);

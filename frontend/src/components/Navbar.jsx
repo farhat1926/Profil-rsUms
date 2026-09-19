@@ -284,7 +284,7 @@ function Navbar() {
                       Bed
                     </Link>
                     <Link
-                      to="/informasi"
+                      to="/artikel"
                       className="pl-4 text-sm text-gray-300 hover:text-white"
                       onClick={() => {
                         setOpen(false);

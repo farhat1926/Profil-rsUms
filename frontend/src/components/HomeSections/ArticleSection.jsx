@@ -14,11 +14,18 @@ const ArticleSection = () => {
     });
   };
 
+  const buatSlug = (teks) => {
+    if (!teks) return "";
+    return teks
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-|-$)+/g, "");
+  };
+
   useEffect(() => {
     fetch(`${API_URL}/informasi`)
       .then((res) => res.json())
       .then((data) => {
-        // PERUBAHAN 1: Tarik 4 artikel dari API
         setArticleList(data.slice(0, 4));
       })
       .catch((err) => console.error("Gagal mengambil artikel:", err));
@@ -43,9 +50,8 @@ const ArticleSection = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
           {articleList.map((article, index) => (
             <Link
-              to={`/artikel/${article.id}`}
+              to={`/artikel/${buatSlug(article.title)}`}
               key={article.id}
-              // PERUBAHAN 2: Trik CSS untuk menyembunyikan artikel ke-4 di Mobile & Desktop, tapi muncul di Tablet
               className={`bg-white rounded-2xl shadow hover:shadow-lg transition-shadow overflow-hidden h-full border border-gray-100 group flex-col ${
                 index === 3 ? "hidden md:flex lg:hidden" : "flex"
               }`}
