@@ -10,6 +10,7 @@ const mitraList = [
   "/images/meditap.webp",
   "/images/grab.webp",
   "/images/btn.webp",
+  "/images/taspen.webp",
 ];
 
 const MitraSection = () => {

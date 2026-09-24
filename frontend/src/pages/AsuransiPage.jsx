@@ -27,6 +27,7 @@ export default function AsuransiPage() {
     { id: 6, name: "Meditap", logo: "/images/meditap.webp" },
     { id: 7, name: "Grab", logo: "/images/grab.webp" },
     { id: 8, name: "BTN", logo: "/images/btn.webp" },
+    { id: 9, name: "Taspen", logo: "/images/taspen.webp" },
   ];
 
   const filteredAsuransi = asuransiData.filter((item) =>
