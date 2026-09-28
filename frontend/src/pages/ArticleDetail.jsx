@@ -71,6 +71,27 @@ const ArticleDetail = () => {
     setTimeout(() => setIsCopied(false), 2000);
   };
 
+  // FUNGSI BARU: Web Share API untuk HP (Bisa Share ke Instagram)
+  const handleNativeShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: article.title,
+          text: `Baca artikel ini: ${article.title} di RS UMS A.R. Fachrudin`,
+          url: window.location.href,
+        });
+      } catch (error) {
+        console.error("Gagal membagikan:", error);
+      }
+    } else {
+      // Fallback jika browser di PC tidak mendukung Web Share
+      handleCopyLink();
+      alert(
+        "Browser ini tidak mendukung fitur Share otomatis. Tautan telah disalin.",
+      );
+    }
+  };
+
   if (!article) {
     return (
       <div className="p-10 text-center font-medium text-gray-500 min-h-screen flex items-center justify-center">
@@ -153,7 +174,6 @@ const ArticleDetail = () => {
             <span className="text-gray-700 font-bold text-lg whitespace-nowrap">
               Bagikan artikel ini:
             </span>
-            {/* Ditambahkan flex-wrap agar rapi di HP */}
             <div className="flex flex-wrap items-center gap-3">
               {/* Tombol WhatsApp */}
               <a
@@ -224,12 +244,10 @@ const ArticleDetail = () => {
                 <span className="text-sm font-semibold">Twitter</span>
               </a>
 
-              {/* Tombol Telegram */}
-              <a
-                href={`https://t.me/share/url?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 px-4 py-2.5 bg-indigo-50 text-indigo-500 hover:bg-indigo-500 hover:text-white rounded-full transition-all duration-300 shadow-sm"
+              {/* Tombol NATIVE SHARE (Untuk Instagram dll di HP) */}
+              <button
+                onClick={handleNativeShare}
+                className="flex items-center gap-2 px-4 py-2.5 bg-gradient-to-tr from-yellow-400 via-pink-500 to-purple-600 text-white hover:opacity-90 rounded-full transition-all duration-300 shadow-sm cursor-pointer"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -242,11 +260,12 @@ const ArticleDetail = () => {
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
-                  <line x1="22" y1="2" x2="11" y2="13" />
-                  <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
                 </svg>
-                <span className="text-sm font-semibold">Telegram</span>
-              </a>
+                <span className="text-sm font-semibold">Bagikan IG</span>
+              </button>
 
               {/* Tombol Salin Tautan */}
               <button
