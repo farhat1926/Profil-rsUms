@@ -13,14 +13,14 @@ export default function PromoPopup() {
   useEffect(() => {
     const today = new Date().getDay(); // 0 (Minggu) sampai 6 (Sabtu)
 
-    const gambarIjinDokter = "images/ijin.webp";
+    const gambarIjinDokter = "images/ijin-new.webp";
     const jadwalHarian = {
-      1: "images/senin.webp",
-      2: "images/selasa.webp",
-      3: "images/rabu.webp",
-      4: "images/kamis.webp",
-      5: "images/jumat.webp",
-      6: "images/sabtu.webp",
+      1: "images/senin-new.webp",
+      2: "images/selasa-new.webp",
+      3: "images/rabu-new.webp",
+      4: "images/kamis-new.webp",
+      5: "images/jumat-new.webp",
+      6: "images/sabtu-new.webp",
     };
 
     let imagesToShow = [];
